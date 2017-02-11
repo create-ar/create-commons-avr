@@ -4,4 +4,5 @@ Core libraries for AVR development. This code base is an attempt to make it easi
 
 ##### Further Reading
 
+* [Data](docs/core-avr-data.md)
 * [Messaging](docs/core-avr-messaging.md)

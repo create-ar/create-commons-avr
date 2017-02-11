@@ -9,18 +9,12 @@ CFLAGS=-c -g -Os -Wall -std=gnu++11 -fno-exceptions -ffunction-sections -fdata-s
 COREINC=-I$(ARDUINODIR)\hardware\arduino\avr\cores\arduino
 INC=-I$(ARDUINODIR)\hardware\arduino\avr\libraries\SoftwareSerial
 
-SOURCES= \
-	Message.cpp\
-	Messaging.cpp\
-	SoftwareSerialSession.cpp\
-	StreamReader.cpp\
-	StreamWriter.cpp
+SOURCES=
 OBJECTS=$(SOURCES:.cpp=.o)
 TEMP_D=$(SOURCES:.cpp=.d)
-TEMP_O=$(SOURCES:.cpp=.o)
 
 all:
 	$(CC) $(CFLAGS) $(COREINC) $(INC) $(SOURCES)
 	$(ARCHIVER) rcs $(TARGETDIR)/libcore-avr-messaging.a $(OBJECTS)
+	rm $(OBJECTS)
 	rm $(TEMP_D)
-	rm $(TEMP_O)

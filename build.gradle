@@ -1,8 +1,22 @@
 apply from: 'util.gradle'
 
-task build {
+task build(dependsOn:'gendocs') {
+	//
+}
+
+task gendocs(dependsOn:'buildlibs') {
+	doLast {
+		println("Generating documentation.")
+
+		exec_cmd([
+			'doxygen',
+			'.doxygen.config'])
+	}
+}
+
+task buildlibs {
 	doLast { task ->
-		println("Building ${task.project.getProjectDir()}.")
+		println("Building library for ${task.project.getProjectDir()}.")
 
 		exec_cmd(['make'])
 	}
