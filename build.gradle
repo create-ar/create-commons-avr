@@ -1,0 +1,9 @@
+apply from: 'util.gradle'
+
+task build {
+	doLast { task ->
+		println("Building ${task.project.getProjectDir()}.")
+
+		exec_cmd(['make'])
+	}
+}
