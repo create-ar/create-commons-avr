@@ -1,4 +1,7 @@
+#include "EEPROMStream.h"
+
 class FileManager
 {
-	private 
+	private:
+		EEPROMStream _stream;
 }

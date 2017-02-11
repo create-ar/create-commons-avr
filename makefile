@@ -1,3 +1,4 @@
 all:
-	# make each subproject
+	# make each subproject in order
 	+$(MAKE) -C core-avr-messaging
+	+$(MAKE) -C core-avr-data
