@@ -1,18 +1,17 @@
-// Path to the Arduino IDE instalation.
-/*
-ext.arduinoDir = "C:\\Program Files (x86)\\Arduino"
-ext.arduinoCore = "$arduinoDir\\hardware\\arduino\\avr\\cores\\arduino\\"
-ext.arduinoVariant = "$arduinoDir\\hardware\\arduino\\avr\\variants\\standard\\"
-ext.librariesDirs = [
-	"$arduinoDir\\libraries\\",
-	"$arduinoDir\\hardware\\arduino\\avr\\libraries\\",
-	"C:\\Projects\\Libraries"
-]
-ext.staticLibraryDir = "C:\\Projects\\Libraries\\static"
-*/
+// base arduino directory
+ext.arduinoDir='C:\\Program\\ Files\\ \\(x86\\)\\Arduino'
+
+// arduino variant
+ext.variant = 'standard';
 
 // The microcontroler used.
-ext.cpuName = "atmega328p"
+ext.cpuName = 'atmega328p'
 
 // Clock speed of the board.
-ext.cpuClock = "16000000L"
+ext.cpuClock = '16000000L'
+
+// paths to includes
+ext.cc="$arduinoDir\\hardware\\tools\\avr\\bin\\avr-g++.exe"
+ext.archiver="$arduinoDir\\hardware\\tools\\avr\\bin\\avr-ar.exe"
+ext.coreInc="$arduinoDir\\hardware\\arduino\\avr\\cores\\arduino"
+ext.arduinoVariant = "$arduinoDir\\hardware\\arduino\\avr\\variants\\$variant\\"

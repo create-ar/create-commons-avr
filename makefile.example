@@ -1,24 +1,31 @@
 ###############################################################################
-# Library includes. Eg -
+# Library includes.
+# 
+# Eg:
+# 
 # -I$(ARDUINODIR)\hardware\arduino\avr\libraries\SoftwareSerial
-INC=-I$(ARDUINODIR)\hardware\arduino\avr\libraries\SoftwareSerial
+#
+INC=
 ###############################################################################
 
 ###############################################################################
-# Name of the library. This will automatically be prefixed by 'lib'. Eg -
+# Name of the library. This will automatically be prefixed by 'lib'.
+# 
+# Eg:
+# 
 # core-avr-data
-LIBNAME=core-avr-messaging
+# 
+LIBNAME=
 ###############################################################################
 
 ###############################################################################
-# All source files. Eg -
+# All source files.
+# 
+# Eg:
+# 
 # Foo.cpp Bar.cpp
-SOURCES=\
-	Message.cpp\
-	Messaging.cpp\
-	SoftwareSerialSession.cpp\
-	StreamReader.cpp\
-	StreamWriter.cpp
+# 
+SOURCES=
 ###############################################################################
 
 ###############################################################################
@@ -34,7 +41,7 @@ OBJECTS=$(SOURCES:.cpp=.o)
 TEMP_D=$(SOURCES:.cpp=.d)
 
 all:
-	$(CC) $(CFLAGS) $(COREINC) $(INC) $(SOURCES)
+	$(CC) $(CFLAGS) $(COREINC) $(VARIANT) $(INC) $(SOURCES)
 	$(ARCHIVER) rcs $(TARGETDIR)/lib$(LIBNAME).a $(OBJECTS)
 	rm $(OBJECTS)
 	rm $(TEMP_D)

@@ -1,4 +1,5 @@
 apply from: 'util.gradle'
+apply from: 'properties.gradle'
 
 // This task simply runs everything.
 task build(dependsOn:'gendocs') {
@@ -17,6 +18,23 @@ task gendocs(dependsOn:'buildlibs') {
 // This task build libs to static libraries.
 task buildlibs {
 	doLast { task ->
-		exec_cmd(['make'])
+		exec_cmd(['mkdir', 'libs'])
+		exec_cmd([
+			'make',
+			"ARDUINODIR=$arduinoDir",
+			"CC=$cc",
+			"ARCHIVER=$archiver",
+			"CPUNAME=$cpuName",
+			"CPUCLOCK=$cpuClock",
+			"COREINC=-I$coreInc",
+			"VARIANT=-I$arduinoVariant"])
+	}
+}
+
+// Cleans lib + generated folders.
+task clean {
+	doLast {
+		exec_cmd(['rm', '-rf', 'libs'])
+		exec_cmd(['rm', '-rf', 'docs/generated/html'])
 	}
 }
