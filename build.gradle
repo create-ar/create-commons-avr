@@ -1,22 +1,23 @@
 apply from: 'util.gradle'
 
+// This task simply runs everything.
 task build(dependsOn:'gendocs') {
 	//
 }
 
+// This task generates documentation.
 task gendocs(dependsOn:'buildlibs') {
 	doLast {
-		println("Generating documentation.")
-
 		exec_cmd([
 			'doxygen',
 			'.doxygen.config'])
 	}
 }
 
+// This task build libs to static libraries.
 task buildlibs {
 	doLast { task ->
-		println("Building library for ${task.project.getProjectDir()}.")
+		println("[${task.project.getProjectDir()}]")
 
 		exec_cmd(['make'])
 	}
