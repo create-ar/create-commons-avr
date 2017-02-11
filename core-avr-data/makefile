@@ -11,7 +11,8 @@ INC=-I$(ARDUINODIR)\hardware\arduino\avr\libraries\SoftwareSerial
 LIBNAME=core-avr-data
 
 SOURCES=\
-	EEPROMStream.cpp
+	EEPROMStream.cpp\
+	File.cpp
 OBJECTS=$(SOURCES:.cpp=.o)
 TEMP_D=$(SOURCES:.cpp=.d)
 

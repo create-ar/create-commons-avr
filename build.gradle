@@ -17,8 +17,6 @@ task gendocs(dependsOn:'buildlibs') {
 // This task build libs to static libraries.
 task buildlibs {
 	doLast { task ->
-		println("[${task.project.getProjectDir()}]")
-
 		exec_cmd(['make'])
 	}
 }

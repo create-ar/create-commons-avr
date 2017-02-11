@@ -17,7 +17,9 @@ To build, run `gradle build`.
 
 ##### Tasks
 
-* 
+* **build** - Builds everything.
+* **buildlibs** - Builds into static libraries.
+* **gendocs** - Generates documentation. Automatically called by build.
 
 
 
