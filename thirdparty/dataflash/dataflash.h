@@ -73,7 +73,7 @@ const uint16_t DF_pagesize[] PROGMEM ={264,264, 264, 264, 264, 528, 528,1056};
 class Dataflash {
 public:
 Dataflash(void);
-void init(void);
+void init(int dataout=11, int datain=12, int spiclock=13, int slaveselect=10);
 void Page_To_Buffer (unsigned int PageAdr, unsigned char BufferNo);
 unsigned char Buffer_Read_Byte (unsigned char BufferNo, unsigned int IntPageAdr);
 void Buffer_Read_Str (unsigned char BufferNo, unsigned int IntPageAdr, unsigned int No_of_bytes, unsigned char *BufferPtr);
@@ -87,6 +87,11 @@ void Page_Erase (unsigned int PageAdr); // added by mthomas
 unsigned char Page_Buffer_Compare(unsigned char BufferNo, unsigned int PageAdr); // added by mthomas
 void Buffer_To_PageNE (unsigned char BufferNo, unsigned int PageAdr);
 private:
+
+int _dataout;
+int _datain;
+int _spiclock;
+int _slaveselect;
 unsigned char DF_SPI_RW (unsigned char output);
 void DF_SPI_init (void);
 unsigned char Read_DF_status (void);

@@ -23,16 +23,19 @@ task buildlibs {
 		{
 			libs.create()
 		}
+
+		def thirdPartyDir = new File('thirdparty')
 		
 		exec_cmd([
 			'make',
 			"ARDUINODIR=$arduinoDir",
+			"THIRDPARTYDIR=${thirdPartyDir.getAbsolutePath()}",
 			"CC=$cc",
 			"ARCHIVER=$archiver",
 			"CPUNAME=$cpuName",
 			"CPUCLOCK=$cpuClock",
 			"COREINC=-I$coreInc",
-			"VARIANT=-I$arduinoVariant"])
+			"VARIANTINC=-I$arduinoVariant"])
 	}
 }
 

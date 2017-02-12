@@ -1,5 +1,19 @@
+#ifndef FILEMANAGER_H
+#define FILEMANAGER_H
+
 #include "EEPROMStream.h"
 #include "File.h"
+
+/**
+ * @brief      Configuration object fo initializing FileManager.
+ */
+struct FileManagerConfig
+{
+	int pinDataOut = 11;
+	int pinDataIn = 12;
+	int pinSpiClock = 13;
+	int pinSlaveSelect = 10;
+};
 
 /**
  * @brief      The FileManager class exposes a fixed-size file manipulation API, based on URI.
@@ -19,11 +33,16 @@ class FileManager
 		FileManager();
 
 		/**
+		 * @brief      Destructor.
+		 */
+		~FileManager();
+
+		/**
 		 * @brief      Initializes the system.
 		 *
 		 * @return     Returns true if everything is good to go.
 		 */
-		bool init();
+		bool init(FileManagerConfig config);
 
 		/**
 		 * @brief      Creates a File of a specific size, linked to a URI.
@@ -53,3 +72,5 @@ class FileManager
 		 */
 		bool set(const File* file);
 };
+
+#endif

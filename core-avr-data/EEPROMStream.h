@@ -1,10 +1,36 @@
+#ifndef EEPROMSTREAM_H
+#define EEPROMSTREAM_H
+
+#include <dataflash.h>
+
 /**
  * @brief      Abstracts SPI + EEPROM paging into working with a single
  * block of contiguous bytes. All calls are blocking.
  */
 class EEPROMStream
 {
+private:
+	/**
+	 * SPI interface.
+	 */
+	Dataflash _dataFlash;
+
 public:
+	/**
+	 * @brief      Constructor.
+	 */
+	EEPROMStream();
+
+	/**
+	 * @brief      Initializes the stream with pin info.
+	 *
+	 * @param[in]  dataout      The dataout pin.
+	 * @param[in]  datain       The datain pin.
+	 * @param[in]  spiclock     The spiclock pin.
+	 * @param[in]  slaveselect  The slaveselect pin.
+	 */
+	bool init(int dataout=11, int datain=12, int spiclock=13, int slaveselect=10);
+
 	/**
 	 * @brief      Reads a single byte from the stream and advances the index.
 	 *
@@ -54,3 +80,5 @@ public:
 	 */
 	int seek(const int offset, const int origin);
 };
+
+#endif

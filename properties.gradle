@@ -14,4 +14,4 @@ ext.cpuClock = '16000000L'
 ext.cc="$arduinoDir\\hardware\\tools\\avr\\bin\\avr-g++.exe"
 ext.archiver="$arduinoDir\\hardware\\tools\\avr\\bin\\avr-ar.exe"
 ext.coreInc="$arduinoDir\\hardware\\arduino\\avr\\cores\\arduino"
-ext.arduinoVariant = "$arduinoDir\\hardware\\arduino\\avr\\variants\\$variant\\"
+ext.arduinoVariant = "$arduinoDir\\hardware\\arduino\\avr\\variants\\$variant"

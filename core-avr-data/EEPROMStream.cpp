@@ -1,5 +1,17 @@
 #include "EEPROMStream.h"
 
+EEPROMStream::EEPROMStream()
+{
+	_dataFlash = Dataflash();
+}
+
+bool EEPROMStream::init(int dataout, int datain, int spiclock, int slaveselect)
+{
+	_dataFlash.init(dataout, datain, spiclock, slaveselect);
+
+	return false;
+}
+
 char EEPROMStream::read()
 {
 	return 0;

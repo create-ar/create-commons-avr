@@ -1,7 +1,7 @@
 ###############################################################################
 # Library includes. Eg -
 # -I$(ARDUINODIR)\hardware\arduino\avr\libraries\SoftwareSerial
-INC=
+INC=-I$(THIRDPARTYDIR)\dataflash
 ###############################################################################
 
 ###############################################################################
@@ -15,7 +15,8 @@ LIBNAME=core-avr-data
 # Foo.cpp Bar.cpp
 SOURCES=\
 	EEPROMStream.cpp\
-	File.cpp
+	File.cpp\
+	FileManager.cpp
 ###############################################################################
 
 ###############################################################################
@@ -31,7 +32,8 @@ OBJECTS=$(SOURCES:.cpp=.o)
 TEMP_D=$(SOURCES:.cpp=.d)
 
 all:
-	$(CC) $(CFLAGS) $(COREINC) $(INC) $(SOURCES)
+	#$(CC) $(CFLAGS) $(COREINC) $(VARIANTINC) $(INC) $(SOURCES)
+	$(CC) $(CFLAGS) $(INC) $(COREINC) $(VARIANTINC) $(SOURCES)
 	$(ARCHIVER) rcs $(TARGETDIR)/lib$(LIBNAME).a $(OBJECTS)
 	rm $(OBJECTS)
 	rm $(TEMP_D)

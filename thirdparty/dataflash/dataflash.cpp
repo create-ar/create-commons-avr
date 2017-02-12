@@ -50,11 +50,6 @@
 
 #include "Dataflash.h"
 
-#define DATAOUT 11//MOSI
-#define DATAIN  12//MISO 
-#define SPICLOCK  13//sck
-#define SLAVESELECT 10//ss
-
 //opcodes
 #define WREN  6
 #define WRDI  4
@@ -68,16 +63,22 @@ unsigned int  PageSize = 0;
 
 Dataflash::Dataflash(void)
 {
+  //
 }
 
-void Dataflash::init(void)
+void Dataflash::init(int dataout=11, int datain=12, int spiclock=13, int slaveselect=10);
 {
+  _dataout = _dataout;
+  _datain = datain;
+  _spiclock = spiclock;
+  _slaveselect = slaveselect;
+
   char clr;
-  pinMode(DATAOUT, OUTPUT);
-  pinMode(DATAIN, INPUT);
-  pinMode(SPICLOCK,OUTPUT);
-  pinMode(SLAVESELECT,OUTPUT);
-  digitalWrite(SLAVESELECT,HIGH); //disable device
+  pinMode(_dataout, OUTPUT);
+  pinMode(_datain, INPUT);
+  pinMode(_spiclock,OUTPUT);
+  pinMode(_slaveselect,OUTPUT);
+  digitalWrite(_slaveselect,HIGH); //disable device
   // SPCR = 01010000
   //interrupt disabled,spi enabled,msb 1st,master,clk low when idle,
   //sample on leading edge of clk,system clock/4 rate (fastest)
@@ -595,9 +596,9 @@ void Dataflash::Buffer_To_PageNE (unsigned char BufferNo, unsigned int PageAdr)
 
 void Dataflash::DF_CS_inactive()
 {
-  digitalWrite(SLAVESELECT,HIGH);
+  digitalWrite(_slaveselect,HIGH);
 }
 void Dataflash::DF_CS_active()
 {
-  digitalWrite(SLAVESELECT,LOW);
+  digitalWrite(_slaveselect,LOW);
 }

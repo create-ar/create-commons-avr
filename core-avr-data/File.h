@@ -1,3 +1,6 @@
+#ifndef FILE_H
+#define FILE_H
+
 #include "EEPROMStream.h"
 
 /**
@@ -67,3 +70,5 @@ public:
 		const int sourceSize,
 		const int targetOffset);
 };
+
+#endif

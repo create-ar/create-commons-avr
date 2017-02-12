@@ -2,11 +2,24 @@
 
 FileManager::FileManager()
 {
+	_stream = EEPROMStream();
+}
+
+FileManager::~FileManager()
+{
 	//
 }
 
-bool FileManager::init()
+bool FileManager::init(FileManagerConfig config)
 {
+	bool success = _stream.init(
+		config.pinDataOut,
+		config.pinDataIn,
+		config.pinSpiClock,
+		config.pinSlaveSelect);
+
+	// read header
+
 	return false;
 }
 
