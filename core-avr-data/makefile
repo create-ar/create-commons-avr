@@ -1,7 +1,7 @@
 ###############################################################################
 # Library includes. Eg -
 # -I$(ARDUINODIR)\hardware\arduino\avr\libraries\SoftwareSerial
-INC=-I$(THIRDPARTYDIR)\dataflash -I$(BASECOREDIR)\core-avr-ds -I$(BASECOREDIR)\common
+INC=-I$(THIRDPARTYDIR)\dataflash -I$(BASECOREDIR)\core-avr-ds -I$(BASECOREDIR)\common -I$(BASECOREDIR)\core-avr-logging
 ###############################################################################
 
 ###############################################################################

@@ -6,6 +6,7 @@
 #include <Converter.h>
 #include <Tuple.h>
 #include <LinkedList.h>
+#include <Logger.h>
 
 /**
  * @brief      Configuration object fo initializing FileManager.
@@ -149,6 +150,11 @@ public:
 class FileManager
 {
 	private:
+		/**
+		 * Logger.
+		 */
+		Logger* _logger = new Logger("FileManager");
+
 		/**
 		 * The FileManager is the owner of the EEPROMStream abstraction.
 		 */
