@@ -2,6 +2,8 @@
 
 The `core-avr-logging` library provides a very basic set of logging utilities modeled after familiar logging frameworks.
 
+![Overview.](https://www.lucidchart.com/publicSegments/view/b779e00d-75b0-4392-96c1-9ea4e1b03c11/image.png)
+
 ##### Log
 
 `Log` provides a static interface for logging. Generally, `Log` is not used directly, but instead configured with log targets and formatters.
