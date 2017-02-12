@@ -1,7 +1,7 @@
 #include "Logger.h"
 #include "Log.h"
 
-Logger::Logger(char* category)
+Logger::Logger(const char* category)
 {
 	_category = category;
 }

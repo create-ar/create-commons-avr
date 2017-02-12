@@ -32,6 +32,16 @@ struct FileManagerConfig
 	 * Specifies the pin for slave selection.
 	 */
 	int pinSlaveSelect = 10;
+
+	/**
+	 * Number of pages in memory.
+	 */
+	int numPages = 128;
+
+	/**
+	 * Number of bytes per page of memory.
+	 */
+	int bytesPerPage = 128;
 };
 
 /**
@@ -169,6 +179,11 @@ class FileManager
 		 * Header information for file system.
 		 */
 		FileManagerHeader _header;
+
+		/**
+		 * Total size of filesystem. Calculated value from config.
+		 */
+		int _totalSize;
 
 	public:
 		/**

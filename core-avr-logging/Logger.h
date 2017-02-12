@@ -18,7 +18,7 @@ public:
 	 *
 	 * @param      category  The category to prefix logs with.
 	 */
-	Logger(char* category);
+	Logger(const char* category);
 
 	/**
 	 * @brief      Logs at a debug level.

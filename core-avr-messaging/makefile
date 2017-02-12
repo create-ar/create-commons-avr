@@ -27,7 +27,7 @@ TARGETDIR=../libs
 ###############################################################################
 
 # Compiler flags: don't touch unless you know what you're doing.
-CFLAGS=-c -g -Os -Wall -std=gnu++11 -fno-exceptions -ffunction-sections -fdata-sections -fno-threadsafe-statics -MMD -DARDUINO=100 -DARDUINO_AVR_NANO -DARDUINO_ARCH_AVR -mmcu=$(CPUNAME) -DF_CPU=$(CPUCLOCK)
+CFLAGS=-c -g -Os -Wall -Werror -std=gnu++11 -fno-exceptions -ffunction-sections -fdata-sections -fno-threadsafe-statics -MMD -DARDUINO=100 -DARDUINO_AVR_NANO -DARDUINO_ARCH_AVR -mmcu=$(CPUNAME) -DF_CPU=$(CPUCLOCK)
 
 # Temporary build files.
 OBJECTS=$(SOURCES:.cpp=.o)
