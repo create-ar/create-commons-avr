@@ -1,7 +1,7 @@
 ###############################################################################
 # Library includes. Eg -
 # -I$(ARDUINODIR)\hardware\arduino\avr\libraries\SoftwareSerial
-INC=-I$(THIRDPARTYDIR)\dataflash
+INC=-I$(THIRDPARTYDIR)\dataflash -I$(BASECOREDIR)\core-avr-ds -I$(BASECOREDIR)\common
 ###############################################################################
 
 ###############################################################################
@@ -32,7 +32,6 @@ OBJECTS=$(SOURCES:.cpp=.o)
 TEMP_D=$(SOURCES:.cpp=.d)
 
 all:
-	#$(CC) $(CFLAGS) $(COREINC) $(VARIANTINC) $(INC) $(SOURCES)
 	$(CC) $(CFLAGS) $(INC) $(COREINC) $(VARIANTINC) $(SOURCES)
 	$(ARCHIVER) rcs $(TARGETDIR)/lib$(LIBNAME).a $(OBJECTS)
 	rm $(OBJECTS)

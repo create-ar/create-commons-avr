@@ -25,10 +25,12 @@ task buildlibs {
 		}
 
 		def thirdPartyDir = new File('thirdparty')
-		
+		def baseCoreDir = new File('.')
+
 		exec_cmd([
 			'make',
 			"ARDUINODIR=$arduinoDir",
+			"BASECOREDIR=${baseCoreDir.getAbsolutePath()}",
 			"THIRDPARTYDIR=${thirdPartyDir.getAbsolutePath()}",
 			"CC=$cc",
 			"ARCHIVER=$archiver",

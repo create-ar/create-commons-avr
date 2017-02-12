@@ -3,6 +3,7 @@
 FileManager::FileManager()
 {
 	_stream = EEPROMStream();
+	_files = LinkedList<Tuple<char*, File>>();
 }
 
 FileManager::~FileManager()
@@ -18,13 +19,14 @@ bool FileManager::init(FileManagerConfig config)
 		config.pinSpiClock,
 		config.pinSlaveSelect);
 
-	// read header
-
-	return false;
+	return success && _header.read(&_stream);
 }
 
 File* FileManager::create(const char* uri, const int size)
 {
+	// first, check if we have the room left
+	
+
 	return nullptr;
 }
 
