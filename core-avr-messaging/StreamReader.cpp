@@ -3,7 +3,7 @@
 // 
 
 #include "StreamReader.h"
-#include "Converter.h"
+#include "..\common\Converter.h"
 
 StreamReader::StreamReader()
 {

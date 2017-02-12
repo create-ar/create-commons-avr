@@ -5,7 +5,11 @@ EEPROMStream::EEPROMStream()
 	_dataFlash = Dataflash();
 }
 
-bool EEPROMStream::init(int dataout, int datain, int spiclock, int slaveselect)
+bool EEPROMStream::init(
+	int dataout,
+	int datain,
+	int spiclock,
+	int slaveselect)
 {
 	_dataFlash.init(dataout, datain, spiclock, slaveselect);
 
@@ -17,7 +21,7 @@ char EEPROMStream::read()
 	return 0;
 }
 
-int EEPROMStream::read(char* buffer, const int offset, const int count)
+int EEPROMStream::read(char* const buffer, const int offset, const int count)
 {
 	return 0;
 }
@@ -27,7 +31,7 @@ bool EEPROMStream::write(const char value)
 	return false;
 }
 
-bool EEPROMStream::write(const char* buffer, const int offset, const int count)
+bool EEPROMStream::write(char* const buffer, const int offset, const int count)
 {
 	return false;
 }

@@ -3,7 +3,7 @@
 #ifndef _STREAMWRITER_h
 #define _STREAMWRITER_h
 
-#include "Converter.h"
+#include "..\common\Converter.h"
 
 class StreamWriter
 {

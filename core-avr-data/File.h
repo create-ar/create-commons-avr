@@ -9,7 +9,35 @@
 class File
 {
 private:
+	/**
+	 * Stream to read/write with.
+	 */
 	EEPROMStream* _stream;
+
+	/**
+	 * Byte offset into stream.
+	 */
+	int _offset;
+
+	/**
+	 * Size in bytes.
+	 */
+	short _size;
+
+	/**
+	 * How many records have been written.
+	 */
+	short _numRecords;
+
+	/**
+	 * Buffer used internally to move floats around.
+	 */
+	char _scratchBuffer[4];
+
+	/**
+	 * @brief      Reads header info from buffer.
+	 */
+	void readHeaderInfo();
 
 public:
 	/**
@@ -19,7 +47,7 @@ public:
 	 * @param[in]  offset  The byte offset this file starts at.
 	 * @param[in]  size    The size of the file, in bytes.
 	 */
-	File(EEPROMStream* stream, const int offset, const int size);
+	File(EEPROMStream* stream, const int offset, const short size);
 
 	/**
 	 * @brief      Retrieves the size of the file.
@@ -37,38 +65,13 @@ public:
 	bool flush();
 
 	/**
-	 * @brief      Essentially a revert, refreshes the file from data.
+	 * @brief      Adds a value to the file.
 	 *
-	 * @return     { description_of_the_return_value }
-	 */
-	bool refresh();
-
-	/**
-	 * @brief      Adds a block of bytes to somewhere in the file.
-	 *
-	 * @param[in]  buffer  The buffer to copy from.
-	 * @param[in]  offset  The byte offset, relative to the file, to start at.
-	 * @param[in]  size    The size of the buffer, in bytes.
+	 * @param[in]  value	The float to add to the file.
 	 *
 	 * @return     Returns true iff the add was successful.
 	 */
-	bool add(const char* buffer, const int offset, const int size);
-	
-	/**
-	 * @brief      Updates a block of memory.
-	 *
-	 * @param[in]  buffer        The buffer to copy data from.
-	 * @param[in]  sourceOffset  The byte offset of the source buffer.
-	 * @param[in]  sourceSize    The size of the memory block to copy, in bytes. 
-	 * @param[in]  targetOffset  The target byte offset, relative to the file, to start at.
-	 *
-	 * @return     Returns true iff the add was successful.
-	 */
-	bool update(
-		const char* buffer,
-		const int sourceOffset,
-		const int sourceSize,
-		const int targetOffset);
+	bool add(float value);
 };
 
 #endif

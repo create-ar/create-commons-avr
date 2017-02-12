@@ -4,13 +4,14 @@
 union ShortUnion
 {
 	short shortValue;
-	unsigned char charValue[2];
+	char charValue[2];
 };
 
 union IntUnion
 {
 	int intValue;
-	unsigned char charValue[4];
+	float floatValue;
+	char charValue[4];
 };
 
 #endif

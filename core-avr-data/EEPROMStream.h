@@ -15,6 +15,21 @@ private:
 	 */
 	Dataflash _dataFlash;
 
+	/**
+	 * Page currently in buffer.
+	 */
+	int _page = -1;
+
+	/**
+	 * Dataflash buffer to use.
+	 */
+	int _bufferIndex = -1;
+
+	/**
+	 * Index into EEPROM stream.
+	 */
+	int _absoluteByteIndex = 0;
+
 public:
 	/**
 	 * @brief      Constructor.
@@ -47,7 +62,7 @@ public:
 	 *
 	 * @return     The number of bytes actually read.
 	 */
-	int read(char* buffer, const int offset, const int count);
+	int read(char* const buffer, const int offset, const int count);
 
 	/**
 	 * @brief      Writes a single byte to the stream and advances the index.
@@ -67,7 +82,7 @@ public:
 	 *
 	 * @return     Returns true if the write was successful.
 	 */
-	bool write(const char* buffer, const int offset, const int count);
+	bool write(char* const buffer, const int offset, const int count);
 
 	/**
 	 * @brief      Moves the index to a specific place. This is used when
