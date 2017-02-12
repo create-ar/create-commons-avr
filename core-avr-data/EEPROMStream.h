@@ -78,7 +78,7 @@ public:
 	 *
 	 * @param[in]  buffer  The buffer to copy values from.
 	 * @param[in]  offset  The starting byte offset.
-	 * @param[in]  count   The number of bytes to read from buffer.
+	 * @param[in]  count   The number of bytes to write from buffer.
 	 *
 	 * @return     Returns true if the write was successful.
 	 */

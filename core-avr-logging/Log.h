@@ -1,6 +1,9 @@
 #ifndef LOG_H
 #define LOG_H
 
+#include "LogTarget.h"
+#include "LogFormatter.h"
+
 /**
  * @brief      Static interface for logging.
  */
@@ -13,7 +16,7 @@ private:
 	#define MAX_LOGTARGETS 4
 
 	/**
-	 * Log targets array.
+	 * Array of pointers to LogTargets.
 	 */
 	static LogTarget* _targets[MAX_LOGTARGETS];
 

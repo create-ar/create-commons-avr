@@ -10,7 +10,7 @@ private:
 	/**
 	 * The category with which to prefix logs.
 	 */
-	char* _category;
+	const char* _category;
 
 public:
 	/**

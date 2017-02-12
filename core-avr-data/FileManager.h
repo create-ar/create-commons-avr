@@ -9,6 +9,11 @@
 #include <Logger.h>
 
 /**
+ * Number of bytes in header.
+ */
+#define FILEMANAGER_HEADER_SIZE 12
+
+/**
  * @brief      Configuration object fo initializing FileManager.
  */
 struct FileManagerConfig
@@ -49,8 +54,6 @@ struct FileManagerConfig
  */
 class FileManagerHeader
 {
-
-	#define HEADER_SIZE 12
 	#define IDENTIFIER_LENGTH 4
 
 public:
@@ -83,10 +86,10 @@ public:
 	 */
 	bool read(EEPROMStream* stream)
 	{
-		char buffer[HEADER_SIZE];
+		char buffer[FILEMANAGER_HEADER_SIZE];
 
 		// read header
-		if (HEADER_SIZE != stream->read(buffer, 0, HEADER_SIZE))
+		if (FILEMANAGER_HEADER_SIZE != stream->read(buffer, 0, FILEMANAGER_HEADER_SIZE))
 		{
 			return false;
 		}
@@ -129,7 +132,7 @@ public:
 	bool write(EEPROMStream* stream)
 	{
 		// prepare buffer
-		char buffer[HEADER_SIZE];
+		char buffer[FILEMANAGER_HEADER_SIZE];
 
 		// copy in identifier
 		memcpy(buffer, identifier, IDENTIFIER_LENGTH);
@@ -150,7 +153,7 @@ public:
 		intConverter.intValue = totalBytes;
 		memcpy(buffer + index, intConverter.charValue, 4);
 
-		return stream->write(buffer, 0, HEADER_SIZE);
+		return stream->write(buffer, 0, FILEMANAGER_HEADER_SIZE);
 	}
 };
 

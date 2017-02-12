@@ -21,7 +21,7 @@ task buildlibs {
 		def libs = new File('libs')
 		if (!libs.exists())
 		{
-			libs.create()
+			libs.mkdir()
 		}
 
 		def thirdPartyDir = new File('thirdparty')
@@ -37,7 +37,8 @@ task buildlibs {
 			"CPUNAME=$cpuName",
 			"CPUCLOCK=$cpuClock",
 			"COREINC=-I$coreInc",
-			"VARIANTINC=-I$arduinoVariant"])
+			"VARIANTINC=-I$arduinoVariant",
+			"ARDUINOINC=-I$arduinoInc"])
 	}
 }
 

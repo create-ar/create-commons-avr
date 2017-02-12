@@ -15,13 +15,13 @@ void Log::setFormatter(LogFormatter* formatter)
  *
  * @param      target  The target.
  */
-static void addTarget(LogTarget* target)
+void Log::addTarget(LogTarget* target)
 {
 	for (int i = 0; i < MAX_LOGTARGETS; i++)
 	{
-		if (nullptr == _target[i])
+		if (nullptr == _targets[i])
 		{
-			_target[i] = target;
+			_targets[i] = target;
 			break;
 		}
 	}
@@ -32,13 +32,13 @@ static void addTarget(LogTarget* target)
  *
  * @param      target  The target.
  */
-static void removeTarget(LogTarget* target)
+void Log::removeTarget(LogTarget* target)
 {
 	for (int i = 0; i < MAX_LOGTARGETS; i++)
 	{
-		if (target == _target[i])
+		if (target == _targets[i])
 		{
-			_target[i] = nullptr;
+			_targets[i] = nullptr;
 			break;
 		}
 	}
@@ -51,15 +51,15 @@ static void removeTarget(LogTarget* target)
  * @param[in]  category  The category of the log.
  * @param[in]  message   The message to log.
  */
-static void log(const char* level, const char* category, const char* message)
+void Log::log(const char* level, const char* category, const char* message)
 {
 	for (int i = 0; i < MAX_LOGTARGETS; i++)
 	{
-		if (nullptr == _target[i])
+		if (nullptr == _targets[i])
 		{
 			break;
 		}
 
-		_target[i]->log(_formatter->format(level, category, message));
+		_targets[i]->log(_formatter->format(level, category, message));
 	}
 }
