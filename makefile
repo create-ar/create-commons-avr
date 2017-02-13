@@ -1,6 +1,3 @@
-OUT_DIR=build
-OBJ_DIR=$(OUT_DIR)/obj
-
 all:
 	# make each subproject in order
 	+$(MAKE) -C core-avr-logging OUT_DIR=$(OUT_DIR) OBJ_DIR=$(OBJ_DIR)

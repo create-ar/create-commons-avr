@@ -24,6 +24,8 @@ task build {
 
 		exec_cmd([
 			'make',
+			"OUT_DIR=$outDir",
+			"OBJ_DIR=$objDir",
 			"ARDUINODIR=$arduinoDir",
 			"BASECOREDIR=${baseCoreDir.getAbsolutePath()}",
 			"THIRDPARTYDIR=${thirdPartyDir.getAbsolutePath()}",
