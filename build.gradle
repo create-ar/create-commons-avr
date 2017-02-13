@@ -1,13 +1,8 @@
 apply from: 'util.gradle'
 apply from: 'properties.gradle'
 
-// This task simply runs everything.
-task build(dependsOn:'gendocs') {
-	//
-}
-
 // This task generates documentation.
-task gendocs(dependsOn:'buildlibs') {
+task gendocs(dependsOn:'build') {
 	doLast {
 		exec_cmd([
 			'doxygen',
@@ -16,7 +11,7 @@ task gendocs(dependsOn:'buildlibs') {
 }
 
 // This task build libs to static libraries.
-task buildlibs {
+task build {
 	doLast { task ->
 		def libs = new File('libs')
 		if (!libs.exists())

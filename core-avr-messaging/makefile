@@ -30,11 +30,18 @@ TARGETDIR=../libs
 CFLAGS=-c -g -Os -Wall -Werror -std=gnu++11 -fno-exceptions -ffunction-sections -fdata-sections -fno-threadsafe-statics -MMD -DARDUINO=100 -DARDUINO_AVR_NANO -DARDUINO_ARCH_AVR -mmcu=$(CPUNAME) -DF_CPU=$(CPUCLOCK)
 
 # Temporary build files.
-OBJECTS=$(SOURCES:.cpp=.o)
-TEMP_D=$(SOURCES:.cpp=.d)
+OBJS=$(addprefix $(OBJ_DIR)/, $(notdir $(SOURCES:.cpp=.o)))
+LIBPATH=$(TARGETDIR)/lib$(LIBNAME).a
 
-all:
-	$(CC) $(CFLAGS) $(COREINC) $(INC) $(SOURCES)
-	$(ARCHIVER) rcs $(TARGETDIR)/lib$(LIBNAME).a $(OBJECTS)
-	rm $(OBJECTS)
-	rm $(TEMP_D)
+all: $(OBJS)
+	$(ARCHIVER) rcs $(LIBPATH) $(OBJS)
+	+$(MAKE) -C test OUT_DIR=$(OUT_DIR) OBJ_DIR=$(OBJ_DIR)
+	
+$(OBJ_DIR)/%.o: %.cpp
+	@mkdir -p $(OUT_DIR)
+	@mkdir -p $(OBJ_DIR)
+	$(CC) $(CFLAGS) $(INC) $(COREINC) $(VARIANTINC) $(ARDUINOINC) -c $< -o $(OBJ_DIR)/$(@F)
+
+clean:
+	rm -Rf $(OUT_DIR)
+	rm -f $(LIBPATH)
