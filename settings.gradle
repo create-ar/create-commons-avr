@@ -1,0 +1,4 @@
+include 'core-avr-data'
+include 'core-avr-ds'
+include 'core-avr-logging'
+include 'core-avr-messaging'
