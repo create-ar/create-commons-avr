@@ -35,7 +35,8 @@ task build {
 			"CPUCLOCK=$cpuClock",
 			"COREINC=-I$coreInc",
 			"VARIANTINC=-I$arduinoVariant",
-			"ARDUINOINC=-I$arduinoInc"])
+			"ARDUINOINC=-I$arduinoInc",
+			"TESTINC=-I$testInc"])
 	}
 }
 
@@ -44,5 +45,43 @@ task clean {
 	doLast {
 		exec_cmd(['rm', '-rf', 'libs'])
 		exec_cmd(['rm', '-rf', 'docs/generated/html'])
+	}
+}
+
+// Generates a project setup for testing.
+task gentests {
+	doLast { task ->
+		if (!task.project.hasProperty('api')) {
+			println('No tests generated. Must be supplied with -Papi property.');
+			return;
+		}
+
+		def api = task.project.api;
+		def apiDir = new File(api);
+		if (!apiDir.exists()) {
+			apiDir.mkdir();
+		}
+
+		def testDir = new File(apiDir, 'test');
+		if (!testDir.exists()) {
+			testDir.mkdir();
+		}
+
+		// copy makefile
+		def src = new File('templates/makefile.test.example')
+		def dst = new File("$api/test/makefile")
+		dst << src.text
+
+		// prep test main
+		dst = new File("$api/test/Main_${api}.cpp")
+		if (!dst.createNewFile()) {
+			println("Could not create ${dst.getAbsolutePath()}.")
+			return;
+		}
+		dst << "\
+#define CATCH_CONFIG_MAIN\n\
+#include <catch.hpp>"
+
+		println("Tests generated in ${api}/tests.");
 	}
 }

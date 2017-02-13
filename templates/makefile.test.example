@@ -12,7 +12,7 @@ all: $(OBJS)
 $(OBJ_DIR)/%.o: %.cpp
 	@mkdir -p $(OUT_DIR)
 	@mkdir -p $(OBJ_DIR)
-	$(CC) -c $< -o $(OBJ_DIR)/$(@F)
+	$(CC) $(TESTINC) -c $< -o $(OBJ_DIR)/$(@F)
 
 clean:
 	rm -Rf $(OUT_DIR)

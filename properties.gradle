@@ -1,6 +1,3 @@
-// base arduino directory
-ext.arduinoDir='C:\\Program\\ Files\\ \\(x86\\)\\Arduino'
-
 // arduino variant
 ext.variant = 'standard';
 
@@ -10,12 +7,18 @@ ext.cpuName = 'atmega328p'
 // Clock speed of the board.
 ext.cpuClock = '16000000L'
 
+// base arduino directory
+ext.arduinoDir='C:\\Program\\ Files\\ \\(x86\\)\\Arduino'
+
 // paths to includes
 ext.cc="$arduinoDir\\hardware\\tools\\avr\\bin\\avr-g++.exe"
 ext.archiver="$arduinoDir\\hardware\\tools\\avr\\bin\\avr-ar.exe"
 ext.coreInc="$arduinoDir\\hardware\\arduino\\avr\\cores\\arduino"
 ext.arduinoVariant="$arduinoDir\\hardware\\arduino\\avr\\variants\\$variant"
 ext.arduinoInc="$arduinoDir\\hardware\\tools\\avr\\avr\\include";
+
+// include for Catch.hpp
+ext.testInc="C:\\Projects\\ThirdParty\\Catch\\single_include"
 
 // paths to intermediate build directories
 ext.outDir='build'

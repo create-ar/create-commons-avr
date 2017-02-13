@@ -1,7 +1,8 @@
 override CC=g++
 override SOURCES=$(wildcard *.cpp)
+override OUT_DIR=build
+override OBJ_DIR=$(OUT_DIR)/obj
 override EXE_NAME=$(OUT_DIR)/Test.exe
-override TESTINC=-I../
 
 override OBJS=$(addprefix $(OBJ_DIR)/, $(notdir $(SOURCES:.cpp=.o)))
 
