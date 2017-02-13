@@ -166,7 +166,7 @@ class FileManager
 		/**
 		 * Logger.
 		 */
-		Logger* _logger = new Logger("FileManager");
+		Logger* _logger;
 
 		/**
 		 * The FileManager is the owner of the EEPROMStream abstraction.

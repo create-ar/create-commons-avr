@@ -3,6 +3,7 @@
 
 #include "EEPROMStream.h"
 #include <Converter.h>
+#include <Logger.h>
 
 #define FILE_HEADER_SIZE 8
 
@@ -11,6 +12,8 @@
  */
 class FileHeader
 {
+
+public:
 	/**
 	 * Version of the file.
 	 */
@@ -72,13 +75,13 @@ class FileHeader
 	 * @brief      Writes the header.
 	 *
 	 * @param      stream  The stream to write with.
-	 * @param      offset  The absolute offset to write the header.
+	 * @param      absoluteOffset  The absolute offset to write the header.
 	 *
 	 * @return     True if the header was successfully writtern.
 	 */
 	bool write(
 		EEPROMStream* stream,
-		int offset)
+		int absoluteOffset)
 	{
 		// prepare buffer
 		char buffer[FILE_HEADER_SIZE];
@@ -94,7 +97,7 @@ class FileHeader
 		shortConverter.shortValue = numRecords;
 		memcpy(buffer + 6, shortConverter.charValue, 2);
 
-		return stream->write(buffer, offset, FILE_HEADER_SIZE);
+		return stream->write(buffer, absoluteOffset, FILE_HEADER_SIZE);
 	}
 };
 
@@ -104,6 +107,12 @@ class FileHeader
 class File
 {
 private:
+
+	/**
+	 * Logger.
+	 */
+	static Logger* _logger;
+
 	/**
 	 * Stream to read/write with.
 	 */
@@ -115,34 +124,41 @@ private:
 	int _offset;
 
 	/**
-	 * Size in bytes.
-	 */
-	short _size;
-
-	/**
-	 * How many records have been written.
-	 */
-	short _numRecords;
-
-	/**
 	 * Buffer used internally to move floats around.
 	 */
 	char _scratchBuffer[4];
 
-	/**
-	 * @brief      Reads header info from buffer.
-	 */
-	void readHeaderInfo();
-
 public:
+
 	/**
-	 * @brief      Creates a fixed size file.
+	 * Header information.
+	 */
+	FileHeader header;
+
+	/**
+	 * @brief      Constructor.
+	 */
+	File();
+
+	/**
+	 * @brief      Loads header into memory. This is for Files that already
+	 * exist.
 	 *
 	 * @param      stream  The stream to read/write from.
 	 * @param[in]  offset  The byte offset this file starts at.
-	 * @param[in]  size    The size of the file, in bytes.
 	 */
-	File(EEPROMStream* stream, const int offset, const short size);
+	bool load(EEPROMStream* stream, const int offset);
+
+	/**
+	 * @brief      Writes header to disk. This is for new Files.
+	 *
+	 * @param      stream  The stream to write to.
+	 * @param[in]  offset  The byte offset this file starts at.
+	 * @param[in]  size    The size, in bytes, of the file.
+	 *
+	 * @return     { description_of_the_return_value }
+	 */
+	bool init(EEPROMStream* stream, const int offset, const short size);
 
 	/**
 	 * @brief      Retrieves the size of the file.

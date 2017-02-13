@@ -3,6 +3,9 @@
 
 #include "LogTarget.h"
 #include "LogFormatter.h"
+#include "Logger.h"
+#include <LinkedList.h>
+#include <Tuple.h>
 
 /**
  * @brief      Static interface for logging.
@@ -24,6 +27,11 @@ private:
 	 * Formatter for all logs.
 	 */
 	static LogFormatter* _formatter;
+
+	/**
+	 * Tracks loggers.
+	 */
+	static LinkedList<Tuple<const char, Logger>> _loggers;
 
 public:
 	/**
@@ -55,6 +63,16 @@ public:
 	 * @param[in]  message   The message to log.
 	 */
 	static void log(const char* level, const char* category, const char* message);
+
+	/**
+	 * @brief      Retrieves a logger for a category. If a logger already
+	 * exists, it returns that logger.
+	 *
+	 * @param[in]  category  The category. Can be anything.
+	 *
+	 * @return     A logger.
+	 */
+	static Logger* logger(const char* category);
 };
 
 #endif

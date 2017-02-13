@@ -1,3 +1,6 @@
+#ifndef TUPLE_H
+#define TUPLE_H
+
 /**
  * @brief      Wraps two pointers.
  *
@@ -34,7 +37,9 @@ public:
 	 */
 	Tuple(T1* first, T2* second)
 	{
-		this.first = first;
-		this.second = second;
+		this->first = first;
+		this->second = second;
 	}
 };
+
+#endif

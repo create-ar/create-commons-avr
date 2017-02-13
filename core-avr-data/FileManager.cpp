@@ -1,10 +1,13 @@
 #include "FileManager.h"
 #include <Converter.h>
+#include <Log.h>
 
+#define FILEMANAGER_VERSION 1
 #define NEW_FILE_BUFFER 128
 
 FileManager::FileManager()
 {
+	_logger = Log::logger("FileManager");
 	_stream = EEPROMStream();
 	_files = LinkedList<Tuple<char*, File>>();
 }
@@ -38,7 +41,7 @@ bool FileManager::init(FileManagerConfig config)
 	_logger->info("Could not read header, attempting to format.");
 
 	// header could not be read, so let's create one
-	_header.version = 1;
+	_header.version = FILEMANAGER_VERSION;
 	_header.numFiles = 0;
 	_header.totalBytes = 0;
 	if (_header.write(&_stream))

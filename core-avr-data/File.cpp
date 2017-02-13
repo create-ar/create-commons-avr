@@ -1,16 +1,45 @@
 #include "File.h"
-#include "..\common\Converter.h"
+#include <Log.h>
+#include <Converter.h>
 
-File::File(EEPROMStream* stream, const int offset, const short size)
+#define FILE_VERSION 1
+
+File::File()
+{
+	_logger = Log::logger("File");
+}
+
+bool File::init(EEPROMStream* stream, const int offset, const short size)
+{
+	header.version = FILE_VERSION;
+	header.size = size;
+	header.numRecords = 0;
+	if (header.write(stream, _offset))
+	{
+		return true;
+	}
+
+	_logger->error("Could not write File header.");
+	return false;
+}
+
+bool File::load(EEPROMStream* stream, const int offset)
 {
 	_stream = stream;
 	_offset = offset;
-	_size = size;
+	
+	if (header.read(stream, _offset))
+	{
+		return true;
+	}
+
+	_logger->error("Could not read File header.");
+	return false;
 }
 
 int File::size()
 {
-	return _size;
+	return header.size;
 }
 
 bool File::flush()
@@ -23,11 +52,9 @@ bool File::flush()
 
 bool File::add(float value)
 {
-	readHeaderInfo();
-
 	// determine if we have the space
-	int numBytes = 2 + _numRecords * 4;
-	if (_size - numBytes < 4)
+	int numBytes = 2 + header.numRecords * 4;
+	if (header.size - numBytes < 4)
 	{
 		return false;
 	}
@@ -38,23 +65,9 @@ bool File::add(float value)
 	_stream->write(converter.charValue, _offset + numBytes, 4);
 
 	// update numRecords at beginning
-	_numRecords += 1;
-	converter.intValue = _numRecords;
+	header.numRecords += 1;
+	converter.intValue = header.numRecords;
 	_stream->write(converter.charValue, _offset, 4);
 
 	return false;
-}
-
-/**
- * @brief      Reads header information from the buffer.
- */
-void File::readHeaderInfo()
-{
-	if (-1 == _numRecords)
-	{
-		ShortUnion converter;
-		_stream->read(converter.charValue, _offset, 2);
-
-		_numRecords = converter.shortValue;
-	}
 }
