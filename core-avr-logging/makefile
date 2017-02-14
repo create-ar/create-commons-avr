@@ -5,7 +5,7 @@
 # 
 # -I$(ARDUINODIR)\hardware\arduino\avr\libraries\SoftwareSerial
 #
-INC=-I$(BASECOREDIR)\core-avr-ds
+INC=-I$(BASECOREDIR)\core-avr-ds\src
 ###############################################################################
 
 ###############################################################################
@@ -26,8 +26,8 @@ LIBNAME=core-avr-logging
 # Foo.cpp Bar.cpp
 # 
 SOURCES=\
-	Log.cpp\
-	Logger.cpp
+	src/Log.cpp\
+	src/Logger.cpp
 ###############################################################################
 
 ###############################################################################
@@ -35,22 +35,20 @@ SOURCES=\
 TARGETDIR=../libs
 ###############################################################################
 
-# Compiler flags: don't touch unless you know what you're doing.
-CFLAGS=-c -g -Os -Wall -Werror -std=gnu++11 -fno-exceptions -ffunction-sections -fdata-sections -fno-threadsafe-statics -MMD -DARDUINO=100 -DARDUINO_AVR_NANO -DARDUINO_ARCH_AVR -mmcu=$(CPUNAME) -DF_CPU=$(CPUCLOCK)
-
 # Temporary build files.
 OBJS=$(addprefix $(OBJ_DIR)/, $(notdir $(SOURCES:.cpp=.o)))
 LIBPATH=$(TARGETDIR)/lib$(LIBNAME).a
 
 all: $(OBJS)
 	$(ARCHIVER) rcs $(LIBPATH) $(OBJS)
-	+$(MAKE) -C test OUT_DIR=$(OUT_DIR) OBJ_DIR=$(OBJ_DIR) TESTINC=$(TESTINC)
 	
-$(OBJ_DIR)/%.o: %.cpp
+$(OBJ_DIR)/%.o: src/%.cpp
 	@mkdir -p $(OUT_DIR)
 	@mkdir -p $(OBJ_DIR)
+
+	# build for arduino architecture
 	$(CC) $(CFLAGS) $(INC) $(COREINC) $(VARIANTINC) $(ARDUINOINC) -c $< -o $(OBJ_DIR)/$(@F)
 
-clean:
-	rm -Rf $(OUT_DIR)
-	rm -f $(LIBPATH)
+.PHONY: buildtests
+buildtests:
+	+$(MAKE) -C test OUT_DIR=$(OUT_DIR) OBJ_DIR=$(OBJ_DIR) TESTINC=$(TESTINC)

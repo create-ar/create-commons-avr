@@ -10,8 +10,8 @@ task gendocs(dependsOn:'build') {
 	}
 }
 
-// This task build libs to static libraries.
-task build {
+// This task build libs to static libraries for avr architecture.
+task buildavr {
 	doLast { task ->
 		def libs = new File('libs')
 		if (!libs.exists())
@@ -29,13 +29,30 @@ task build {
 			"ARDUINODIR=$arduinoDir",
 			"BASECOREDIR=${baseCoreDir.getAbsolutePath()}",
 			"THIRDPARTYDIR=${thirdPartyDir.getAbsolutePath()}",
+
 			"CC=$cc",
 			"ARCHIVER=$archiver",
-			"CPUNAME=$cpuName",
-			"CPUCLOCK=$cpuClock",
+			"CFLAGS=-c -g -Os -Wall -Werror -std=gnu++11 -fno-exceptions -ffunction-sections -fdata-sections -fno-threadsafe-statics -MMD -DARDUINO=100 -DARDUINO_AVR_NANO -DARDUINO_ARCH_AVR -mmcu=$cpuName -DF_CPU=$cpuClock",
 			"COREINC=-I$coreInc",
 			"VARIANTINC=-I$arduinoVariant",
-			"ARDUINOINC=-I$arduinoInc",
+			"ARDUINOINC=-I$arduinoInc"])
+	}
+}
+
+// This task builds tests separately than libs.
+task buildtests {
+	doLast {
+		def thirdPartyDir = new File('thirdparty')
+		def baseCoreDir = new File('.')
+
+		exec_cmd([
+			'make',
+			'buildtests',
+			"OUT_DIR=$outDir",
+			"OBJ_DIR=$objDir",
+			"BASECOREDIR=${baseCoreDir.getAbsolutePath()}",
+			"THIRDPARTYDIR=${thirdPartyDir.getAbsolutePath()}",
+			"CC=g++",
 			"TESTINC=-I$testInc"])
 	}
 }

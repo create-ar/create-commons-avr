@@ -193,6 +193,8 @@ public:
 
 			ptr = ptr->next;
 		}
+
+		return false;
 	}
 };
 

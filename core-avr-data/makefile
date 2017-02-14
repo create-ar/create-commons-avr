@@ -33,7 +33,6 @@ LIBPATH=$(TARGETDIR)/lib$(LIBNAME).a
 
 all: $(OBJS)
 	$(ARCHIVER) rcs $(LIBPATH) $(OBJS)
-	+$(MAKE) -C test OUT_DIR=$(OUT_DIR) OBJ_DIR=$(OBJ_DIR) TESTINC=$(TESTINC)
 	
 $(OBJ_DIR)/%.o: %.cpp
 	@mkdir -p $(OUT_DIR)

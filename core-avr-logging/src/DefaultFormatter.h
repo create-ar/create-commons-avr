@@ -2,7 +2,6 @@
 #define DEFAULTFORMATTER_H
 
 #include "LogFormatter.h"
-#include <Arduino.h>
 
 /**
  * @brief      Formats a log.
@@ -29,10 +28,11 @@ public:
 		const char* category,
 		const char* message)
 	{
-		return "[" + String(level) + "]"
-			+ "[" + String(category) + "]"
-			+ (time ? ("[" + millis() + "]\t") : "\t")
-			+ String(message);
+		return message;
+		/*return "[" + level + "]"
+			+ "[" + category + "]"
+			//+ (time ? ("[" + millis() + "]\t") : "\t")
+			+ message;*/
 	}
 };
 
