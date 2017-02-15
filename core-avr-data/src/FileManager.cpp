@@ -1,14 +1,18 @@
 #include "FileManager.h"
+
+#include <stdlib.h>
+#include <AvrMath.h>
 #include <Converter.h>
 #include <Log.h>
 
 #define FILEMANAGER_VERSION 1
 #define NEW_FILE_BUFFER 128
 
-FileManager::FileManager()
+FileManager::FileManager(Stream* stream)
 {
+	_stream = stream;
+
 	_logger = Log::logger("FileManager");
-	_stream = EEPROMStream();
 	_files = LinkedList<Tuple<char*, File>>();
 }
 
@@ -22,18 +26,8 @@ bool FileManager::init(FileManagerConfig config)
 	// calculate total size of EEPROM
 	_totalSize = config.numPages * config.bytesPerPage;
 
-	bool success = _stream.init(
-		config.pinDataOut,
-		config.pinDataIn,
-		config.pinSpiClock,
-		config.pinSlaveSelect);
-	if (!success)
-	{
-		_logger->error("Could not initialize FileManager, stream could not be read from.");
-		return false;
-	}
-
-	if (_header.read(&_stream))
+	// read in header
+	if (_header.read(_stream))
 	{
 		return true;
 	}
@@ -44,7 +38,7 @@ bool FileManager::init(FileManagerConfig config)
 	_header.version = FILEMANAGER_VERSION;
 	_header.numFiles = 0;
 	_header.totalBytes = 0;
-	if (_header.write(&_stream))
+	if (_header.write(_stream))
 	{
 		return true;
 	}
@@ -84,7 +78,7 @@ File* FileManager::create(const char* uri, const int size)
 	while (bytesWritten < size)
 	{
 		int bytesToWrite = min(bufferSize, size - bytesWritten);
-		if (!_stream.write(
+		if (!_stream->write(
 			memory,
 			absoluteOffset,
 			bytesToWrite))

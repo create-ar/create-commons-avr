@@ -1,7 +1,9 @@
 #ifndef FILE_H
 #define FILE_H
 
-#include "EEPROMStream.h"
+#include "Stream.h"
+
+#include <string.h>
 #include <Converter.h>
 #include <Logger.h>
 
@@ -38,7 +40,7 @@ public:
 	 * @return     True if the header was successfully read.
 	 */
 	bool read(
-		EEPROMStream* stream,
+		Stream* stream,
 		int absoluteOffset)
 	{
 		char buffer[FILE_HEADER_SIZE];
@@ -80,7 +82,7 @@ public:
 	 * @return     True if the header was successfully writtern.
 	 */
 	bool write(
-		EEPROMStream* stream,
+		Stream* stream,
 		int absoluteOffset)
 	{
 		// prepare buffer
@@ -116,7 +118,7 @@ private:
 	/**
 	 * Stream to read/write with.
 	 */
-	EEPROMStream* _stream;
+	Stream* _stream;
 
 	/**
 	 * Byte offset into stream.
@@ -147,7 +149,7 @@ public:
 	 * @param      stream  The stream to read/write from.
 	 * @param[in]  offset  The byte offset this file starts at.
 	 */
-	bool load(EEPROMStream* stream, const int offset);
+	bool load(Stream* stream, const int offset);
 
 	/**
 	 * @brief      Writes header to disk. This is for new Files.
@@ -158,7 +160,7 @@ public:
 	 *
 	 * @return     { description_of_the_return_value }
 	 */
-	bool init(EEPROMStream* stream, const int offset, const short size);
+	bool init(Stream* stream, const int offset, const short size);
 
 	/**
 	 * @brief      Retrieves the size of the file.

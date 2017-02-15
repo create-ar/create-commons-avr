@@ -1,7 +1,7 @@
 #ifndef FILEMANAGER_H
 #define FILEMANAGER_H
 
-#include "EEPROMStream.h"
+#include "Stream.h"
 #include "File.h"
 #include <Converter.h>
 #include <Tuple.h>
@@ -84,7 +84,7 @@ public:
 	 *
 	 * @return     True if the header was read successfully.
 	 */
-	bool read(EEPROMStream* stream)
+	bool read(Stream* stream)
 	{
 		char buffer[FILEMANAGER_HEADER_SIZE];
 
@@ -129,7 +129,7 @@ public:
 	 *
 	 * @return     Returns true if successful.
 	 */
-	bool write(EEPROMStream* stream)
+	bool write(Stream* stream)
 	{
 		// prepare buffer
 		char buffer[FILEMANAGER_HEADER_SIZE];
@@ -171,7 +171,7 @@ class FileManager
 		/**
 		 * The FileManager is the owner of the EEPROMStream abstraction.
 		 */
-		EEPROMStream _stream;
+		Stream* _stream;
 
 		/**
 		 * Tracks files.
@@ -192,7 +192,7 @@ class FileManager
 		/**
 		 * @brief      Constructor.
 		 */
-		FileManager();
+		FileManager(Stream* stream);
 
 		/**
 		 * @brief      Destructor.
