@@ -4,16 +4,22 @@ EXE_NAME=$(OUT_DIR)/Test.exe
 
 CC=g++
 CFLAGS=-g -Os -Wall -Werror -std=gnu++11
-INC=-IC:\Projects\ThirdParty\Catch\single_include\
-	-I../../core-avr-ds/src
+INC=-I../../core-avr-ds/src
+TEST_INC=-IC:\Projects\ThirdParty\Catch\single_include
 
 TEST_SOURCES=\
-	Main_core-avr-logging.cpp
+	Main_core-avr-logging.cpp\
+	Log_Tests.cpp\
+	DefaultFormatter_Tests.cpp
 INC_SOURCES=\
 	../src/Log.cpp\
 	../src/Logger.cpp
 
-OBJS=build/obj/Main_core-avr-logging.o build/obj/Log.o build/obj/Logger.o
+OBJS=build/obj/Main_core-avr-logging.o\
+	build/obj/Log_Tests.o\
+	build/obj/DefaultFormatter_Tests.o\
+	build/obj/Log.o\
+	build/obj/Logger.o
 
 .PHONY: all clean
 
@@ -32,14 +38,10 @@ main-build: pre-build
 target: $(OBJS)
 	$(CC) $(CFLAGS) -o $(EXE_NAME) $(OBJS)
 
-build/obj/Log.o: ../src/Log.cpp
-	$(CC) $(CFLAGS) $(INC) -I../src -c ../src/Log.cpp -o $(OBJ_DIR)/Log.o
+VPATH=../src
 
-build/obj/Logger.o: ../src/Logger.cpp
-	$(CC) $(CFLAGS) $(INC) -I../src -c ../src/Logger.cpp -o $(OBJ_DIR)/Logger.o
-
-build/obj/Main_core-avr-logging.o: Main_core-avr-logging.cpp
-	$(CC) $(CFLAGS) $(INC) -I../src -c Main_core-avr-logging.cpp -o $(OBJ_DIR)/Main_core-avr-logging.o
+$(OBJ_DIR)/%.o: %.cpp
+	$(CC) $(CFLAGS) $(INC) $(TEST_INC) -I../src -c $< -o $(OBJ_DIR)/$(@F)
 
 clean:
 	rm -Rf $(OUT_DIR)

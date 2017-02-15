@@ -20,6 +20,8 @@ public:
 	 */
 	Logger(const char* category);
 
+	~Logger();
+
 	/**
 	 * @brief      Logs at a debug level.
 	 *

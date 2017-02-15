@@ -2,7 +2,7 @@ apply from: '../util.gradle'
 
 task clean {
 	doLast {
-		exec_cmd(['rm', '-Rf', 'build'])
-		exec_cmd(['rm', '-Rf', 'test/build'])
+		exec_cmd(['rm', '-rf', 'build'])
+		exec_cmd(['rm', '-rf', 'test/build'])
 	}
 }

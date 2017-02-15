@@ -1,18 +1,38 @@
-override CC=g++
-override SOURCES=$(wildcard *.cpp)
-override OUT_DIR=build
-override OBJ_DIR=$(OUT_DIR)/obj
-override EXE_NAME=$(OUT_DIR)/Test.exe
+OUT_DIR=build
+OBJ_DIR=$(OUT_DIR)/obj
+EXE_NAME=$(OUT_DIR)/Test.exe
 
-override OBJS=$(addprefix $(OBJ_DIR)/, $(notdir $(SOURCES:.cpp=.o)))
+CC=g++
+CFLAGS=-g -Os -Wall -Werror -std=gnu++11
+INC=
+TEST_INC=-IC:\Projects\ThirdParty\Catch\single_include
 
-all: $(OBJS)
-	$(CC) -o $(EXE_NAME) $(OBJS)
+TEST_SOURCES=
+INC_SOURCES=
 
-$(OBJ_DIR)/%.o: %.cpp
+OBJS=
+
+.PHONY: all clean
+
+all: post-build
+
+pre-build:
 	@mkdir -p $(OUT_DIR)
 	@mkdir -p $(OBJ_DIR)
-	$(CC) $(TESTINC) -c $< -o $(OBJ_DIR)/$(@F)
+
+post-build: main-build
+	@echo Complete.
+
+main-build: pre-build
+	@$(MAKE) --no-print-directory target
+
+target: $(OBJS)
+	$(CC) $(CFLAGS) -o $(EXE_NAME) $(OBJS)
+
+VPATH=../src
+
+$(OBJ_DIR)/%.o: %.cpp
+	$(CC) $(CFLAGS) $(INC) $(TEST_INC) -I../src -c $< -o $(OBJ_DIR)/$(@F)
 
 clean:
 	rm -Rf $(OUT_DIR)

@@ -6,6 +6,8 @@ Logger::Logger(const char* category)
 	_category = category;
 }
 
+Logger::~Logger() { }
+
 void Logger::debug(const char* message)
 {
 	Log::log("debug", _category, message);

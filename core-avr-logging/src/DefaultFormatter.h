@@ -3,6 +3,8 @@
 
 #include "LogFormatter.h"
 
+#include <string.h>
+
 /**
  * @brief      Formats a log.
  */
@@ -12,7 +14,23 @@ public:
 	/**
 	 * True iff the time should be appended to the log.
 	 */
-	bool time = true;
+	bool time;
+
+	/**
+	 * @brief      Default constructor.
+	 */
+	DefaultFormatter() : time(true)
+	{
+
+	}
+
+	/**
+	 * @brief      Default destructor.
+	 */
+	~DefaultFormatter()
+	{
+
+	}
 
 	/**
 	 * @brief      Formats a log.
@@ -23,16 +41,28 @@ public:
 	 *
 	 * @return     The formatted log.
 	 */
-	virtual const char* format(
+	const char* format(
 		const char* level,
 		const char* category,
-		const char* message)
+		const char* message) override
 	{
-		return message;
-		/*return "[" + level + "]"
-			+ "[" + category + "]"
-			//+ (time ? ("[" + millis() + "]\t") : "\t")
-			+ message;*/
+		int size;
+
+		static char defaultString[] = "NULL";
+
+		const char* levelBuffer = nullptr == level ? defaultString : level;
+		const char* categoryBuffer = nullptr == category ? defaultString : category;
+		const char* messageBuffer = nullptr == message ? defaultString : message;
+
+		// [{level}][{category}]\s{message}
+		char* buffer = new char[
+			strlen(levelBuffer) + 2
+			+ strlen(categoryBuffer) + 2
+			+ strlen(messageBuffer) + 1];
+		
+		sprintf(buffer, "[%s][%s] %s", levelBuffer, categoryBuffer, messageBuffer);
+
+		return (const char*) buffer;
 	}
 };
 

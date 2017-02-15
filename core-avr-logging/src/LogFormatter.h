@@ -8,6 +8,11 @@ class LogFormatter
 {
 public:
 	/**
+	 * @brief      Destructor.
+	 */
+	virtual ~LogFormatter() = 0;
+
+	/**
 	 * @brief      Formats a log.
 	 *
 	 * @param[in]  level     The level of the log.
@@ -19,7 +24,15 @@ public:
 	virtual const char* format(
 		const char* level,
 		const char* category,
-		const char* message);
+		const char* message) = 0;
 };
+
+/**
+ * @brief      Destructor.
+ */
+inline LogFormatter::~LogFormatter()
+{
+	//
+}
 
 #endif

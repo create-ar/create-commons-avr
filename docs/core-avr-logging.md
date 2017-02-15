@@ -2,7 +2,25 @@
 
 The `core-avr-logging` library provides a very basic set of logging utilities modeled after familiar logging frameworks.
 
-![Overview.](https://www.lucidchart.com/publicSegments/view/b779e00d-75b0-4392-96c1-9ea4e1b03c11/image.png)
+![Overview.](https://www.lucidchart.com/publicSegments/view/5b7ca2d9-799d-4b97-807d-7e9cce16e56f/image.png)
+
+#### Usage
+
+Setup:
+```
+auto formatter = new DefaultFormatter();
+auto target = new SerialTarget();
+
+Log::addTarget(target);
+Log::setFormatter(formatter);
+```
+
+Log:
+```
+auto logger = Log::logger("MyClass");
+...
+logger->debug("This is a test!");
+```
 
 ##### Log
 
@@ -20,4 +38,10 @@ Simply set target using `Log`'s static interface.
 
 ##### LogFormatter
 
-Finally, make your logs look how you want them too by implementing a `LogFormatter`. A basic implementation is provided in `DefaultLogFormatter`.
+Finally, make your logs look how you want them too by implementing a `LogFormatter`. A basic implementation is provided in `DefaultFormatter`. This class will output files in this format:
+
+`[{Level}][{Category}] {Message}`
+
+Eg.-
+
+`[debug][FileManager] This is a log!`
