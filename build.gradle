@@ -85,7 +85,7 @@ task gentests {
 		}
 
 		// copy makefile
-		def src = new File('templates/makefile.test.example')
+		def src = new File('templates/tests/makefile.example')
 		def dst = new File("$api/test/makefile")
 		dst << src.text
 

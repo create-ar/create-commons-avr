@@ -3,8 +3,6 @@
 #ifndef _STREAMWRITER_h
 #define _STREAMWRITER_h
 
-#include "..\common\Converter.h"
-
 class StreamWriter
 {
 private:

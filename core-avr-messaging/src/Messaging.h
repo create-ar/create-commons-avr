@@ -3,15 +3,14 @@
 #ifndef _MESSAGING_h
 #define _MESSAGING_h
 
-#include <inttypes.h>
-
-#include "../core-avr-ds/LinkedList.h"
-
 #include "StreamReader.h"
 #include "StreamWriter.h"
 #include "Session.h"
 #include "Message.h"
 #include "MessageFactory.h"
+
+#include <inttypes.h>
+#include <LinkedList.h>
 
 // maximum packet size
 #define MESSAGING_MAX_PACKET_SIZE 512

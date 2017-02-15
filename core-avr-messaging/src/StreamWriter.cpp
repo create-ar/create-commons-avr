@@ -1,5 +1,7 @@
 #include "StreamWriter.h"
 
+#include <Converter.h>
+
 StreamWriter::StreamWriter(int maxLen)
 {
 	_bufferLen = maxLen;

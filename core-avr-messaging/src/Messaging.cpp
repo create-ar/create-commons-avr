@@ -1,6 +1,7 @@
 #include "Messaging.h"
 #include "Message.h"
-#include "crc.h"
+
+#include <crc.h>
 
 // Milliseconds a request can be out before it expires.
 const int MESSAGING_TIMEOUT_MILLIS = 3 * 1000;
