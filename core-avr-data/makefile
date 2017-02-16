@@ -32,7 +32,8 @@ LIBNAME=core-avr-data
 SOURCES=\
 	src/EEPROMStream.cpp\
 	src/File.cpp\
-	src/FileManager.cpp
+	src/FileManager.cpp\
+	src/MemoryStream.cpp
 ###############################################################################
 
 ###############################################################################

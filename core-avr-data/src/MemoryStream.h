@@ -1,3 +1,6 @@
+#ifndef MEMORYSTREAM_H
+#define MEMORYSTREAM_H
+
 #include "Stream.h"
 
 #include <Log.h>
@@ -15,7 +18,8 @@ private:
 	int _index;
 
 public:
-	MemoryStream();
+	
+	MemoryStream(const int size);
 	~MemoryStream();
 
 	bool init(PinConfiguration pins) override;
@@ -30,3 +34,5 @@ public:
 
 	virtual int seek(const int offset, const int origin) override;
 };
+
+#endif

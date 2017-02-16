@@ -7,3 +7,4 @@ all:
 .PHONY: buildtests
 buildtests:
 	+$(MAKE) buildtests -C core-avr-logging OUT_DIR=$(OUT_DIR) OBJ_DIR=$(OBJ_DIR) TESTINC=$(TESTINC)
+	+$(MAKE) buildtests -C core-avr-data OUT_DIR=$(OUT_DIR) OBJ_DIR=$(OBJ_DIR) TESTINC=$(TESTINC)

@@ -1,37 +1,62 @@
-#ifndef	STREAM_H
-#define STREAM_H
+#ifndef EEPROMSTREAMER_H
+#define EEPROMSTREAMER_H
+
+#include "Streamer.h"
 
 #include <PinConfiguration.h>
+#include <dataflash.h>
 
 /**
- * @brief      Abstracts the method of reading/writing bytes.
+ * @brief      Abstracts SPI + EEPROM paging into working with a single
+ * block of contiguous bytes. All calls are blocking.
  */
-class Stream
+class EEPROMStreamer : public Streamer
 {
+private:
+	/**
+	 * SPI interface.
+	 */
+	Dataflash _dataFlash;
+
+	/**
+	 * Page currently in buffer.
+	 */
+	int _page = -1;
+
+	/**
+	 * Dataflash buffer to use.
+	 */
+	int _bufferIndex = -1;
+
+	/**
+	 * Index into EEPROM stream.
+	 */
+	int _absoluteByteIndex = 0;
+
 public:
 	/**
 	 * @brief      Constructor.
 	 */
-	Stream();
+	EEPROMStreamer();
 
 	/**
 	 * @brief      Destructor.
 	 */
-	~Stream();
+	~EEPROMStreamer();
 
 	/**
 	 * @brief      Initializes the stream with pin info.
-	 * 
-	 * @param[in]  pins      The configuration for pins.
+	 *
+	 * @param[in]  pins      The configuration for each pin.
 	 */
-	virtual bool init(PinConfiguration pins) = 0;
+	bool init(PinConfiguration pins) override;
 
 	/**
 	 * @brief      Reads a single byte from the stream and advances the index.
 	 *
 	 * @return     Returns the byte read.
 	 */
-	virtual char read() = 0;
+	char read() override;
 
 	/**
 	 * @brief      Reads a block of bytes into the input buffer.
@@ -42,7 +67,7 @@ public:
 	 *
 	 * @return     The number of bytes actually read.
 	 */
-	virtual int read(char* const buffer, const int offset, const int count) = 0;
+	int read(char* const buffer, const int offset, const int count) override;
 
 	/**
 	 * @brief      Writes a single byte to the stream and advances the index.
@@ -51,7 +76,7 @@ public:
 	 *
 	 * @return     Returns true if the byte could be successfully written.
 	 */
-	virtual bool write(const char value) = 0;
+	bool write(const char value) override;
 
 	/**
 	 * @brief      Writes a block of bytes to the stream.
@@ -62,7 +87,7 @@ public:
 	 *
 	 * @return     Returns true if the write was successful.
 	 */
-	virtual bool write(char* const buffer, const int offset, const int count) = 0;
+	bool write(char* const buffer, const int offset, const int count) override;
 
 	/**
 	 * @brief      Moves the index to a specific place. This is used when
@@ -73,15 +98,7 @@ public:
 	 *
 	 * @return     The current absolute index.
 	 */
-	virtual int seek(const int offset, const int origin) = 0;
+	int seek(const int offset, const int origin) override;
 };
-
-/**
- * @brief      Destructor.
- */
-inline Stream::~Stream()
-{
-	//
-}
 
 #endif

@@ -18,7 +18,7 @@ FileManager::FileManager(Stream* stream)
 
 FileManager::~FileManager()
 {
-	delete _logger;
+	
 }
 
 bool FileManager::init(FileManagerConfig config)

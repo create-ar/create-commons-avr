@@ -1,3 +1,6 @@
+#ifndef PINCONFIGURATION_H
+#define PINCONFIGURATION_H
+
 #include "LinkedList.h"
 
 enum PinMode
@@ -62,3 +65,5 @@ public:
 		return nullptr;
 	}
 };
+
+#endif

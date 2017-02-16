@@ -1,4 +1,5 @@
 #include "File.h"
+
 #include <Log.h>
 #include <Converter.h>
 
@@ -9,7 +10,7 @@ File::File()
 	_logger = Log::logger("File");
 }
 
-bool File::init(EEPROMStream* stream, const int offset, const short size)
+bool File::init(Stream* stream, const int offset, const short size)
 {
 	header.version = FILE_VERSION;
 	header.size = size;
@@ -23,7 +24,7 @@ bool File::init(EEPROMStream* stream, const int offset, const short size)
 	return false;
 }
 
-bool File::load(EEPROMStream* stream, const int offset)
+bool File::load(Stream* stream, const int offset)
 {
 	_stream = stream;
 	_offset = offset;

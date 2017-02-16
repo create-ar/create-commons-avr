@@ -8,6 +8,7 @@
 class MemoryStream : public Stream
 {
 public:
+	
 	MemoryStream::MemoryStream(const int size)
 	{
 		_logger = Log::logger("MemoryStream");
@@ -15,9 +16,9 @@ public:
 		_index = 0;
 	}
 
-	MemoryStream::~MemoryStream()
+	MemoryStream::~MemoryStream() override
 	{
-		free _buffer;
+		free(_buffer);
 	}
 
 	bool MemoryStream::init(PinConfiguration pins) override
@@ -35,12 +36,38 @@ public:
 	
 	char MemoryStream::read() override
 	{
+		if (nullptr == _buffer)
+		{
+			return -1;
+		}
 
+		if (_index >= 0 && _index < _size)
+		{
+			return _buffer[_index++];
+		}
+
+		return -1;
 	}
 
-	int MemoryStream::read(char* const buffer, const int offset, const int count) override
+	int MemoryStream::read(
+		char* const buffer,
+		const int offset,
+		const int count) override
 	{
+		if (nullptr == _buffer)
+		{
+			return -1;
+		}
 
+		if (offset < 0 || offset >= _size)
+		{
+			return -1;
+		}
+
+		if (count <= 0)
+		{
+			return -1;
+		}
 	}
 
 	bool MemoryStream::write(const char value) override

@@ -113,7 +113,7 @@ private:
 	/**
 	 * Logger.
 	 */
-	static Logger* _logger;
+	Logger* _logger;
 
 	/**
 	 * Stream to read/write with.

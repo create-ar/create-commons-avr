@@ -4,21 +4,28 @@ EXE_NAME=$(OUT_DIR)/Test.exe
 
 CC=g++
 CFLAGS=-g -Os -Wall -Werror -std=gnu++11
-INC=
+INC=\
+	-I$(BASECOREDIR)/core-avr-ds/src\
+	-I$(BASECOREDIR)/core-avr-logging/src\
+	-I$(BASECOREDIR)/common
 TEST_INC=-IC:\Projects\ThirdParty\Catch\single_include
 
 TEST_SOURCES=\
 	Main_core-avr-data.cpp\
-	File_Tests.cpp
+	File_Tests.cpp\
+	MemoryStream_Tests.cpp
 INC_SOURCES=\
 	../src/File.cpp\
-	../src/FileManager.cpp
+	../src/FileManager.cpp\
+	../src/MemoryStreamer.cpp
 
 OBJS=\
 	$(OBJ_DIR)/Main_core-avr-data.o\
-	$(OBJ_DIR)/File_Tests.cpp\
+	$(OBJ_DIR)/File_Tests.o\
+	$(OBJ_DIR)/MemoryStream_Tests.o\
 	$(OBJ_DIR)/File.o\
-	$(OBJ_DIR)/FileManager.o
+	$(OBJ_DIR)/FileManager.o\
+	$(OBJ_DIR)/MemoryStreamer.o
 
 .PHONY: all clean
 
