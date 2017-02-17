@@ -1,26 +1,26 @@
 #ifndef MEMORYSTREAM_H
 #define MEMORYSTREAM_H
 
-#include "Stream.h"
+#include "Streamer.h"
 
 #include <Log.h>
 #include <Logger.h>
 
 /**
- * @brief      Stream implementation completely in memory.
+ * @brief      Streamer implementation completely in memory.
  */
-class MemoryStream : public Stream
+class MemoryStreamer : public Streamer
 {
 private:
 	Logger* _logger;
 	const int _size;
-	const char* _buffer;
+	char* _buffer;
 	int _index;
 
 public:
 	
-	MemoryStream(const int size);
-	~MemoryStream();
+	MemoryStreamer(const int size);
+	~MemoryStreamer();
 
 	bool init(PinConfiguration pins) override;
 	

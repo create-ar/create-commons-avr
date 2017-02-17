@@ -8,7 +8,7 @@
 #define FILEMANAGER_VERSION 1
 #define NEW_FILE_BUFFER 128
 
-FileManager::FileManager(Stream* stream)
+FileManager::FileManager(Streamer* stream)
 {
 	_stream = stream;
 

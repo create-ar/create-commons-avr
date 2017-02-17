@@ -1,7 +1,7 @@
 #ifndef FILE_H
 #define FILE_H
 
-#include "Stream.h"
+#include "Streamer.h"
 
 #include <string.h>
 #include <Converter.h>
@@ -40,8 +40,8 @@ public:
 	 * @return     True if the header was successfully read.
 	 */
 	bool read(
-		Stream* stream,
-		int absoluteOffset)
+		Streamer* stream,
+		const int absoluteOffset)
 	{
 		char buffer[FILE_HEADER_SIZE];
 
@@ -82,8 +82,8 @@ public:
 	 * @return     True if the header was successfully writtern.
 	 */
 	bool write(
-		Stream* stream,
-		int absoluteOffset)
+		Streamer* stream,
+		const int absoluteOffset)
 	{
 		// prepare buffer
 		char buffer[FILE_HEADER_SIZE];
@@ -118,7 +118,7 @@ private:
 	/**
 	 * Stream to read/write with.
 	 */
-	Stream* _stream;
+	Streamer* _stream;
 
 	/**
 	 * Byte offset into stream.
@@ -149,7 +149,7 @@ public:
 	 * @param      stream  The stream to read/write from.
 	 * @param[in]  offset  The byte offset this file starts at.
 	 */
-	bool load(Stream* stream, const int offset);
+	bool load(Streamer* stream, const int offset);
 
 	/**
 	 * @brief      Writes header to disk. This is for new Files.
@@ -160,7 +160,7 @@ public:
 	 *
 	 * @return     { description_of_the_return_value }
 	 */
-	bool init(Stream* stream, const int offset, const short size);
+	bool init(Streamer* stream, const int offset, const short size);
 
 	/**
 	 * @brief      Retrieves the size of the file.

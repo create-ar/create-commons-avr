@@ -30,10 +30,10 @@ LIBNAME=core-avr-data
 # Foo.cpp Bar.cpp
 # 
 SOURCES=\
-	src/EEPROMStream.cpp\
+	src/EEPROMStreamer.cpp\
 	src/File.cpp\
 	src/FileManager.cpp\
-	src/MemoryStream.cpp
+	src/MemoryStreamer.cpp
 ###############################################################################
 
 ###############################################################################

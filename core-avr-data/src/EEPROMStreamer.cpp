@@ -1,42 +1,38 @@
-#include "EEPROMStream.h"
+#include "EEPROMStreamer.h"
 
-EEPROMStream::EEPROMStream()
+EEPROMStreamer::EEPROMStreamer()
 {
 	_dataFlash = Dataflash();
 }
 
-bool EEPROMStream::init(
-	int dataout,
-	int datain,
-	int spiclock,
-	int slaveselect)
+bool EEPROMStreamer::init(PinConfiguration pins)
 {
-	_dataFlash.init(dataout, datain, spiclock, slaveselect);
+	//_dataFlash.init(dataout, datain, spiclock, slaveselect);
 
 	return false;
 }
 
-char EEPROMStream::read()
+char EEPROMStreamer::read()
 {
 	return 0;
 }
 
-int EEPROMStream::read(char* const buffer, const int offset, const int count)
+int EEPROMStreamer::read(char* const buffer, const int offset, const int count)
 {
 	return 0;
 }
 
-bool EEPROMStream::write(const char value)
+bool EEPROMStreamer::write(const char value)
 {
 	return false;
 }
 
-bool EEPROMStream::write(char* const buffer, const int offset, const int count)
+bool EEPROMStreamer::write(char* const buffer, const int offset, const int count)
 {
 	return false;
 }
 
-int EEPROMStream::seek(const int offset, const int origin)
+int EEPROMStreamer::seek(const int offset, const int origin)
 {
 	return 0;
 }

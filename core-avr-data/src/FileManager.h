@@ -84,7 +84,7 @@ public:
 	 *
 	 * @return     True if the header was read successfully.
 	 */
-	bool read(Stream* stream)
+	bool read(Streamer* stream)
 	{
 		char buffer[FILEMANAGER_HEADER_SIZE];
 
@@ -129,7 +129,7 @@ public:
 	 *
 	 * @return     Returns true if successful.
 	 */
-	bool write(Stream* stream)
+	bool write(Streamer* stream)
 	{
 		// prepare buffer
 		char buffer[FILEMANAGER_HEADER_SIZE];
@@ -171,7 +171,7 @@ class FileManager
 		/**
 		 * The FileManager is the owner of the EEPROMStream abstraction.
 		 */
-		Stream* _stream;
+		Streamer* _stream;
 
 		/**
 		 * Tracks files.
@@ -192,7 +192,7 @@ class FileManager
 		/**
 		 * @brief      Constructor.
 		 */
-		FileManager(Stream* stream);
+		FileManager(Streamer* stream);
 
 		/**
 		 * @brief      Destructor.
