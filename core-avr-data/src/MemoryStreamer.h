@@ -17,6 +17,17 @@ private:
 	char* _buffer;
 	int _index;
 
+	/**
+	 * @brief      Calculates the index given an offset and a count.
+	 *
+	 * @param[in]  offset  The offset at which to start the index.
+	 * @param[in]  count   The count to advance the index.
+	 *
+	 * @return     For bad inputs, outputs -1. For all other inputs, returns
+	 * clamped values.
+	 */
+	int index(const int offset, const int count);
+
 public:
 	
 	MemoryStreamer(const int size);
@@ -30,9 +41,9 @@ public:
 
 	virtual bool write(const char value) override;
 
-	virtual bool write(char* const buffer, const int offset, const int count) override;
+	virtual int write(char* const buffer, const int offset, const int count) override;
 
-	virtual int seek(const int offset, const int size) override;
+	virtual int seek(const int offset, const int count) override;
 };
 
 #endif

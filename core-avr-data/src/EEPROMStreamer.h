@@ -85,9 +85,9 @@ public:
 	 * @param[in]  offset  The starting byte offset.
 	 * @param[in]  count   The number of bytes to write from buffer.
 	 *
-	 * @return     Returns true if the write was successful.
+	 * @return     Returns how many bytes were successfully written.
 	 */
-	bool write(char* const buffer, const int offset, const int count) override;
+	int write(char* const buffer, const int offset, const int count) override;
 
 	/**
 	 * @brief      Moves the index to a specific place. This is used when

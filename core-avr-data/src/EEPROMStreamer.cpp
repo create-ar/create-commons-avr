@@ -27,9 +27,9 @@ bool EEPROMStreamer::write(const char value)
 	return false;
 }
 
-bool EEPROMStreamer::write(char* const buffer, const int offset, const int count)
+int EEPROMStreamer::write(char* const buffer, const int offset, const int count)
 {
-	return false;
+	return -1;
 }
 
 int EEPROMStreamer::seek(const int offset, const int origin)

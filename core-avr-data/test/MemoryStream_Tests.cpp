@@ -24,6 +24,8 @@ TEST_CASE("MemoryStreamer.", "[MemoryStream]")
 	{
 		MemoryStreamer* stream = new MemoryStreamer(size);
 		char* readBuffer = new char[size];
+
+		REQUIRE(-1 == stream->read());
 		
 		PinConfiguration pins;
 		stream->init(pins);
@@ -54,8 +56,10 @@ TEST_CASE("MemoryStreamer.", "[MemoryStream]")
 		MemoryStreamer* stream = new MemoryStreamer(size);
 		char* readBuffer = new char[size];
 
+		REQUIRE(-1 == stream->seek(0, 1));
+
 		PinConfiguration pins;
-		REQUIRE(stream->init(pins));
+		stream->init(pins);
 
 		REQUIRE(-1 == stream->seek(-1, 2));
 		REQUIRE(-1 == stream->seek(0, -1));
@@ -71,25 +75,42 @@ TEST_CASE("MemoryStreamer.", "[MemoryStream]")
 		delete stream;
 	}
 
-	SECTION("read()/write()/seek()")
+	SECTION("write()")
 	{
 		MemoryStreamer* stream = new MemoryStreamer(size);
 		char* readBuffer = new char[size];
 		
+		REQUIRE(!stream->write('a'));
+
 		PinConfiguration pins;
 		REQUIRE(stream->init(pins));
+
+		REQUIRE(stream->write('a'));
+
+		delete[] readBuffer;
+		delete stream;
+	}
+
+	SECTION("read()/write()/seek()")
+	{
+		MemoryStreamer* stream = new MemoryStreamer(size);
+		char* readBuffer = new char[size];
 
 		char write[] = "This is a test.";
 		int len = strlen(write);
 
-		stream->seek(4, 0);
+		REQUIRE(-1 == stream->write(write, 0, len));
+		
+		PinConfiguration pins;
+		stream->init(pins);
+
 		REQUIRE(stream->write(write[7]));
-		stream->seek(4, 0);
+		stream->seek(0, 0);
 		REQUIRE(write[7] == stream->read());
 
-		REQUIRE(stream->write(write, 0, strlen(write)));
-		REQUIRE(stream->read(readBuffer, 0, strlen(write)));
-		REQUIRE(0 == strncmp(readBuffer, write, strlen(write)));
+		REQUIRE(stream->write(write, 0, len));
+		REQUIRE(stream->read(readBuffer, 0, len));
+		REQUIRE(0 == strncmp(readBuffer, write, len));
 		
 		delete[] readBuffer;
 		delete stream;
