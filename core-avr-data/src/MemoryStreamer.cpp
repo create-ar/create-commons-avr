@@ -81,7 +81,10 @@ int MemoryStreamer::read(
 
 	// see how many bytes we should read
 	int remaining = _size - offset;
-	int len = remaining < count ? remaining : count;
+	int len = remaining < count
+		? remaining
+		: count;
+	
 	if (0 == len)
 	{
 		return 0;
@@ -89,7 +92,7 @@ int MemoryStreamer::read(
 
 	memcpy(
 		buffer,
-		_buffer,
+		_buffer + offset,
 		len);
 
 	return len;
@@ -119,24 +122,37 @@ int  MemoryStreamer::write(char* const buffer, const int offset, const int count
 		return -1;
 	}
 
-	int index = this->index(offset, count);
-	if (-1 == index)
+	if (nullptr == buffer)
 	{
 		return -1;
 	}
 
-	int remainingBytes = _size - index;
-	int toWrite = remainingBytes < count ? remainingBytes : count;
-
-	if (0 != toWrite)
+	if (offset < 0 || offset > _size)
 	{
-		memcpy(
-			_buffer,
-			buffer,
-			toWrite);
+		return -1;
 	}
 
-	return toWrite;
+	if (count < 0)
+	{
+		return -1;
+	}
+
+	int remaining = _size - offset;
+	int len = remaining < count
+		? remaining
+		: count;
+
+	if (0 == len)
+	{
+		return 0;
+	}
+
+	memcpy(
+		_buffer + offset,
+		buffer,
+		len);
+
+	return len;
 }
 
 int MemoryStreamer::seek(const int offset, const int count)
@@ -146,19 +162,6 @@ int MemoryStreamer::seek(const int offset, const int count)
 		return -1;
 	}
 
-	int index = this->index(offset, count);
-	if (-1 == index)
-	{
-		return -1;
-	}
-
-	_index = index;
-
-	return _index;
-}
-
-int MemoryStreamer::index(const int offset, const int count)
-{
 	if (offset < 0 || offset > _size)
 	{
 		return -1;
@@ -170,9 +173,18 @@ int MemoryStreamer::index(const int offset, const int count)
 	}
 
 	int calculated = offset + count;
-	return calculated < 0
+	int index = calculated < 0
 		? 0
 		: calculated > _size
 			? _size
 			: calculated;
+
+	if (-1 == index)
+	{
+		return -1;
+	}
+
+	_index = index;
+
+	return _index;
 }

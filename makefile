@@ -10,3 +10,4 @@ clean:
 	rm -rf core-avr-logging/build
 	rm -rf core-avr-data/build
 	rm -rf core-avr-messaging/build
+	rm -rf libs

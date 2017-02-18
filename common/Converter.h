@@ -10,6 +10,11 @@ union ShortUnion
 union IntUnion
 {
 	int intValue;
+	char charValue[4];
+};
+
+union FloatUnion
+{
 	float floatValue;
 	char charValue[4];
 };

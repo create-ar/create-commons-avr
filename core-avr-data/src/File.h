@@ -88,16 +88,9 @@ public:
 		// prepare buffer
 		char buffer[FILE_HEADER_SIZE];
 
-		IntUnion intConverter;
-		intConverter.intValue = version;
-		memcpy(buffer, intConverter.charValue, 4);
-
-		ShortUnion shortConverter;
-		shortConverter.shortValue = size;
-		memcpy(buffer + 4, shortConverter.charValue, 2);
-
-		shortConverter.shortValue = numRecords;
-		memcpy(buffer + 6, shortConverter.charValue, 2);
+		memcpy(buffer, &version, 4);
+		memcpy(buffer + 4, &size, 2);
+		memcpy(buffer + 6, &numRecords, 2);
 
 		int bytesWritten = stream->write(buffer, absoluteOffset, FILE_HEADER_SIZE);
 
@@ -192,6 +185,24 @@ public:
 	 * @return     Returns true iff the add was successful.
 	 */
 	bool add(float value);
+
+	/**
+	 * @brief      Total number of stored values.
+	 *
+	 * @return     Total number of float values stored.
+	 */
+	float numValues();
+
+	/**
+	 * @brief      Retrieves values.
+	 *
+	 * @param[in]  buffer   Buffer to copy values into.
+	 * @param[in]  recordOffset  The starting index of values.
+	 * @param[in]  recordCount   The number of values to copy into the buffer.
+	 *
+	 * @return     Returns the number of values copied.
+	 */
+	int values(float* buffer, const int recordDffset, const int recordCount);
 };
 
 #endif

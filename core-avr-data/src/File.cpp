@@ -2,6 +2,9 @@
 
 #include <Log.h>
 #include <Converter.h>
+#include <stdlib.h>
+#include <stdio.h>
+#include <string.h>
 
 #define FILE_VERSION 1
 
@@ -27,14 +30,15 @@ bool File::init(Streamer* stream, const int offset, const short size)
 		return false;
 	}
 
-	_stream = stream;
-	_offset = offset;
-
 	header.version = FILE_VERSION;
 	header.size = size;
 	header.numRecords = 0;
-	if (header.write(_stream, _offset))
+
+	if (header.write(stream, offset))
 	{
+		_stream = stream;
+		_offset = offset;
+
 		return true;
 	}
 
@@ -53,12 +57,12 @@ bool File::load(Streamer* stream, const int offset)
 	{
 		return false;
 	}
-
-	_stream = stream;
-	_offset = offset;
 	
-	if (header.read(stream, _offset))
+	if (header.read(stream, offset))
 	{
+		_stream = stream;
+		_offset = offset;
+
 		return true;
 	}
 
@@ -73,30 +77,82 @@ int File::size()
 
 bool File::flush()
 {
-	// for now, we are always writing to EEPROM
-	// TODO: Buffering adds, then writing many at once.
+	header.write(_stream, _offset);
 
 	return true;
 }
 
 bool File::add(float value)
 {
+	if (nullptr == _stream)
+	{
+		return false;
+	}
+
 	// determine if we have the space
-	int numBytes = 2 + header.numRecords * 4;
-	if (header.size - numBytes < 4)
+	int numRecordBytes = header.numRecords * 4;
+	if (header.size - numRecordBytes < 4)
 	{
 		return false;
 	}
 
 	// write new value to end of the buffer
-	IntUnion converter;
-	converter.floatValue = value;
-	_stream->write(converter.charValue, _offset + numBytes, 4);
+	int absByteIndex = _offset + FILE_HEADER_SIZE + 4 * header.numRecords;
+	int numBytesWritten = _stream->write((char*) &value, absByteIndex, 4);
 
-	// update numRecords at beginning
+	if (4 != numBytesWritten)
+	{
+		return false;
+	}
+
+	/*float* floatValue = (float*) calloc(1, 4);
+	_stream->read((char*) floatValue, byteIndex, 4);
+
+	char* throwBuffer = (char*) calloc(32, 1);
+	sprintf(throwBuffer, "%i -> %f=%f", byteIndex, value, floatValue[0]);
+	throw throwBuffer;
+	free(throwBuffer);
+
+	free(floatValue);*/
+
+	// update numRecords-- not written till flush()
 	header.numRecords += 1;
-	converter.intValue = header.numRecords;
-	_stream->write(converter.charValue, _offset, 4);
 
-	return false;
+	return true;
+}
+
+float File::numValues()
+{
+	return header.numRecords;
+}
+
+int File::values(float* buffer, const int recordOffset, const int recordCount)
+{
+	if (nullptr == _stream)
+	{
+		return -1;
+	}
+
+	if (nullptr == buffer)
+	{
+		return -1;
+	}
+
+	if (recordOffset < 0 || recordOffset > header.numRecords || recordCount < 0)
+	{
+		return -1;
+	}
+
+	// just print everything
+	int startAbsByteIndex = _offset + FILE_HEADER_SIZE + 4 * recordOffset;
+	int endAbsByteIndex = startAbsByteIndex + 4 * recordCount;
+	int byteLen = endAbsByteIndex - startAbsByteIndex;
+
+	int readLen = _stream->read((char*) buffer, startAbsByteIndex, byteLen);
+	if (readLen != byteLen)
+	{
+		throw "Error";
+	}
+
+	return readLen / 4;
 }
