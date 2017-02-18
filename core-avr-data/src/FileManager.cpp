@@ -1,7 +1,6 @@
 #include "FileManager.h"
 
 #include <stdlib.h>
-#include <AvrMath.h>
 #include <Converter.h>
 #include <Log.h>
 
@@ -62,7 +61,7 @@ File* FileManager::create(const char* uri, const int size)
 	int absoluteOffset = FILEMANAGER_HEADER_SIZE + _header.totalBytes;
 
 	// allocate a small buffer
-	const int bufferSize = min(NEW_FILE_BUFFER, size);
+	const int bufferSize = NEW_FILE_BUFFER < size ? NEW_FILE_BUFFER : size;
 	char* memory = (char*) calloc(bufferSize, sizeof(char));
 	if (nullptr == memory)
 	{
@@ -77,7 +76,8 @@ File* FileManager::create(const char* uri, const int size)
 	int bytesWritten = 0;
 	while (bytesWritten < size)
 	{
-		int bytesToWrite = min(bufferSize, size - bytesWritten);
+		int remaining = size - bytesWritten;
+		int bytesToWrite = bufferSize < remaining ? bufferSize : remaining;
 		if (!_stream->write(
 			memory,
 			absoluteOffset,

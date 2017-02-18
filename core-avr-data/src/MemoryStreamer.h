@@ -32,7 +32,7 @@ public:
 
 	virtual bool write(char* const buffer, const int offset, const int count) override;
 
-	virtual int seek(const int offset, const int origin) override;
+	virtual int seek(const int offset, const int size) override;
 };
 
 #endif

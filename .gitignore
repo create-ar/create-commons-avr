@@ -1,6 +1,8 @@
 .gradle
 .git
-Debug/
+
 docs/generated/
 libs/
 build/
+
+*.stackdump

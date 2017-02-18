@@ -1,5 +1,6 @@
 #include <catch.hpp>
 #include <string.h>
+#include <PinConfiguration.h>
 
 #include "MemoryStreamer.h"
 
@@ -7,50 +8,88 @@ TEST_CASE("MemoryStreamer.", "[MemoryStream]")
 {
 	const int size = 512;
 
-	SECTION("Bad inputs")
+	SECTION("init()")
 	{
 		MemoryStreamer* stream = new MemoryStreamer(size);
 		char* readBuffer = new char[size];
 
-		SECTION("read()")
-		{
-			int offset = 12;
-			int readSize = 128;
+		PinConfiguration pins;
+		REQUIRE(stream->init(pins));
+		
+		delete[] readBuffer;
+		delete stream;
+	}
 
-			REQUIRE(0 == stream->read());
-			
-			REQUIRE(-1 == stream->read(nullptr, offset, readSize));
-			
-			REQUIRE(-1 == stream->read(readBuffer, -1, readSize));
-			REQUIRE(0 == stream->read(readBuffer, size, size));
+	SECTION("read()")
+	{
+		MemoryStreamer* stream = new MemoryStreamer(size);
+		char* readBuffer = new char[size];
+		
+		PinConfiguration pins;
+		stream->init(pins);
 
-			REQUIRE(-1 == stream->read(readBuffer, offset, -1));
-			REQUIRE(0 == stream->read(readBuffer, offset, 0));
+		int offset = 12;
+		int readSize = 128;
 
-			REQUIRE(readSize == stream->read(readBuffer, offset, readSize));
-		}
+		// default data is zeroed out
+		REQUIRE(0 == stream->read());
+		
+		// invalid inputs
+		REQUIRE(-1 == stream->read(nullptr, offset, readSize));
+		REQUIRE(-1 == stream->read(readBuffer, -1, readSize));
+		REQUIRE(-1 == stream->read(readBuffer, offset, -1));
 
-		SECTION("seek")
-		{
-			REQUIRE(6 == stream->seek(4, 2));
-			REQUIRE(6 == stream->seek(size, 0));
-			REQUIRE(6 == stream->seek(6, size));
-		}
+		// clamped inputs
+		REQUIRE(0 == stream->read(readBuffer, size, size));
+		REQUIRE(0 == stream->read(readBuffer, offset, 0));
 
-		SECTION("read()/write()/seek()")
-		{
-			char write[] = "This is a test.";
-			int len = strlen(write);
+		REQUIRE(readSize == stream->read(readBuffer, offset, readSize));
 
-			stream->seek(4, 0);
-			REQUIRE(stream->write(write[7]));
-			stream->seek(4, 0);
-			REQUIRE(write[7] == stream->read());
+		delete readBuffer;
+		delete stream;
+	}
 
-			REQUIRE(stream->write(write, 0, strlen(write)));
-			REQUIRE(stream->read(readBuffer, 0, strlen(write)));
-			REQUIRE(0 == strncmp(readBuffer, write, strlen(write)));
-		}
+	SECTION("seek()")
+	{
+		MemoryStreamer* stream = new MemoryStreamer(size);
+		char* readBuffer = new char[size];
+
+		PinConfiguration pins;
+		REQUIRE(stream->init(pins));
+
+		REQUIRE(-1 == stream->seek(-1, 2));
+		REQUIRE(-1 == stream->seek(0, -1));
+
+		REQUIRE(0 == stream->seek(0, 0));
+		REQUIRE(size == stream->seek(size, size));
+
+		REQUIRE(6 == stream->seek(4, 2));
+		REQUIRE(size == stream->seek(size, 0));
+		REQUIRE(size == stream->seek(6, size));
+
+		delete[] readBuffer;
+		delete stream;
+	}
+
+	SECTION("read()/write()/seek()")
+	{
+		MemoryStreamer* stream = new MemoryStreamer(size);
+		char* readBuffer = new char[size];
+		
+		PinConfiguration pins;
+		REQUIRE(stream->init(pins));
+
+		char write[] = "This is a test.";
+		int len = strlen(write);
+
+		stream->seek(4, 0);
+		REQUIRE(stream->write(write[7]));
+		stream->seek(4, 0);
+		REQUIRE(write[7] == stream->read());
+
+		REQUIRE(stream->write(write, 0, strlen(write)));
+		REQUIRE(stream->read(readBuffer, 0, strlen(write)));
+		REQUIRE(0 == strncmp(readBuffer, write, strlen(write)));
 		
 		delete[] readBuffer;
 		delete stream;
