@@ -99,7 +99,9 @@ public:
 		shortConverter.shortValue = numRecords;
 		memcpy(buffer + 6, shortConverter.charValue, 2);
 
-		return FILE_HEADER_SIZE == stream->write(buffer, absoluteOffset, FILE_HEADER_SIZE);
+		int bytesWritten = stream->write(buffer, absoluteOffset, FILE_HEADER_SIZE);
+
+		return FILE_HEADER_SIZE == bytesWritten;
 	}
 };
 

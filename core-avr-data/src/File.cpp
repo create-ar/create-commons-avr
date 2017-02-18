@@ -22,7 +22,7 @@ bool File::init(Streamer* stream, const int offset, const short size)
 		return false;
 	}
 
-	if (offset <= 0 || size <= 0)
+	if (offset < 0 || size <= 0)
 	{
 		return false;
 	}

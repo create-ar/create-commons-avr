@@ -12,6 +12,10 @@ TEST_CASE("File consistency.", "[File]")
 	SECTION("Initialization.")
 	{
 		Streamer* stream = new MemoryStreamer(size);
+
+		PinConfiguration pins;
+		stream->init(pins);
+		
 		File* file = new File();
 
 		REQUIRE(!file->init(nullptr, offset, size));
