@@ -12,9 +12,24 @@
 class MemoryStreamer : public Streamer
 {
 private:
+	/**
+	 * Logger instance.
+	 */
 	Logger* _logger;
+
+	/**
+	 * Size of the buffer.
+	 */
 	const int _size;
+
+	/**
+	 * Actual memory buffer.
+	 */
 	char* _buffer;
+
+	/**
+	 * Index in the buffer.
+	 */
 	int _index;
 
 	/**

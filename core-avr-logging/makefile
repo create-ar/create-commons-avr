@@ -29,7 +29,9 @@ LIBNAME=core-avr-logging
 # 
 SOURCES=\
 	src/Log.cpp\
-	src/Logger.cpp
+	src/Logger.cpp\
+	src/ConsoleLogTarget.cpp\
+	src/FunctionPointerLogTarget.cpp
 ###############################################################################
 
 ###############################################################################

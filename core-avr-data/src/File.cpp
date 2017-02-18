@@ -10,12 +10,30 @@ File::File()
 	_logger = Log::logger("File");
 }
 
+File::~File()
+{
+	//
+}
+
 bool File::init(Streamer* stream, const int offset, const short size)
 {
+	if (nullptr == stream)
+	{
+		return false;
+	}
+
+	if (offset <= 0 || size <= 0)
+	{
+		return false;
+	}
+
+	_stream = stream;
+	_offset = offset;
+
 	header.version = FILE_VERSION;
 	header.size = size;
 	header.numRecords = 0;
-	if (header.write(stream, _offset))
+	if (header.write(_stream, _offset))
 	{
 		return true;
 	}
@@ -26,6 +44,16 @@ bool File::init(Streamer* stream, const int offset, const short size)
 
 bool File::load(Streamer* stream, const int offset)
 {
+	if (nullptr == stream)
+	{
+		return false;
+	}
+
+	if (offset < 0)
+	{
+		return false;
+	}
+
 	_stream = stream;
 	_offset = offset;
 	

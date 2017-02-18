@@ -99,7 +99,7 @@ public:
 		shortConverter.shortValue = numRecords;
 		memcpy(buffer + 6, shortConverter.charValue, 2);
 
-		return stream->write(buffer, absoluteOffset, FILE_HEADER_SIZE);
+		return FILE_HEADER_SIZE == stream->write(buffer, absoluteOffset, FILE_HEADER_SIZE);
 	}
 };
 
@@ -141,6 +141,11 @@ public:
 	 * @brief      Constructor.
 	 */
 	File();
+
+	/**
+	 * @brief      Destructor.
+	 */
+	~File();
 
 	/**
 	 * @brief      Loads header into memory. This is for Files that already
