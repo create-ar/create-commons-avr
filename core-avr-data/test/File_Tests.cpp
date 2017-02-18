@@ -1,7 +1,7 @@
 #include <catch.hpp>
 
 #include "File.h"
-#include "MemoryStream.h"
+#include "MemoryStreamer.h"
 
 TEST_CASE("File consistency.", "[File]")
 {
@@ -10,7 +10,7 @@ TEST_CASE("File consistency.", "[File]")
 
 	SECTION("Initialization.")
 	{
-		MemoryStream* stream = new MemoryStream(size);
+		Streamer* stream = new MemoryStreamer(size);
 		File* file = new File();
 
 		SECTION("Bad parameters.")
@@ -34,7 +34,7 @@ TEST_CASE("File consistency.", "[File]")
 
 	SECTION("Data consistency.")
 	{
-		Stream* stream = new MemoryStream(size);
+		Streamer* stream = new MemoryStreamer(size);
 		File* file = new File();
 		
 

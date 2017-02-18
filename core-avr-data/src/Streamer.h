@@ -14,7 +14,7 @@ public:
 
 	}
 
-	~Streamer()
+	virtual ~Streamer()
 	{
 
 	}

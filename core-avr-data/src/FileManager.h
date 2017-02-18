@@ -1,7 +1,7 @@
 #ifndef FILEMANAGER_H
 #define FILEMANAGER_H
 
-#include "Stream.h"
+#include "Streamer.h"
 #include "File.h"
 #include <Converter.h>
 #include <Tuple.h>

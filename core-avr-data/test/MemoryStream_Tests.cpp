@@ -1,15 +1,15 @@
 #include <catch.hpp>
 #include <string.h>
 
-#include "MemoryStream.h"
+#include "MemoryStreamer.h"
 
-TEST_CASE("MemoryStream.", "[MemoryStream]")
+TEST_CASE("MemoryStreamer.", "[MemoryStream]")
 {
 	const int size = 512;
 
 	SECTION("Bad inputs")
 	{
-		MemoryStream* stream = new MemoryStream(size);
+		MemoryStreamer* stream = new MemoryStreamer(size);
 		char* readBuffer = new char[size];
 
 		SECTION("read()")

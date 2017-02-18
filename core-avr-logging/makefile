@@ -1,11 +1,13 @@
+include ../properties.mk
+
 ###############################################################################
 # Library includes.
 # 
 # Eg:
 # 
-# -I$(ARDUINODIR)\hardware\arduino\avr\libraries\SoftwareSerial
+# -I$(BASECORE_DIR)/core-avr-ds/src
 #
-INC=-I$(BASECOREDIR)\core-avr-ds\src
+INC=-I$(BASECORE_DIR)/core-avr-ds/src
 ###############################################################################
 
 ###############################################################################
@@ -31,24 +33,40 @@ SOURCES=\
 ###############################################################################
 
 ###############################################################################
-# Directory to compile to.
-TARGETDIR=../libs
+# All test source files.
+# 
+# Eg:
+# 
+# Foo.cpp Bar.cpp
+# 
+TEST_SOURCES=\
+	test/Main_core-avr-logging.cpp\
+	test/Log_Tests.cpp\
+	test/DefaultFormatter_Tests.cpp
 ###############################################################################
 
+# object file directories
+AVR_OBJ_DIR=build/avr/obj
+x86_OBJ_DIR=build/x86/obj
+
 # Temporary build files.
-OBJS=$(addprefix $(OBJ_DIR)/, $(notdir $(SOURCES:.cpp=.o)))
-LIBPATH=$(TARGETDIR)/lib$(LIBNAME).a
+AVR_OBJS=$(addprefix $(AVR_OBJ_DIR)/, $(notdir $(SOURCES:.cpp=.o)))
+x86_OBJS=$(addprefix $(x86_OBJ_DIR)/, $(notdir $(SOURCES:.cpp=.o)))
+TEST_OBJS=$(addprefix $(x86_OBJ_DIR)/, $(notdir $(TEST_SOURCES:.cpp=.o)))
 
-all: $(OBJS)
-	$(ARCHIVER) rcs $(LIBPATH) $(OBJS)
-	
-$(OBJ_DIR)/%.o: src/%.cpp
-	@mkdir -p $(OUT_DIR)
-	@mkdir -p $(OBJ_DIR)
+build/Test.exe: $(x86_OBJS) $(TEST_OBJS)
+	$(x86_CC) -o build/Test.exe $(x86_OBJS) $(TEST_OBJS)
+	@mkdir -p $(LIB_DIR)/x86
+	$(x86_ARCHIVER) rvs $(LIB_DIR)/x86/lib$(LIBNAME).a $(x86_OBJS)
 
-	# build for arduino architecture
-	$(CC) $(CFLAGS) $(INC) $(COREINC) $(VARIANTINC) $(ARDUINOINC) -c $< -o $(OBJ_DIR)/$(@F)
+$(AVR_OBJ_DIR)/%.o: src/%.cpp
+	@mkdir -p $(AVR_OBJ_DIR)
+	$(AVR_CC) $(AVR_CFLAGS) $(AVR_INCLUDES) $(INC) -c $< -o $(AVR_OBJ_DIR)/$(@F)
 
-.PHONY: buildtests
-buildtests:
-	+$(MAKE) -C test OUT_DIR=$(OUT_DIR) OBJ_DIR=$(OBJ_DIR) TESTINC=$(TESTINC)
+$(x86_OBJ_DIR)/%.o: src/%.cpp
+	@mkdir -p $(x86_OBJ_DIR)
+	$(x86_CC) $(x86_CFLAGS) $(x86_INCLUDES) $(INC) -c $< -o $(x86_OBJ_DIR)/$(@F)
+
+$(x86_OBJ_DIR)/%.o: test/%.cpp
+	@mkdir -p $(x86_OBJ_DIR)
+	$(x86_CC) $(x86_CFLAGS) $(TEST_INCLUDES) $(INC) -Isrc -c $< -o $(x86_OBJ_DIR)/$(@F)
