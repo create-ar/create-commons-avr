@@ -155,6 +155,11 @@ int  MemoryStreamer::write(char* const buffer, const int offset, const int count
 	return len;
 }
 
+int MemoryStreamer::set(const char value, const int offset, const int count)
+{
+	return -1;
+}
+
 int MemoryStreamer::seek(const int offset, const int count)
 {
 	if (nullptr == _buffer)

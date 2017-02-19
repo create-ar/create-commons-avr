@@ -47,6 +47,8 @@ public:
 
 	virtual int write(char* const buffer, const int offset, const int count) override;
 
+	virtual int set(const char value, const int offset, const int count) override;
+
 	virtual int seek(const int offset, const int count) override;
 };
 

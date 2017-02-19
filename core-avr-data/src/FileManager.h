@@ -11,7 +11,7 @@
 /**
  * Number of bytes in header.
  */
-#define FILEMANAGER_HEADER_SIZE 12
+#define FILEMANAGER_HEADER_SIZE 16
 
 /**
  * @brief      Configuration object fo initializing FileManager.
@@ -19,38 +19,13 @@
 struct FileManagerConfig
 {
 	/**
-	 * Specifies the data out pin, from the EEPROM.
+	 * Total size, in bytes. Defaults to 2MB.
 	 */
-	int pinDataOut = 11;
-
-	/**
-	 * Specifies the data in pin, from the EEPROM.
-	 */
-	int pinDataIn = 12;
-
-	/**
-	 * Specifies the pin that controls the SPI clock.
-	 */
-	int pinSpiClock = 13;
-
-	/**
-	 * Specifies the pin for slave selection.
-	 */
-	int pinSlaveSelect = 10;
-
-	/**
-	 * Number of pages in memory.
-	 */
-	int numPages = 128;
-
-	/**
-	 * Number of bytes per page of memory.
-	 */
-	int bytesPerPage = 128;
+	int totalBytes = 2097152;
 };
 
 /**
- * @brief      Header stored at beginning of EEPROM.
+ * @brief      Header stored at beginning of stream.
  */
 class FileManagerHeader
 {
@@ -58,7 +33,7 @@ class FileManagerHeader
 
 public:
 	/**
-	 * Identifier lets us know if the EEPROM has a file manager header at all.
+	 * Identifier lets us know if the stream has a file manager header at all.
 	 */
 	char identifier[IDENTIFIER_LENGTH] = {'O', 'F', 'F', 'H'};
 
@@ -68,16 +43,23 @@ public:
 	short version;
 
 	/**
-	 * Total number of files.
+	 * Total number of files stored.
 	 */
 	short numFiles;
 
 	/**
-	 * Bytes used by all files, not including this header.
+	 * Total number of bytes being used by file system, excluding the header.
+	 */
+	int usedBytes;
+
+	/**
+	 * Total number of bytes this file system can use, excluding the header.
 	 */
 	int totalBytes;
 
 	/**
+	 * TODO: GET RID OF UNIONS.
+	 * 
 	 * @brief      Reads header in.
 	 *
 	 * @param      stream  The stream to read with.
@@ -114,15 +96,20 @@ public:
 		converter.charValue[1] = buffer[3];
 		numFiles = converter.shortValue;
 
-		// read in total bytes used
+		// read in used/total bytes
 		IntUnion intConverter;
 		memcpy(intConverter.charValue, buffer + 4, 4);
+		usedBytes = intConverter.intValue;
+
+		memcpy(intConverter.charValue, buffer + 8, 4);
 		totalBytes = intConverter.intValue;
 
 		return true;
 	}
 
 	/**
+	 * TODO: GET RID OF UNIONS.
+	 * 
 	 * @brief      Writes header to stream.
 	 *
 	 * @param[in]  stream  The stream to write with.
@@ -134,22 +121,29 @@ public:
 		// prepare buffer
 		char buffer[FILEMANAGER_HEADER_SIZE];
 
-		// copy in identifier
+		// id
 		memcpy(buffer, identifier, IDENTIFIER_LENGTH);
-
 		int index = IDENTIFIER_LENGTH;
 
 		ShortUnion shortConverter;
 		IntUnion intConverter;
 
+		// version
 		shortConverter.shortValue = version;
 		memcpy(buffer + index, shortConverter.charValue, 2);
 		index += 2;
 
+		// numFiles
 		shortConverter.shortValue = numFiles;
 		memcpy(buffer + index, shortConverter.charValue, 2);
 		index += 2;
 
+		// used
+		intConverter.intValue = usedBytes;
+		memcpy(buffer + index, intConverter.charValue, 4);
+		index += 4;
+
+		// total
 		intConverter.intValue = totalBytes;
 		memcpy(buffer + index, intConverter.charValue, 4);
 
@@ -174,19 +168,9 @@ class FileManager
 		Streamer* _stream;
 
 		/**
-		 * Tracks files.
-		 */
-		LinkedList<Tuple<char*, File>> _files;
-
-		/**
 		 * Header information for file system.
 		 */
 		FileManagerHeader _header;
-
-		/**
-		 * Total size of filesystem. Calculated value from config.
-		 */
-		int _totalSize;
 
 	public:
 		/**
@@ -200,7 +184,14 @@ class FileManager
 		~FileManager();
 
 		/**
-		 * @brief      Initializes the system.
+		 * @brief      Attempts to load existing filesystem.
+		 *
+		 * @return     Returns true if everything is good to go.
+		 */
+		bool load(FileManagerConfig config);
+
+		/**
+		 * @brief      Initializes a new filesystem.
 		 *
 		 * @return     Returns true if everything is good to go.
 		 */
@@ -232,7 +223,7 @@ class FileManager
 		 *
 		 * @return     Returns true if the File was successfully saved.
 		 */
-		bool set(const File* file);
+		bool set(File* file);
 };
 
 #endif

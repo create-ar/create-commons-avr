@@ -2,9 +2,6 @@
 
 #include <Log.h>
 #include <Converter.h>
-#include <stdlib.h>
-#include <stdio.h>
-#include <string.h>
 
 #define FILE_VERSION 1
 
@@ -18,20 +15,20 @@ File::~File()
 	//
 }
 
-bool File::init(Streamer* stream, const int offset, const short size)
+bool File::init(Streamer* stream, const int offset, const short contentSize)
 {
 	if (nullptr == stream)
 	{
 		return false;
 	}
 
-	if (offset < 0 || size <= 0)
+	if (offset < 0 || contentSize <= 0)
 	{
 		return false;
 	}
 
 	header.version = FILE_VERSION;
-	header.size = size;
+	header.contentSize = contentSize;
 	header.numRecords = 0;
 
 	if (header.write(stream, offset))
@@ -70,11 +67,6 @@ bool File::load(Streamer* stream, const int offset)
 	return false;
 }
 
-int File::size()
-{
-	return header.size;
-}
-
 bool File::flush()
 {
 	header.write(_stream, _offset);
@@ -91,7 +83,7 @@ bool File::add(float value)
 
 	// determine if we have the space
 	int numRecordBytes = header.numRecords * 4;
-	if (header.size - numRecordBytes < 4)
+	if (header.contentSize - numRecordBytes < 4)
 	{
 		return false;
 	}
@@ -104,16 +96,6 @@ bool File::add(float value)
 	{
 		return false;
 	}
-
-	/*float* floatValue = (float*) calloc(1, 4);
-	_stream->read((char*) floatValue, byteIndex, 4);
-
-	char* throwBuffer = (char*) calloc(32, 1);
-	sprintf(throwBuffer, "%i -> %f=%f", byteIndex, value, floatValue[0]);
-	throw throwBuffer;
-	free(throwBuffer);
-
-	free(floatValue);*/
 
 	// update numRecords-- not written till flush()
 	header.numRecords += 1;

@@ -7,13 +7,14 @@
 #include <Converter.h>
 #include <Logger.h>
 
-#define FILE_HEADER_SIZE 8
-
 /**
  * @brief      Description of file, stored at the start of the file buffer.
  */
 class FileHeader
 {
+
+	#define FILE_URI_SIZE 16
+	#define FILE_HEADER_SIZE 8 + FILE_URI_SIZE
 
 public:
 	/**
@@ -24,12 +25,17 @@ public:
 	/**
 	 * Number of bytes, excluding the header.
 	 */
-	short size;
+	short contentSize;
 
 	/**
 	 * Number of records total.
 	 */
 	short numRecords;
+
+	/**
+	 * Uri.
+	 */
+	char uri[FILE_URI_SIZE];
 
 	/**
 	 * @brief      Reads header information.
@@ -51,7 +57,7 @@ public:
 			return false;
 		}
 
-		// read in version
+		// version
 		IntUnion intConverter;
 		intConverter.charValue[0] = buffer[0];
 		intConverter.charValue[1] = buffer[1];
@@ -63,12 +69,15 @@ public:
 		ShortUnion converter;
 		converter.charValue[0] = buffer[4];
 		converter.charValue[1] = buffer[5];
-		size = converter.shortValue;
+		contentSize = converter.shortValue;
 
 		// numrecords
 		converter.charValue[0] = buffer[6];
 		converter.charValue[1] = buffer[7];
 		numRecords = converter.shortValue;
+
+		// uri
+		memcpy(uri, buffer, FILE_URI_SIZE);
 
 		return true;
 	}
@@ -89,8 +98,9 @@ public:
 		char buffer[FILE_HEADER_SIZE];
 
 		memcpy(buffer, &version, 4);
-		memcpy(buffer + 4, &size, 2);
+		memcpy(buffer + 4, &contentSize, 2);
 		memcpy(buffer + 6, &numRecords, 2);
+		memcpy(buffer + 8, uri, FILE_URI_SIZE);
 
 		int bytesWritten = stream->write(buffer, absoluteOffset, FILE_HEADER_SIZE);
 
@@ -156,18 +166,11 @@ public:
 	 *
 	 * @param      stream  The stream to write to.
 	 * @param[in]  offset  The byte offset this file starts at.
-	 * @param[in]  size    The size, in bytes, of the file.
+	 * @param[in]  contentSize    The size, in bytes, of the file.
 	 *
 	 * @return     { description_of_the_return_value }
 	 */
-	bool init(Streamer* stream, const int offset, const short size);
-
-	/**
-	 * @brief      Retrieves the size of the file.
-	 *
-	 * @return     Returns the size of the file, in bytes.
-	 */
-	int size();
+	bool init(Streamer* stream, const int offset, const short contentSize);
 
 	/**
 	 * @brief      Flushes any changes to the stream, in case the File decides

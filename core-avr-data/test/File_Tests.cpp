@@ -29,8 +29,7 @@ TEST_CASE("File consistency.", "[File]")
 		
 		file = new File();
 		REQUIRE(file->load(stream, 0));
-		REQUIRE(file->size() == size);
-		REQUIRE(file->header.size == size);
+		REQUIRE(file->header.contentSize == size);
 
 		delete file;
 		delete stream;

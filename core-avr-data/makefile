@@ -46,7 +46,8 @@ SOURCES=\
 TEST_SOURCES=\
 	test/File_Tests.cpp\
 	test/Main_core-avr-data.cpp\
-	test/MemoryStream_Tests.cpp
+	test/MemoryStream_Tests.cpp\
+	test/FileManager_Tests.cpp
 ###############################################################################
 
 ###############################################################################

@@ -65,6 +65,17 @@ public:
 	virtual int write(char* const buffer, const int offset, const int count) = 0;
 
 	/**
+	 * @brief      Sets a block of bytes to a specific value. Effectively, memset.
+	 *
+	 * @param[in]  value   The value to fill with.
+	 * @param[in]  offset  The starting byte offset.
+	 * @param[in]  count   The number of bytes to set.
+	 *
+	 * @return     Returns how many bytes were successfully set.
+	 */
+	virtual int set(const char value, const int offset, const int count) = 0;
+
+	/**
 	 * @brief      Moves the index to a specific place. This is used when
 	 * reading and writing single values.
 	 *

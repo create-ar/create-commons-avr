@@ -10,9 +10,7 @@
 FileManager::FileManager(Streamer* stream)
 {
 	_stream = stream;
-
 	_logger = Log::logger("FileManager");
-	_files = LinkedList<Tuple<char*, File>>();
 }
 
 FileManager::~FileManager()
@@ -20,23 +18,28 @@ FileManager::~FileManager()
 	
 }
 
-bool FileManager::init(FileManagerConfig config)
+bool FileManager::load(FileManagerConfig config)
 {
-	// calculate total size of EEPROM
-	_totalSize = config.numPages * config.bytesPerPage;
-
-	// read in header
 	if (_header.read(_stream))
 	{
-		return true;
+		if (_header.totalBytes == config.totalBytes)
+		{
+			return true;
+		}
+
+		return false;
 	}
 
-	_logger->info("Could not read header, attempting to format.");
+	return false;
+}
 
-	// header could not be read, so let's create one
+bool FileManager::init(FileManagerConfig config)
+{
 	_header.version = FILEMANAGER_VERSION;
 	_header.numFiles = 0;
-	_header.totalBytes = 0;
+	_header.usedBytes = 0;
+	_header.totalBytes = config.totalBytes;
+
 	if (_header.write(_stream))
 	{
 		return true;
@@ -50,56 +53,69 @@ File* FileManager::create(const char* uri, const int size)
 {
 	int totalSize = size + FILE_HEADER_SIZE;
 
-	// first, check if we have the room left 
-	if (_totalSize - _header.totalBytes < totalSize)
+	// first, check if we have the room left
+	if (_header.totalBytes - _header.usedBytes < totalSize)
 	{
 		_logger->error("Not enough storage to create file.");
 		return nullptr;
 	}
 
-	// find starting absolute offset
-	int absoluteOffset = FILEMANAGER_HEADER_SIZE + _header.totalBytes;
+	// set that memory to 0
+	int absoluteOffset = FILEMANAGER_HEADER_SIZE + _header.usedBytes;
+	_stream->set('\0', absoluteOffset, size);
 
-	// allocate a small buffer
-	const int bufferSize = NEW_FILE_BUFFER < size ? NEW_FILE_BUFFER : size;
-	char* memory = (char*) calloc(bufferSize, sizeof(char));
-	if (nullptr == memory)
+	// create a file
+	File* file = new File();
+	if (!file->init(_stream, absoluteOffset, size))
 	{
-		_logger->error("Could not allocate space: malloc failed.");
+		delete file;
 		return nullptr;
 	}
 
-	// TODO: write header to the stream
-
-	// write to stream until we hit size
-	absoluteOffset += FILE_HEADER_SIZE;
-	int bytesWritten = 0;
-	while (bytesWritten < size)
-	{
-		int remaining = size - bytesWritten;
-		int bytesToWrite = bufferSize < remaining ? bufferSize : remaining;
-		if (!_stream->write(
-			memory,
-			absoluteOffset,
-			bytesToWrite))
-		{
-			_logger->error("Could not write file.");
-			return nullptr;
-		}
-	}
-
-	// free memory
-	free(memory);
-
-	return nullptr;
+	return file;
 }
 
 File* FileManager::get(const char* uri)
 {
+	if (0 == _header.numFiles)
+	{
+		return nullptr;
+	}
+
+	int offset = FILE_HEADER_SIZE;
+	FileHeader fileHeader;
+
+	// read in header
+	while (offset < _header.usedBytes)
+	{
+		if (fileHeader.read(_stream, offset))
+		{
+			if (0 == strcmp(
+				(const char*) fileHeader.uri,
+				uri))
+			{
+				File* file = new File();
+				if (!file->load(_stream, offset))
+				{
+					delete file;
+
+					_logger->warn("Found file, but could not load it.");
+
+					return nullptr;
+				}
+
+				return file;
+			}
+
+			// move to next file
+			offset += FILE_HEADER_SIZE + fileHeader.contentSize;
+		}
+	}
+
 	return nullptr;
 }
 
-bool FileManager::set(const File* file)
+bool FileManager::set(File* file)
 {
-	return false;
+	return file->flush();
 }
