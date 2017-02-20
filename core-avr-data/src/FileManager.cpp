@@ -61,6 +61,16 @@ bool FileManager::init(FileManagerConfig config)
 
 File* FileManager::create(const char* uri, const int size)
 {
+	if (nullptr == uri)
+	{
+		return nullptr;
+	}
+
+	if (size <= 0)
+	{
+		return nullptr;
+	}
+
 	int totalSize = size + FILE_HEADER_SIZE;
 
 	// first, check if we have the room left
@@ -75,17 +85,25 @@ File* FileManager::create(const char* uri, const int size)
 
 	// create a file
 	File* file = new File();
-	if (!file->init(_stream, absoluteOffset, size))
+	if (!file->init(_stream, absoluteOffset, size, uri))
 	{
 		delete file;
 		return nullptr;
 	}
+
+	_header.numFiles += 1;
+	_header.usedBytes += totalSize;
 
 	return file;
 }
 
 File* FileManager::get(const char* uri)
 {
+	if (nullptr == uri)
+	{
+		return nullptr;
+	}
+
 	if (0 == _header.numFiles)
 	{
 		return nullptr;
@@ -97,7 +115,10 @@ File* FileManager::get(const char* uri)
 	// read in header
 	while (offset < _header.usedBytes)
 	{
-		if (fileHeader.read(_stream, offset))
+		if (FILE_HEADER_SIZE == _stream->read(
+			(char*) &fileHeader,
+			offset,
+			FILE_HEADER_SIZE))
 		{
 			if (0 == strcmp(
 				(const char*) fileHeader.uri,

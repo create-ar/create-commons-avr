@@ -18,18 +18,25 @@ TEST_CASE("File consistency.", "[File]")
 		File* file = new File();
 
 		const int offset = 12;
+		const char* nullUri = nullptr;
+		const char* uri = "test";
 
-		REQUIRE(!file->init(nullptr, offset, size));
-		REQUIRE(!file->init(stream, offset, 0));
-		REQUIRE(!file->init(stream, -1, size));
+		REQUIRE(!file->init(nullptr, offset, size, uri));
+		REQUIRE(!file->init(stream, offset, 0, uri));
+		REQUIRE(!file->init(stream, -1, size, uri));
+		REQUIRE(!file->init(stream, offset, size, nullUri));
 
 		// should initialize correctly
-		REQUIRE(file->init(stream, 0, size));
+		REQUIRE(file->init(stream, 0, size, uri));
 		delete file;
 		
 		file = new File();
 		REQUIRE(file->load(stream, 0));
 		REQUIRE(file->header.contentSize == size);
+		REQUIRE(0 == strncmp(
+			file->header.uri,
+			uri,
+			strlen(uri)));
 
 		delete file;
 		delete stream;
@@ -45,7 +52,7 @@ TEST_CASE("File consistency.", "[File]")
 		const float values[] = {1.0f, 2.0f, 3.0f, 4.0f, 5.0f, 6.0f, 7.0f, 8.0f, 9.0f, 10.0f};
 
 		File* file = new File();
-		file->init(stream, 0, size);
+		file->init(stream, 0, size, "uri");
 
 		// write values
 		int numRecordsToWrite = 10;

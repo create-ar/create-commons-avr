@@ -15,7 +15,11 @@ File::~File()
 	//
 }
 
-bool File::init(Streamer* stream, const int offset, const short contentSize)
+bool File::init(
+	Streamer* stream,
+	const int offset,
+	const short contentSize,
+	const char* uri)
 {
 	if (nullptr == stream)
 	{
@@ -31,7 +35,13 @@ bool File::init(Streamer* stream, const int offset, const short contentSize)
 	header.contentSize = contentSize;
 	header.numRecords = 0;
 
-	if (header.write(stream, offset))
+	memset((char*) header.uri, '\0', FILE_URI_SIZE);
+	memcpy(&header, uri, FILE_URI_SIZE);
+
+	if (FILE_HEADER_SIZE == stream->write(
+		(char*) &header,
+		offset,
+		FILE_HEADER_SIZE))
 	{
 		_stream = stream;
 		_offset = offset;
@@ -39,7 +49,6 @@ bool File::init(Streamer* stream, const int offset, const short contentSize)
 		return true;
 	}
 
-	_logger->error("Could not write File header.");
 	return false;
 }
 
@@ -55,7 +64,10 @@ bool File::load(Streamer* stream, const int offset)
 		return false;
 	}
 	
-	if (header.read(stream, offset))
+	if (FILE_HEADER_SIZE == stream->read(
+		(char*) &header,
+		offset,
+		FILE_HEADER_SIZE))
 	{
 		_stream = stream;
 		_offset = offset;
@@ -63,15 +75,20 @@ bool File::load(Streamer* stream, const int offset)
 		return true;
 	}
 
-	_logger->error("Could not read File header.");
 	return false;
 }
 
 bool File::flush()
 {
-	header.write(_stream, _offset);
+	if (nullptr == _stream)
+	{
+		return false;
+	}
 
-	return true;
+	return FILE_HEADER_SIZE == _stream->write(
+		(char*) &header,
+		_offset,
+		FILE_HEADER_SIZE);
 }
 
 bool File::add(float value)
