@@ -1,6 +1,6 @@
 #### Overview
 
-We collect sensor data with varying granularities. At the bottom layer, the device aggregates data and stores as much as possible via [core-avr-data](core-avr-data.md). The phone also has an aggregation and storage mechanism before it hits the backend, which has a third aggregation system.
+We collect sensor data with varying granularities. At the bottom layer, the device aggregates data and stores as much as possible via [core-avr-database](core-avr-database.md). The phone also has an aggregation and storage mechanism before it hits the backend, which has a third aggregation system.
 
 It's helpful to define the end points first, then dive into the middle.
 
@@ -14,7 +14,7 @@ Data is aggregated as a function of how old the data is, storage requirements of
 
 There is a common component that can _simulate_ that function, so that the mobile and backend can make reasonable judgements about what is happening to data on the device. For instance, so we can send a notification to the user when we know that data is being lost.
 
-This data is then stored on device through the [core-avr-data](core-avr-data.md) library.
+This data is then stored on device through the [core-avr-database](core-avr-database.md) library.
 
 ##### Mobile Syncing
 
@@ -26,7 +26,7 @@ Once a mobile has the device data, that data is pushed through an aggregation pr
 
 The backend API can perform operations on time-series formatted data. It uses [Whisper](https://github.com/graphite-project/whisper) to store this data. Further reading [here](http://graphite.readthedocs.io/en/latest/whisper.html).
 
-```"Whisper allows for higher resolution (seconds per point) of recent data to degrade into lower resolutions for long-term retention of historical data."```
+>"Whisper allows for higher resolution (seconds per point) of recent data to degrade into lower resolutions for long-term retention of historical data."
 
 This backend works in much the same way as [Carbon](https://github.com/graphite-project/carbon). There is a `relay` that accepts requests, an `aggregator` that tames data into aggregations, and a `cache` that is used for retrieval. The main difference is that in our structure, `Graphite-Web` is essentially an HTTP api for data retrieval, embedded in our backend.
 

@@ -9,5 +9,5 @@ The core libraries can be built using `gradle`. Under the hood, we leverage `mak
 ##### Libraries
 
 * [Logging](docs/core-avr-logging.md)
-* [Data](docs/core-avr-data.md)
+* [Database](docs/core-avr-database.md)
 * [Messaging](docs/core-avr-messaging.md)
