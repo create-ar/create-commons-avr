@@ -106,31 +106,30 @@ File* FileManager::get(const char* uri)
 
 	if (0 == _header.numFiles)
 	{
+		throw "No files!";
 		return nullptr;
 	}
 
-	int offset = FILE_HEADER_SIZE;
+	// start looking through files right after the header
+	unsigned int offset = FILEMANAGER_HEADER_SIZE;
 	FileHeader fileHeader;
 
-	// read in header
-	while (offset < _header.usedBytes)
+	while (offset < FILEMANAGER_HEADER_SIZE + _header.usedBytes)
 	{
 		if (FILE_HEADER_SIZE == _stream->read(
 			(char*) &fileHeader,
 			offset,
 			FILE_HEADER_SIZE))
 		{
-			if (0 == strcmp(
+			if (0 == strncmp(
 				(const char*) fileHeader.uri,
-				uri))
+				uri,
+				strlen(uri)))
 			{
 				File* file = new File();
 				if (!file->load(_stream, offset))
 				{
 					delete file;
-
-					_logger->warn("Found file, but could not load it.");
-
 					return nullptr;
 				}
 
@@ -141,7 +140,7 @@ File* FileManager::get(const char* uri)
 			offset += FILE_HEADER_SIZE + fileHeader.contentSize;
 		}
 	}
-
+	
 	return nullptr;
 }
 

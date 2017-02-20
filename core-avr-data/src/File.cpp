@@ -36,7 +36,7 @@ bool File::init(
 	header.numRecords = 0;
 
 	memset((char*) header.uri, '\0', FILE_URI_SIZE);
-	memcpy(&header, uri, FILE_URI_SIZE);
+	memcpy(&header.uri, uri, FILE_URI_SIZE);
 
 	if (FILE_HEADER_SIZE == stream->write(
 		(char*) &header,

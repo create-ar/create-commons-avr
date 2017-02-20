@@ -7,7 +7,7 @@
 #include <Converter.h>
 #include <Logger.h>
 
-#define FILE_URI_SIZE 16
+#define FILE_URI_SIZE 64
 
 /**
  * @brief      Description of file, stored at the start of the file buffer.

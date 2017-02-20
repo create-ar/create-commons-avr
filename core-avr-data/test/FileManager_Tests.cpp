@@ -46,6 +46,7 @@ TEST_CASE("FileManager usage.", "[FileManager]")
 		FileManager* files = new FileManager(stream);
 
 		FileManagerConfig config;
+		config.totalBytes = size;
 		REQUIRE(files->init(config));
 
 		const char* uri = "/records/moisturesensor";
@@ -61,7 +62,7 @@ TEST_CASE("FileManager usage.", "[FileManager]")
 		delete stream;
 	}
 
-	SECTION("Get/Set")
+	SECTION("Get()")
 	{
 		MemoryStreamer* stream = new MemoryStreamer(size);
 		PinConfiguration pins;
@@ -74,11 +75,14 @@ TEST_CASE("FileManager usage.", "[FileManager]")
 
 		const char* uri = "/records/moisturesensor";
 		File* file = files->create(uri, filesize);
+		delete file;
 
 		REQUIRE(nullptr == files->get(nullptr));
 		REQUIRE(nullptr == files->get("other"));
-		REQUIRE(file == files->get(uri));
-		REQUIRE(files->set(file));
+
+		file = files->get(uri);
+		REQUIRE(nullptr != file);
+		delete file;
 		
 		delete files;
 		delete stream;
@@ -93,13 +97,12 @@ TEST_CASE("FileManager usage.", "[FileManager]")
 		FileManager* files = new FileManager(stream);
 
 		FileManagerConfig config;
+		config.totalBytes = size;
 		REQUIRE(files->init(config));
 
 		// create many files
 		const int numFiles = 10;
-		const int fileSize = 512;
-		File* tempFiles[numFiles];
-
+		const int fileSize = 128;
 		char* uriBuffer;
 
 		for (int i = 0; i < numFiles; i++)
@@ -107,7 +110,11 @@ TEST_CASE("FileManager usage.", "[FileManager]")
 			uriBuffer = (char*) calloc(16, 0);
 			sprintf(uriBuffer, "/db/sensor/%i", i);
 
-			tempFiles[i] = files->create((const char*) uriBuffer, fileSize);
+			File* file = files->create((const char*) uriBuffer, fileSize);
+
+			REQUIRE(nullptr != file);
+
+			delete file;
 
 			free(uriBuffer);
 		}
@@ -117,7 +124,11 @@ TEST_CASE("FileManager usage.", "[FileManager]")
 			uriBuffer = (char*) calloc(16, 0);
 			sprintf(uriBuffer, "/db/sensor/%i", i);
 
-			REQUIRE(tempFiles[i] == files->get((const char*) uriBuffer));
+			File* file = files->get((const char*) uriBuffer);
+
+			REQUIRE(nullptr != file);
+
+			delete file;
 
 			free(uriBuffer);
 		}
