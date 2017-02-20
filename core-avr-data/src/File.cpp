@@ -31,6 +31,11 @@ bool File::init(
 		return false;
 	}
 
+	if (nullptr == uri)
+	{
+		return false;
+	}
+
 	header.version = FILE_VERSION;
 	header.contentSize = contentSize;
 	header.numRecords = 0;
