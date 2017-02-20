@@ -4,7 +4,7 @@ Core libraries for AVR development. This code base is an attempt to make it easi
 
 ##### Building
 
-The core libraries can be built using `gradle`. Under the hood, we leverage `make` to do the heavy lifting. Check out the **[build process documentation](docs/build/build-process.overview.md)** for further reading.
+The core libraries can be built using `gradle`. Under the hood, we leverage `make` to do the heavy lifting. Check out the **[build process documentation](docs/build-process.overview.md)** for further reading.
 
 ##### Libraries
 
