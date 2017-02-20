@@ -3,15 +3,15 @@
 
 #include "Streamer.h"
 #include "File.h"
-#include <Converter.h>
+
 #include <Tuple.h>
 #include <LinkedList.h>
 #include <Logger.h>
+#include <stdio.h>
 
-/**
- * Number of bytes in header.
- */
-#define FILEMANAGER_HEADER_SIZE 16
+#define IDENTIFIER_LENGTH 4
+
+static char VALID_IDENTIFIER[IDENTIFIER_LENGTH] = {'O', 'F', 'F', 'H'};
 
 /**
  * @brief      Configuration object fo initializing FileManager.
@@ -27,15 +27,12 @@ struct FileManagerConfig
 /**
  * @brief      Header stored at beginning of stream.
  */
-class FileManagerHeader
+struct FileManagerHeader
 {
-	#define IDENTIFIER_LENGTH 4
-
-public:
 	/**
 	 * Identifier lets us know if the stream has a file manager header at all.
 	 */
-	char identifier[IDENTIFIER_LENGTH] = {'O', 'F', 'F', 'H'};
+	char identifier[IDENTIFIER_LENGTH];
 
 	/**
 	 * FileManager header version.
@@ -56,100 +53,12 @@ public:
 	 * Total number of bytes this file system can use, excluding the header.
 	 */
 	int totalBytes;
-
-	/**
-	 * TODO: GET RID OF UNIONS.
-	 * 
-	 * @brief      Reads header in.
-	 *
-	 * @param      stream  The stream to read with.
-	 *
-	 * @return     True if the header was read successfully.
-	 */
-	bool read(Streamer* stream)
-	{
-		char buffer[FILEMANAGER_HEADER_SIZE];
-
-		// read header
-		if (FILEMANAGER_HEADER_SIZE != stream->read(buffer, 0, FILEMANAGER_HEADER_SIZE))
-		{
-			return false;
-		}
-
-		// look for matching identifier
-		for (int i = 0; i < IDENTIFIER_LENGTH; i++)
-		{
-			if (buffer[i] != identifier[i])
-			{
-				return false;
-			}
-		}
-		
-		// read in version
-		ShortUnion converter;
-		converter.charValue[0] = buffer[0];
-		converter.charValue[1] = buffer[1];
-		version = converter.shortValue;
-
-		// read in number of files
-		converter.charValue[0] = buffer[2];
-		converter.charValue[1] = buffer[3];
-		numFiles = converter.shortValue;
-
-		// read in used/total bytes
-		IntUnion intConverter;
-		memcpy(intConverter.charValue, buffer + 4, 4);
-		usedBytes = intConverter.intValue;
-
-		memcpy(intConverter.charValue, buffer + 8, 4);
-		totalBytes = intConverter.intValue;
-
-		return true;
-	}
-
-	/**
-	 * TODO: GET RID OF UNIONS.
-	 * 
-	 * @brief      Writes header to stream.
-	 *
-	 * @param[in]  stream  The stream to write with.
-	 *
-	 * @return     Returns true if successful.
-	 */
-	bool write(Streamer* stream)
-	{
-		// prepare buffer
-		char buffer[FILEMANAGER_HEADER_SIZE];
-
-		// id
-		memcpy(buffer, identifier, IDENTIFIER_LENGTH);
-		int index = IDENTIFIER_LENGTH;
-
-		ShortUnion shortConverter;
-		IntUnion intConverter;
-
-		// version
-		shortConverter.shortValue = version;
-		memcpy(buffer + index, shortConverter.charValue, 2);
-		index += 2;
-
-		// numFiles
-		shortConverter.shortValue = numFiles;
-		memcpy(buffer + index, shortConverter.charValue, 2);
-		index += 2;
-
-		// used
-		intConverter.intValue = usedBytes;
-		memcpy(buffer + index, intConverter.charValue, 4);
-		index += 4;
-
-		// total
-		intConverter.intValue = totalBytes;
-		memcpy(buffer + index, intConverter.charValue, 4);
-
-		return stream->write(buffer, 0, FILEMANAGER_HEADER_SIZE);
-	}
 };
+
+/**
+ * Number of bytes in header.
+ */
+#define FILEMANAGER_HEADER_SIZE sizeof(FileManagerHeader)
 
 /**
  * @brief      The FileManager class exposes a fixed-size file manipulation API, based on URI.

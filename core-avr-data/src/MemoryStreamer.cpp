@@ -157,7 +157,37 @@ int  MemoryStreamer::write(char* const buffer, const int offset, const int count
 
 int MemoryStreamer::set(const char value, const int offset, const int count)
 {
-	return -1;
+	if (nullptr == _buffer)
+	{
+		return -1;
+	}
+
+	if (offset < 0 || offset > _size)
+	{
+		return -1;
+	}
+
+	if (count < 0)
+	{
+		return -1;
+	}
+
+	int remaining = _size - offset;
+	int len = remaining < count
+		? remaining
+		: count;
+
+	if (0 == len)
+	{
+		return 0;
+	}
+
+	memset(
+		_buffer + offset,
+		value,
+		count);
+
+	return len;
 }
 
 int MemoryStreamer::seek(const int offset, const int count)

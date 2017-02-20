@@ -9,23 +9,25 @@
 
 TEST_CASE("FileManager usage.", "[FileManager]")
 {
-	/*const int size = 4096;
+	const int size = 4096;
 	const int filesize = 128;
 
-	SECTION("Init/load")
+	SECTION("Initialization.")
 	{
-		MemoryStreamer* stream = new MemoryStreamer(size);
-		FileManager* files = new FileManager(stream);
-
-		REQUIRE(!files->load(config));
+		const short version = 23;
+		const short numFiles = 12;
+		const int usedBytes = 1025;
+		const int totalBytes = 4096;
 
 		FileManagerConfig config;
-		config.totalBytes = 0;
-		REQUIRE(!files->init(config));
+		config.totalBytes = totalBytes;
 
-		config.totalBytes = 512;
+		MemoryStreamer* stream = new MemoryStreamer(totalBytes);
+		PinConfiguration pins;
+		stream->init(pins);
+
+		FileManager* files = new FileManager(stream);
 		REQUIRE(files->init(config));
-
 		delete files;
 
 		files = new FileManager(stream);
@@ -38,6 +40,9 @@ TEST_CASE("FileManager usage.", "[FileManager]")
 	SECTION("Create")
 	{
 		MemoryStreamer* stream = new MemoryStreamer(size);
+		PinConfiguration pins;
+		stream->init(pins);
+
 		FileManager* files = new FileManager(stream);
 
 		FileManagerConfig config;
@@ -59,6 +64,9 @@ TEST_CASE("FileManager usage.", "[FileManager]")
 	SECTION("Get/Set")
 	{
 		MemoryStreamer* stream = new MemoryStreamer(size);
+		PinConfiguration pins;
+		stream->init(pins);
+
 		FileManager* files = new FileManager(stream);
 
 		FileManagerConfig config;
@@ -79,6 +87,9 @@ TEST_CASE("FileManager usage.", "[FileManager]")
 	SECTION("Get many")
 	{
 		MemoryStreamer* stream = new MemoryStreamer(size);
+		PinConfiguration pins;
+		stream->init(pins);
+
 		FileManager* files = new FileManager(stream);
 
 		FileManagerConfig config;
@@ -113,5 +124,5 @@ TEST_CASE("FileManager usage.", "[FileManager]")
 
 		delete files;
 		delete stream;
-	}*/
+	}
 }

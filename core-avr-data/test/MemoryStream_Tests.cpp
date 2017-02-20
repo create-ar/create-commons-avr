@@ -116,28 +116,25 @@ TEST_CASE("MemoryStreamer.", "[MemoryStream]")
 		delete stream;
 	}
 
-	SECTION("read()/write()/seek() float")
+	SECTION("set()")
 	{
-		MemoryStreamer* stream = new MemoryStreamer(size);
-		char* readBuffer = new char[size];
-
-		float write[] = {1,2,3,4,5};
-		int len = 5;
-
+		MemoryStreamer* stream = new MemoryStreamer(size);		
 		PinConfiguration pins;
 		stream->init(pins);
 
-		REQUIRE(len * 4 == stream->write((char*) write, 0, len * 4));
-
-		float read[len];
-		REQUIRE(len * 4 == stream->read((char*) read, 0, len * 4));
-
-		for (int i = 0; i < len; i++)
-		{
-			REQUIRE(read[i] == write[i]);
-		}
+		char readBuffer[size];
+		char writeBuffer[size];
 		
-		delete[] readBuffer;
+		memset(writeBuffer, 'a', size);
+		REQUIRE(size == stream->write((char* const) writeBuffer, 0, size));
+		REQUIRE(size == stream->read(readBuffer, 0, size));
+		REQUIRE(0 == strncmp(readBuffer, writeBuffer, size));
+
+		memset(writeBuffer, '\0', size);
+		REQUIRE(size == stream->set('\0', 0, size));
+		REQUIRE(size == stream->read(readBuffer, 0, size));
+		REQUIRE(0 == strncmp(readBuffer, writeBuffer, size));
+
 		delete stream;
 	}
 }

@@ -20,14 +20,19 @@ FileManager::~FileManager()
 
 bool FileManager::load(FileManagerConfig config)
 {
-	if (_header.read(_stream))
+	if (_stream->read((char *) &_header, 0, FILEMANAGER_HEADER_SIZE))
 	{
-		if (_header.totalBytes == config.totalBytes)
+		if (0 != strncmp(_header.identifier, VALID_IDENTIFIER, IDENTIFIER_LENGTH))
 		{
-			return true;
+			return false;
 		}
 
-		return false;
+		if (_header.totalBytes != config.totalBytes)
+		{
+			return false;
+		}
+
+		return true;
 	}
 
 	return false;
@@ -35,17 +40,22 @@ bool FileManager::load(FileManagerConfig config)
 
 bool FileManager::init(FileManagerConfig config)
 {
+	if (0 == config.totalBytes)
+	{
+		return false;
+	}
+
+	memcpy(_header.identifier, VALID_IDENTIFIER, IDENTIFIER_LENGTH);
 	_header.version = FILEMANAGER_VERSION;
 	_header.numFiles = 0;
 	_header.usedBytes = 0;
 	_header.totalBytes = config.totalBytes;
 
-	if (_header.write(_stream))
+	if (_stream->write((char*) &_header, 0, FILEMANAGER_HEADER_SIZE))
 	{
 		return true;
 	}
 
-	_logger->error("Could not write new header.");
 	return false;
 }
 
@@ -56,7 +66,6 @@ File* FileManager::create(const char* uri, const int size)
 	// first, check if we have the room left
 	if (_header.totalBytes - _header.usedBytes < totalSize)
 	{
-		_logger->error("Not enough storage to create file.");
 		return nullptr;
 	}
 
