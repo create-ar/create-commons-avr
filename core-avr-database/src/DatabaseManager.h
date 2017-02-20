@@ -1,8 +1,8 @@
-#ifndef FILEMANAGER_H
-#define FILEMANAGER_H
+#ifndef DATABASEMANAGER_H
+#define DATABASEMANAGER_H
 
-#include "Streamer.h"
-#include "File.h"
+#include "AvrStream.h"
+#include "Database.h"
 
 #include <Tuple.h>
 #include <LinkedList.h>
@@ -14,9 +14,9 @@
 static char VALID_IDENTIFIER[IDENTIFIER_LENGTH] = {'O', 'F', 'F', 'H'};
 
 /**
- * @brief      Configuration object fo initializing FileManager.
+ * @brief      Configuration object fo initializing DatabaseManager.
  */
-struct FileManagerConfig
+struct DatabaseManagerConfig
 {
 	/**
 	 * Total size, in bytes. Defaults to 2MB.
@@ -27,7 +27,7 @@ struct FileManagerConfig
 /**
  * @brief      Header stored at beginning of stream.
  */
-struct FileManagerHeader
+struct DatabaseManagerHeader
 {
 	/**
 	 * Identifier lets us know if the stream has a file manager header at all.
@@ -35,14 +35,14 @@ struct FileManagerHeader
 	char identifier[IDENTIFIER_LENGTH];
 
 	/**
-	 * FileManager header version.
+	 * DatabaseManager header version.
 	 */
 	short version;
 
 	/**
 	 * Total number of files stored.
 	 */
-	short numFiles;
+	short numDatabases;
 
 	/**
 	 * Total number of bytes being used by file system, excluding the header.
@@ -58,12 +58,12 @@ struct FileManagerHeader
 /**
  * Number of bytes in header.
  */
-#define FILEMANAGER_HEADER_SIZE sizeof(FileManagerHeader)
+#define DATABASEMANAGER_HEADER_SIZE sizeof(DatabaseManagerHeader)
 
 /**
- * @brief      The FileManager class exposes a fixed-size file manipulation API, based on URI.
+ * @brief      The DatabaseManager class exposes a fixed-size file manipulation API, based on URI.
  */
-class FileManager
+class DatabaseManager
 {
 	private:
 		/**
@@ -72,67 +72,67 @@ class FileManager
 		Logger* _logger;
 
 		/**
-		 * The FileManager is the owner of the EEPROMStream abstraction.
+		 * The DatabaseManager is the owner of the EEPROMStream abstraction.
 		 */
-		Streamer* _stream;
+		AvrStream* _stream;
 
 		/**
 		 * Header information for file system.
 		 */
-		FileManagerHeader _header;
+		DatabaseManagerHeader _header;
 
 	public:
 		/**
 		 * @brief      Constructor.
 		 */
-		FileManager(Streamer* stream);
+		DatabaseManager(AvrStream* stream);
 
 		/**
 		 * @brief      Destructor.
 		 */
-		~FileManager();
+		~DatabaseManager();
 
 		/**
 		 * @brief      Attempts to load existing filesystem.
 		 *
 		 * @return     Returns true if everything is good to go.
 		 */
-		bool load(FileManagerConfig config);
+		bool load(DatabaseManagerConfig config);
 
 		/**
 		 * @brief      Initializes a new filesystem.
 		 *
 		 * @return     Returns true if everything is good to go.
 		 */
-		bool init(FileManagerConfig config);
+		bool init(DatabaseManagerConfig config);
 
 		/**
-		 * @brief      Creates a File of a specific size, linked to a URI.
+		 * @brief      Creates a Database of a specific size, linked to a URI.
 		 *
-		 * @param[in]  uri   The uri this File can be addressed at.
+		 * @param[in]  uri   The uri this Database can be addressed at.
 		 * @param[in]  size  The size of the file.
 		 *
-		 * @return     If there was room for the file and it was successfully created, returns the File. If not, nullptr.
+		 * @return     If there was room for the file and it was successfully created, returns the Database. If not, nullptr.
 		 */
-		File* create(const char* uri, const int size);
+		Database* create(const char* uri, const int size);
 
 		/**
 		 * @brief      Retrieves a file by uri.
 		 *
 		 * @param[in]  uri   The uri to retrieve the file with.
 		 *
-		 * @return     If the File was found, the file. Otherwise, nullptr.
+		 * @return     If the Database was found, the file. Otherwise, nullptr.
 		 */
-		File* get(const char* uri);
+		Database* get(const char* uri);
 
 		/**
-		 * @brief      Writes the file. This is the equivalent to calling File::flush().
+		 * @brief      Writes the file. This is the equivalent to calling Database::flush().
 		 *
 		 * @param[in]  file  The file to write to disk.
 		 *
-		 * @return     Returns true if the File was successfully saved.
+		 * @return     Returns true if the Database was successfully saved.
 		 */
-		bool set(File* file);
+		bool set(Database* file);
 };
 
 #endif

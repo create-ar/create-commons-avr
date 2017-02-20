@@ -1,22 +1,22 @@
-#include "File.h"
+#include "Database.h"
 
 #include <Log.h>
 #include <Converter.h>
 
-#define FILE_VERSION 1
+#define DATABASE_VERSION 1
 
-File::File()
+Database::Database()
 {
-	_logger = Log::logger("File");
+	_logger = Log::logger("Database");
 }
 
-File::~File()
+Database::~Database()
 {
 	//
 }
 
-bool File::init(
-	Streamer* stream,
+bool Database::init(
+	AvrStream* stream,
 	const int offset,
 	const short contentSize,
 	const char* uri)
@@ -36,17 +36,17 @@ bool File::init(
 		return false;
 	}
 
-	header.version = FILE_VERSION;
+	header.version = DATABASE_VERSION;
 	header.contentSize = contentSize;
 	header.numRecords = 0;
 
-	memset((char*) header.uri, '\0', FILE_URI_SIZE);
-	memcpy(&header.uri, uri, FILE_URI_SIZE);
+	memset((char*) header.uri, '\0', DATABASE_URI_SIZE);
+	memcpy(&header.uri, uri, DATABASE_URI_SIZE);
 
-	if (FILE_HEADER_SIZE == stream->write(
+	if (DATABASE_HEADER_SIZE == stream->write(
 		(char*) &header,
 		offset,
-		FILE_HEADER_SIZE))
+		DATABASE_HEADER_SIZE))
 	{
 		_stream = stream;
 		_offset = offset;
@@ -57,7 +57,7 @@ bool File::init(
 	return false;
 }
 
-bool File::load(Streamer* stream, const int offset)
+bool Database::load(AvrStream* stream, const int offset)
 {
 	if (nullptr == stream)
 	{
@@ -69,10 +69,10 @@ bool File::load(Streamer* stream, const int offset)
 		return false;
 	}
 	
-	if (FILE_HEADER_SIZE == stream->read(
+	if (DATABASE_HEADER_SIZE == stream->read(
 		(char*) &header,
 		offset,
-		FILE_HEADER_SIZE))
+		DATABASE_HEADER_SIZE))
 	{
 		_stream = stream;
 		_offset = offset;
@@ -83,20 +83,20 @@ bool File::load(Streamer* stream, const int offset)
 	return false;
 }
 
-bool File::flush()
+bool Database::flush()
 {
 	if (nullptr == _stream)
 	{
 		return false;
 	}
 
-	return FILE_HEADER_SIZE == _stream->write(
+	return DATABASE_HEADER_SIZE == _stream->write(
 		(char*) &header,
 		_offset,
-		FILE_HEADER_SIZE);
+		DATABASE_HEADER_SIZE);
 }
 
-bool File::add(float value)
+bool Database::add(float value)
 {
 	if (nullptr == _stream)
 	{
@@ -111,7 +111,7 @@ bool File::add(float value)
 	}
 
 	// write new value to end of the buffer
-	int absByteIndex = _offset + FILE_HEADER_SIZE + 4 * header.numRecords;
+	int absByteIndex = _offset + DATABASE_HEADER_SIZE + 4 * header.numRecords;
 	int numBytesWritten = _stream->write((char*) &value, absByteIndex, 4);
 
 	if (4 != numBytesWritten)
@@ -125,12 +125,12 @@ bool File::add(float value)
 	return true;
 }
 
-float File::numValues()
+float Database::numValues()
 {
 	return header.numRecords;
 }
 
-int File::values(float* buffer, const int recordOffset, const int recordCount)
+int Database::values(float* buffer, const int recordOffset, const int recordCount)
 {
 	if (nullptr == _stream)
 	{
@@ -148,7 +148,7 @@ int File::values(float* buffer, const int recordOffset, const int recordCount)
 	}
 
 	// just print everything
-	int startAbsByteIndex = _offset + FILE_HEADER_SIZE + 4 * recordOffset;
+	int startAbsByteIndex = _offset + DATABASE_HEADER_SIZE + 4 * recordOffset;
 	int endAbsByteIndex = startAbsByteIndex + 4 * recordCount;
 	int byteLen = endAbsByteIndex - startAbsByteIndex;
 

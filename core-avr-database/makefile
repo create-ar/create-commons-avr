@@ -20,7 +20,7 @@ INC=-I$(THIRDPARTY_DIR)/DataFlash\
 # 
 # core-avr-data
 # 
-LIBNAME=core-avr-logging
+LIBNAME=core-avr-database
 ###############################################################################
 
 ###############################################################################
@@ -31,9 +31,9 @@ LIBNAME=core-avr-logging
 # Foo.cpp Bar.cpp
 # 
 SOURCES=\
-	src/File.cpp\
-	src/FileManager.cpp\
-	src/MemoryStreamer.cpp
+	src/Database.cpp\
+	src/DatabaseManager.cpp\
+	src/MemoryStream.cpp
 ###############################################################################
 
 ###############################################################################
@@ -44,10 +44,10 @@ SOURCES=\
 # Foo.cpp Bar.cpp
 # 
 TEST_SOURCES=\
-	test/File_Tests.cpp\
-	test/Main_core-avr-data.cpp\
+	test/Database_Tests.cpp\
+	test/Main_core-avr-database.cpp\
 	test/MemoryStream_Tests.cpp\
-	test/FileManager_Tests.cpp
+	test/DatabaseManager_Tests.cpp
 ###############################################################################
 
 ###############################################################################

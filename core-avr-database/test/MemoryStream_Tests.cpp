@@ -2,33 +2,16 @@
 #include <string.h>
 #include <PinConfiguration.h>
 
-#include "MemoryStreamer.h"
+#include "MemoryStream.h"
 
-TEST_CASE("MemoryStreamer.", "[MemoryStream]")
+TEST_CASE("MemoryStream.", "[MemoryStream]")
 {
 	const int size = 512;
 
-	SECTION("init()")
-	{
-		MemoryStreamer* stream = new MemoryStreamer(size);
-		char* readBuffer = new char[size];
-
-		PinConfiguration pins;
-		REQUIRE(stream->init(pins));
-		
-		delete[] readBuffer;
-		delete stream;
-	}
-
 	SECTION("read()")
 	{
-		MemoryStreamer* stream = new MemoryStreamer(size);
+		MemoryStream* stream = new MemoryStream(size);
 		char* readBuffer = new char[size];
-
-		REQUIRE(-1 == stream->read());
-		
-		PinConfiguration pins;
-		stream->init(pins);
 
 		int offset = 12;
 		int readSize = 128;
@@ -53,13 +36,8 @@ TEST_CASE("MemoryStreamer.", "[MemoryStream]")
 
 	SECTION("seek()")
 	{
-		MemoryStreamer* stream = new MemoryStreamer(size);
+		MemoryStream* stream = new MemoryStream(size);
 		char* readBuffer = new char[size];
-
-		REQUIRE(-1 == stream->seek(0, 1));
-
-		PinConfiguration pins;
-		stream->init(pins);
 
 		REQUIRE(-1 == stream->seek(-1, 2));
 		REQUIRE(-1 == stream->seek(0, -1));
@@ -77,13 +55,8 @@ TEST_CASE("MemoryStreamer.", "[MemoryStream]")
 
 	SECTION("write()")
 	{
-		MemoryStreamer* stream = new MemoryStreamer(size);
+		MemoryStream* stream = new MemoryStream(size);
 		char* readBuffer = new char[size];
-		
-		REQUIRE(!stream->write('a'));
-
-		PinConfiguration pins;
-		REQUIRE(stream->init(pins));
 
 		REQUIRE(stream->write('a'));
 
@@ -93,16 +66,13 @@ TEST_CASE("MemoryStreamer.", "[MemoryStream]")
 
 	SECTION("read()/write()/seek() char")
 	{
-		MemoryStreamer* stream = new MemoryStreamer(size);
+		MemoryStream* stream = new MemoryStream(size);
 		char* readBuffer = new char[size];
 
 		char write[] = "This is a test.";
 		int len = strlen(write);
 
-		REQUIRE(-1 == stream->write(write, 0, len));
-		
-		PinConfiguration pins;
-		stream->init(pins);
+		REQUIRE(len == stream->write(write, 0, len));
 
 		REQUIRE(stream->write(write[7]));
 		stream->seek(0, 0);
@@ -118,9 +88,7 @@ TEST_CASE("MemoryStreamer.", "[MemoryStream]")
 
 	SECTION("set()")
 	{
-		MemoryStreamer* stream = new MemoryStreamer(size);		
-		PinConfiguration pins;
-		stream->init(pins);
+		MemoryStream* stream = new MemoryStream(size);		
 
 		char readBuffer[size];
 		char writeBuffer[size];

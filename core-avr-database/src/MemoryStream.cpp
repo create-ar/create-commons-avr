@@ -1,4 +1,4 @@
-#include "MemoryStreamer.h"
+#include "MemoryStream.h"
 
 #include <string.h>
 #include <stdlib.h>
@@ -6,16 +6,17 @@
 /**
 * @brief      Stream implementation completely in memory.
 */
-MemoryStreamer::MemoryStreamer(const int size) :
+MemoryStream::MemoryStream(const int size) :
 	_logger(nullptr),
 	_size(size),
 	_buffer(nullptr),
 	_index(0)
 {
-	_logger = Log::logger("MemoryStreamer");
+	_logger = Log::logger("MemoryStream");
+	_buffer = (char*) calloc(_size, sizeof(char));
 }
 
-MemoryStreamer::~MemoryStreamer()
+MemoryStream::~MemoryStream()
 {
 	if (nullptr == _buffer)
 	{
@@ -25,21 +26,7 @@ MemoryStreamer::~MemoryStreamer()
 	free(_buffer);
 }
 
-bool MemoryStreamer::init(PinConfiguration pins)
-{
-	// already initialized
-	if (nullptr != _buffer)
-	{
-		_logger->warn("MemoryStreamer already initialized.");
-		return false;
-	}
-
-	_buffer = (char*) calloc(_size, sizeof(char));
-
-	return nullptr != _buffer;
-}
-
-char MemoryStreamer::read()
+char MemoryStream::read()
 {
 	if (nullptr == _buffer)
 	{
@@ -54,7 +41,7 @@ char MemoryStreamer::read()
 	return -1;
 }
 
-int MemoryStreamer::read(
+int MemoryStream::read(
 	char* const buffer,
 	const int offset,
 	const int count)
@@ -98,7 +85,7 @@ int MemoryStreamer::read(
 	return len;
 }
 
-bool MemoryStreamer::write(const char value)
+bool MemoryStream::write(const char value)
 {
 	if (nullptr == _buffer)
 	{
@@ -115,7 +102,7 @@ bool MemoryStreamer::write(const char value)
 	return true;
 }
 
-int  MemoryStreamer::write(char* const buffer, const int offset, const int count)
+int  MemoryStream::write(char* const buffer, const int offset, const int count)
 {
 	if (nullptr == _buffer)
 	{
@@ -155,7 +142,7 @@ int  MemoryStreamer::write(char* const buffer, const int offset, const int count
 	return len;
 }
 
-int MemoryStreamer::set(const char value, const int offset, const int count)
+int MemoryStream::set(const char value, const int offset, const int count)
 {
 	if (nullptr == _buffer)
 	{
@@ -190,7 +177,7 @@ int MemoryStreamer::set(const char value, const int offset, const int count)
 	return len;
 }
 
-int MemoryStreamer::seek(const int offset, const int count)
+int MemoryStream::seek(const int offset, const int count)
 {
 	if (nullptr == _buffer)
 	{

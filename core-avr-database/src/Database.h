@@ -1,18 +1,17 @@
-#ifndef FILE_H
-#define FILE_H
+#ifndef DATABASE_H
+#define DATABASE_H
 
-#include "Streamer.h"
+#include "AvrStream.h"
 
 #include <string.h>
-#include <Converter.h>
 #include <Logger.h>
 
-#define FILE_URI_SIZE 64
+#define DATABASE_URI_SIZE 64
 
 /**
  * @brief      Description of file, stored at the start of the file buffer.
  */
-struct FileHeader
+struct DatabaseHeader
 {
 	/**
 	 * Version of the file.
@@ -32,15 +31,15 @@ struct FileHeader
 	/**
 	 * Uri.
 	 */
-	char uri[FILE_URI_SIZE];
+	char uri[DATABASE_URI_SIZE];
 };
 
-#define FILE_HEADER_SIZE sizeof(FileHeader)
+#define DATABASE_HEADER_SIZE sizeof(DatabaseHeader)
 
 /**
  * @brief      Entry point for adding data to + updating fixed size files.
  */
-class File
+class Database
 {
 private:
 
@@ -52,7 +51,7 @@ private:
 	/**
 	 * Stream to read/write with.
 	 */
-	Streamer* _stream;
+	AvrStream* _stream;
 
 	/**
 	 * Byte offset into stream.
@@ -69,20 +68,20 @@ public:
 	/**
 	 * Header information.
 	 */
-	FileHeader header;
+	DatabaseHeader header;
 
 	/**
 	 * @brief      Constructor.
 	 */
-	File();
+	Database();
 
 	/**
 	 * @brief      Destructor.
 	 */
-	~File();
+	~Database();
 
 	/**
-	 * @brief      Loads header into memory. This is for Files that already
+	 * @brief      Loads header into memory. This is for Databases that already
 	 * exist.
 	 *
 	 * @param      stream  The stream to read/write from.
@@ -90,10 +89,10 @@ public:
 	 * 
 	 * @return     True if the file was successfully loaded.
 	 */
-	bool load(Streamer* stream, const int offset);
+	bool load(AvrStream* stream, const int offset);
 
 	/**
-	 * @brief      Writes header to disk. This is for new Files.
+	 * @brief      Writes header to disk. This is for new Databases.
 	 *
 	 * @param      stream  The stream to write to.
 	 * @param[in]  offset  The byte offset this file starts at.
@@ -102,10 +101,10 @@ public:
 	 *
 	 * @return     True if the file was successfully written.
 	 */
-	bool init(Streamer* stream, const int offset, const short contentSize, const char* uri);
+	bool init(AvrStream* stream, const int offset, const short contentSize, const char* uri);
 
 	/**
-	 * @brief      Flushes any changes to the stream, in case the File decides
+	 * @brief      Flushes any changes to the stream, in case the Database decides
 	 * to cache.
 	 *
 	 * @return     { description_of_the_return_value }

@@ -1,7 +1,7 @@
-#ifndef EEPROMSTREAMER_H
-#define EEPROMSTREAMER_H
+#ifndef EEPROMSTREAM_H
+#define EEPROMSTREAM_H
 
-#include "Streamer.h"
+#include "AvrStream.h"
 
 #include <PinConfiguration.h>
 #include <dataflash.h>
@@ -10,7 +10,7 @@
  * @brief      Abstracts SPI + EEPROM paging into working with a single
  * block of contiguous bytes. All calls are blocking.
  */
-class EEPROMStreamer : public Streamer
+class EEPROMStream : public AvrStream
 {
 private:
 	/**
@@ -37,12 +37,12 @@ public:
 	/**
 	 * @brief      Constructor.
 	 */
-	EEPROMStreamer();
+	EEPROMStream();
 
 	/**
 	 * @brief      Destructor.
 	 */
-	~EEPROMStreamer();
+	~EEPROMStream();
 
 	/**
 	 * @brief      Initializes the stream with pin info.

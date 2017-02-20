@@ -1,30 +1,21 @@
-#ifndef	STREAMER_H
-#define STREAMER_H
-
-#include <PinConfiguration.h>
+#ifndef	AVRSTREAM_H
+#define AVRSTREAM_H
 
 /**
  * @brief      Abstracts the method of reading/writing bytes.
  */
-class Streamer
+class AvrStream
 {
 public:
-	Streamer()
+	AvrStream()
 	{
 
 	}
 
-	virtual ~Streamer()
+	virtual ~AvrStream()
 	{
 
 	}
-
-	/**
-	 * @brief      Initializes the stream with pin info.
-	 * 
-	 * @param[in]  pins      The configuration for pins.
-	 */
-	virtual bool init(PinConfiguration pins) = 0;
 
 	/**
 	 * @brief      Reads a single byte from the stream and advances the index.

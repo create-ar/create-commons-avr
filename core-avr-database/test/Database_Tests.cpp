@@ -1,21 +1,17 @@
 #include <catch.hpp>
 #include <Log.h>
 
-#include "File.h"
-#include "MemoryStreamer.h"
+#include "Database.h"
+#include "MemoryStream.h"
 
-TEST_CASE("File consistency.", "[File]")
+TEST_CASE("Database consistency.", "[Database]")
 {
 	int size = 512;
 
 	SECTION("Initialization.")
 	{
-		Streamer* stream = new MemoryStreamer(size);
-
-		PinConfiguration pins;
-		stream->init(pins);
-
-		File* file = new File();
+		AvrStream* stream = new MemoryStream(size);
+		Database* file = new Database();
 
 		const int offset = 12;
 		const char* nullUri = nullptr;
@@ -30,7 +26,7 @@ TEST_CASE("File consistency.", "[File]")
 		REQUIRE(file->init(stream, 0, size, uri));
 		delete file;
 		
-		file = new File();
+		file = new Database();
 		REQUIRE(file->load(stream, 0));
 		REQUIRE(file->header.contentSize == size);
 		REQUIRE(0 == strncmp(
@@ -44,14 +40,11 @@ TEST_CASE("File consistency.", "[File]")
 
 	SECTION("Data consistency.")
 	{
-		Streamer* stream = new MemoryStreamer(size);
-
-		PinConfiguration pins;
-		stream->init(pins);
-
+		AvrStream* stream = new MemoryStream(size);
+		
 		const float values[] = {1.0f, 2.0f, 3.0f, 4.0f, 5.0f, 6.0f, 7.0f, 8.0f, 9.0f, 10.0f};
 
-		File* file = new File();
+		Database* file = new Database();
 		file->init(stream, 0, size, "uri");
 
 		// write values

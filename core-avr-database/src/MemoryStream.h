@@ -1,15 +1,15 @@
 #ifndef MEMORYSTREAM_H
 #define MEMORYSTREAM_H
 
-#include "Streamer.h"
+#include "AvrStream.h"
 
 #include <Log.h>
 #include <Logger.h>
 
 /**
- * @brief      Streamer implementation completely in memory.
+ * @brief      Stream implementation completely in memory.
  */
-class MemoryStreamer : public Streamer
+class MemoryStream : public AvrStream
 {
 private:
 	/**
@@ -34,11 +34,9 @@ private:
 
 public:
 	
-	MemoryStreamer(const int size);
-	~MemoryStreamer();
+	MemoryStream(const int size);
+	~MemoryStream();
 
-	bool init(PinConfiguration pins) override;
-	
 	virtual char read() override;
 
 	virtual int read(char* const buffer, const int offset, const int count) override;

@@ -1,26 +1,25 @@
-#include "FileManager.h"
+#include "DatabaseManager.h"
 
 #include <stdlib.h>
 #include <Converter.h>
 #include <Log.h>
 
-#define FILEMANAGER_VERSION 1
-#define NEW_FILE_BUFFER 128
+#define DATABASEMANAGER_VERSION 1
 
-FileManager::FileManager(Streamer* stream)
+DatabaseManager::DatabaseManager(AvrStream* stream)
 {
 	_stream = stream;
-	_logger = Log::logger("FileManager");
+	_logger = Log::logger("DatabaseManager");
 }
 
-FileManager::~FileManager()
+DatabaseManager::~DatabaseManager()
 {
 	
 }
 
-bool FileManager::load(FileManagerConfig config)
+bool DatabaseManager::load(DatabaseManagerConfig config)
 {
-	if (_stream->read((char *) &_header, 0, FILEMANAGER_HEADER_SIZE))
+	if (_stream->read((char *) &_header, 0, DATABASEMANAGER_HEADER_SIZE))
 	{
 		if (0 != strncmp(_header.identifier, VALID_IDENTIFIER, IDENTIFIER_LENGTH))
 		{
@@ -38,7 +37,7 @@ bool FileManager::load(FileManagerConfig config)
 	return false;
 }
 
-bool FileManager::init(FileManagerConfig config)
+bool DatabaseManager::init(DatabaseManagerConfig config)
 {
 	if (0 == config.totalBytes)
 	{
@@ -46,12 +45,12 @@ bool FileManager::init(FileManagerConfig config)
 	}
 
 	memcpy(_header.identifier, VALID_IDENTIFIER, IDENTIFIER_LENGTH);
-	_header.version = FILEMANAGER_VERSION;
-	_header.numFiles = 0;
+	_header.version = DATABASEMANAGER_VERSION;
+	_header.numDatabases = 0;
 	_header.usedBytes = 0;
 	_header.totalBytes = config.totalBytes;
 
-	if (_stream->write((char*) &_header, 0, FILEMANAGER_HEADER_SIZE))
+	if (_stream->write((char*) &_header, 0, DATABASEMANAGER_HEADER_SIZE))
 	{
 		return true;
 	}
@@ -59,7 +58,7 @@ bool FileManager::init(FileManagerConfig config)
 	return false;
 }
 
-File* FileManager::create(const char* uri, const int size)
+Database* DatabaseManager::create(const char* uri, const int size)
 {
 	if (nullptr == uri)
 	{
@@ -71,7 +70,7 @@ File* FileManager::create(const char* uri, const int size)
 		return nullptr;
 	}
 
-	int totalSize = size + FILE_HEADER_SIZE;
+	int totalSize = size + DATABASE_HEADER_SIZE;
 
 	// first, check if we have the room left
 	if (_header.totalBytes - _header.usedBytes < totalSize)
@@ -80,53 +79,53 @@ File* FileManager::create(const char* uri, const int size)
 	}
 
 	// set that memory to 0
-	int absoluteOffset = FILEMANAGER_HEADER_SIZE + _header.usedBytes;
+	int absoluteOffset = DATABASEMANAGER_HEADER_SIZE + _header.usedBytes;
 	_stream->set('\0', absoluteOffset, size);
 
 	// create a file
-	File* file = new File();
+	Database* file = new Database();
 	if (!file->init(_stream, absoluteOffset, size, uri))
 	{
 		delete file;
 		return nullptr;
 	}
 
-	_header.numFiles += 1;
+	_header.numDatabases += 1;
 	_header.usedBytes += totalSize;
 
 	return file;
 }
 
-File* FileManager::get(const char* uri)
+Database* DatabaseManager::get(const char* uri)
 {
 	if (nullptr == uri)
 	{
 		return nullptr;
 	}
 
-	if (0 == _header.numFiles)
+	if (0 == _header.numDatabases)
 	{
 		throw "No files!";
 		return nullptr;
 	}
 
 	// start looking through files right after the header
-	unsigned int offset = FILEMANAGER_HEADER_SIZE;
-	FileHeader fileHeader;
+	unsigned int offset = DATABASEMANAGER_HEADER_SIZE;
+	DatabaseHeader fileHeader;
 
-	while (offset < FILEMANAGER_HEADER_SIZE + _header.usedBytes)
+	while (offset < DATABASEMANAGER_HEADER_SIZE + _header.usedBytes)
 	{
-		if (FILE_HEADER_SIZE == _stream->read(
+		if (DATABASE_HEADER_SIZE == _stream->read(
 			(char*) &fileHeader,
 			offset,
-			FILE_HEADER_SIZE))
+			DATABASE_HEADER_SIZE))
 		{
 			if (0 == strncmp(
 				(const char*) fileHeader.uri,
 				uri,
 				strlen(uri)))
 			{
-				File* file = new File();
+				Database* file = new Database();
 				if (!file->load(_stream, offset))
 				{
 					delete file;
@@ -137,14 +136,14 @@ File* FileManager::get(const char* uri)
 			}
 
 			// move to next file
-			offset += FILE_HEADER_SIZE + fileHeader.contentSize;
+			offset += DATABASE_HEADER_SIZE + fileHeader.contentSize;
 		}
 	}
 	
 	return nullptr;
 }
 
-bool FileManager::set(File* file)
+bool DatabaseManager::set(Database* file)
 {
 	return file->flush();
 }
