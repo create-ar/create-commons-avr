@@ -1,30 +1,39 @@
 #### Overview
 
-The `core-avr` libraries are built into static libraries using `gradle` to manage dependencies and `make` to build and link.
+The `core-avr` libraries are built into both static libraries and executables for testing. We use `make` for compilation and linking. `gradle` is also configured (but not required) for dependency resolution, code + project generation, and documentation.
+
+`make` is configured to build to two cpu architectures: `x86` and `avr`. The former for local unit tests, the latter for Arduino projects.
 
 ##### Dependencies
 
-* gradle
 * make
-* doxygen
+* gradle	(optional)
+* doxygen	(optional)
 
-##### Build
+##### Configuration
 
-To build all projects, run `gradle build`.
+All `make` configuration is contained in [**`properties.mk`**](https://github.com/Open-farm/openfarm-core-avr/blob/master/properties.mk). Each subproject includes this file to configure both builds. This file is heavily documented with the specifics you'll need to adjust for your environment.
 
->**This process requires a *nix shell for specific commands. For building on Windows, please see [this guide](build-process.windows.md) for specific considerations.**
+##### Building for Arduino
 
-##### Tasks
+When writing an Arduino application, you can either directly include the source files, or link against static libraries. `avr-g++` requires detailed hardware knowledge to compile correctly (Arduino variant, cpu clock, cpu name), so you will need to configure the properties file if you wish to use static libraries.
 
-You may also run tasks individually.
+##### Building for x86 + Testing
 
-* **buildavr** - Builds static libraries for avr architecture.
-* **buildtests** - Builds test executables for _current_ architecture.
-* **gendocs** - Generates documentation using `Doxygen`. This is output in [`docs/generated`](../generates/index.html).
+During development, we build x86 static libraries to the `/lib` folder. We use [`catch`](https://github.com/philsquared/Catch) to write tests. This is why we make x86 object files-- so we can link these into a testable executable.
+
+>**Note:** This process currently requires a *nix shell for specific commands. For building on Windows, please see [this guide](build-process.windows.md) for specific considerations.
+
+##### Gradle
+
+We also include a number of `gradle` tasks.
+
+* **build** - Builds static libraries and test executables
+* **gendocs** - Generates documentation using `doxygen`. This is output in [`docs/generated`](../generated/index.html).
 * **gentest** - Generates unit test archetype for a project. Requires `-Papi` property, eg - `gradle gentest -Papi=core-avr-ds`.
 
 
-##### Properties
+##### Gradle Properties
 
 You may also pass properties to `gradle` using the `-P[PROPERTY]` form.
 

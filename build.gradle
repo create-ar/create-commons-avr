@@ -9,6 +9,13 @@ task gendocs(dependsOn:'build') {
 	}
 }
 
+// Builds.
+task build {
+	doLast {
+		exec_cmd(["make"])
+	}
+}
+
 // Cleans lib + generated folders.
 task clean {
 	doLast {
