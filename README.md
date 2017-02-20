@@ -1,4 +1,4 @@
-#### core-avr
+#### Overview
 
 Core libraries for AVR development. This code base is an attempt to make it easier to jump start more serious AVR projects.
 
@@ -8,6 +8,10 @@ The core libraries can be built using `gradle`. Under the hood, we leverage `mak
 
 ##### Libraries
 
-* [Logging](docs/core-avr-logging.md)
-* [Database](docs/core-avr-database.md)
-* [Messaging](docs/core-avr-messaging.md)
+* **[Logging](docs/core-avr-logging.md)**
+* **[Database](docs/core-avr-database.md)**
+* **[Messaging](docs/core-avr-messaging.md)**
+
+##### Testing
+
+We have extensive test suites for all our libraries. You can read more about our testing strategy **[here](docs/testing.overview.md)**.
