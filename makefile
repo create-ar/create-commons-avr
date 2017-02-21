@@ -1,6 +1,7 @@
 include properties.mk
 
 all:
+	+$(MAKE) -C core-avr-ds
 	+$(MAKE) -C core-avr-logging
 	+$(MAKE) -C core-avr-database
 	#+$(MAKE) -C core-avr-messaging
