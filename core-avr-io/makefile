@@ -7,10 +7,9 @@ include ../properties.mk
 # 
 # -I$(BASECORE_DIR)/core-avr-ds/src
 #
-INC=-I$(BASECORE_DIR)/core-avr-ds/src \
-	-I$(BASECORE_DIR)/core-avr-logging/src \
-	-I$(BASECORE_DIR)/core-avr-io/src \
-	-I$(BASECORE_DIR)/common
+INC=-I$(THIRDPARTY_DIR)/DataFlash\
+	-I$(BASECORE_DIR)/core-avr-ds/src \
+	-I$(BASECORE_DIR)/core-avr-logging/src
 ###############################################################################
 
 ###############################################################################
@@ -20,7 +19,7 @@ INC=-I$(BASECORE_DIR)/core-avr-ds/src \
 # 
 # core-avr-data
 # 
-LIBNAME=core-avr-database
+LIBNAME=core-avr-io
 ###############################################################################
 
 ###############################################################################
@@ -31,8 +30,7 @@ LIBNAME=core-avr-database
 # Foo.cpp Bar.cpp
 # 
 SOURCES=\
-	src/Database.cpp\
-	src/DatabaseManager.cpp
+	src/MemoryStream.cpp
 ###############################################################################
 
 ###############################################################################
@@ -43,9 +41,8 @@ SOURCES=\
 # Foo.cpp Bar.cpp
 # 
 TEST_SOURCES=\
-	test/Database_Tests.cpp\
-	test/Main_core-avr-database.cpp\
-	test/DatabaseManager_Tests.cpp
+	test/Main_core-avr-io.cpp\
+	test/MemoryStream_Tests.cpp
 ###############################################################################
 
 ###############################################################################
@@ -56,8 +53,7 @@ TEST_SOURCES=\
 # Foo.cpp Bar.cpp
 #
 ARCHIVE_INCLUDES=\
-	-lcore-avr-logging\
-	-lcore-avr-io
+	-lcore-avr-logging
 ###############################################################################
 
 # object file directories
