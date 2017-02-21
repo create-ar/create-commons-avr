@@ -42,5 +42,6 @@ Many values may be retrieved at once using `Database::values`, which will can re
 
 #####Further Reading
 
+* **[Storage](core-avr-database.storage.md)**
 * **[SPI](https://www.arduino.cc/en/reference/SPI)**
 * **[SPIEEPROM](https://www.arduino.cc/en/Tutorial/SPIEEPROM)**

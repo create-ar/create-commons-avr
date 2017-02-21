@@ -7,6 +7,7 @@ all:
 
 .PHONY: clean
 clean:
+	rm -rf core-avr-ds/build
 	rm -rf core-avr-logging/build
 	rm -rf core-avr-database/build
 	rm -rf core-avr-messaging/build

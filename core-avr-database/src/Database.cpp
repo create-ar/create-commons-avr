@@ -1,7 +1,6 @@
 #include "Database.h"
 
 #include <Log.h>
-#include <Converter.h>
 
 #define DATABASE_VERSION 1
 
