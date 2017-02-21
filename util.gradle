@@ -55,8 +55,8 @@ public class StreamGobbler extends Thread {
 // Executes a shell command.
 // 
 // cmd - list of separate command line arguments.
-ext.exec_cmd = { cmd ->
-	def verbose = project.hasProperty("verbose")
+ext.exec_cmd = { cmd, verbose ->
+	//def verbose = project.hasProperty("verbose")
 
 	def command = ""
 
@@ -85,6 +85,7 @@ ext.exec_cmd = { cmd ->
 			println command
 			System.out.print(new String(redir_out.toByteArray()))
 		}
-		throw new GradleException()
 	}
+
+	return retCode;
 }

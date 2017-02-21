@@ -5,21 +5,40 @@ task gendocs(dependsOn:'build') {
 	doLast {
 		exec_cmd([
 			'doxygen',
-			'.doxygen.config'])
+			'.doxygen.config'],
+			false)
 	}
 }
 
 // Builds.
 task build {
 	doLast {
-		exec_cmd(["make"])
+		exec_cmd(["make"], true)
 	}
 }
 
 // Cleans lib + generated folders.
 task clean {
 	doLast {
-		exec_cmd(['rm', '-rf', 'docs/generated/html'])
+		exec_cmd(['rm', '-rf', 'docs/generated/html'], false)
+	}
+}
+
+// Runs all tests.
+task test {
+	doLast { task ->
+		def libs = ['core-avr-ds', 'core-avr-logging', 'core-avr-io', 'core-avr-database']
+		libs.each({ lib ->
+			println "Running $lib tests..."
+			if (task.project.hasProperty('verbose'))
+			{
+				exec_cmd(["$lib/build/Test.exe", '-s'], true)
+			}
+			else
+			{
+				exec_cmd(["$lib/build/Test.exe"], true)
+			}
+		})
 	}
 }
 
