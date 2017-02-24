@@ -1,10 +1,12 @@
+[TOC]
+
 ####Overview
 
 `avr-core-database` is our library for easily reading and writing databases.
 
 ![High level overview.](https://www.lucidchart.com/publicSegments/view/8fd76fcb-2ed5-469e-9c44-70b3132bcc5e/image.png)
 
-##### DatabaseManager
+###### DatabaseManager
 
 The `DatabaseManager` class exposes an API for fixed size databases, which are created and manipulated via URI. `DatabaseManager` stores a fixed size header that helps with looking up databases. When initialized, this header is read into memory.
 
@@ -22,7 +24,7 @@ When a `Database` is **retrieved** via `DatabaseManager::get`, a new `Database` 
 
 >**Note:** `Database` objects returned from this API are _not_ managed by the `DatabaseManager` and should be freed with `delete`.
 
-##### Database
+###### Database
 
 A `Database` is a fixed size store for floating point values. Similar to `DatabaseManager`, a `Database` has both an `init` and a `load` method, useful in the same capacities. These methods should not be called directly. Instead, use the `DatabaseManager` API to create and retreive databases.
 
@@ -32,15 +34,11 @@ Many values may be retrieved at once using `Database::values`, which will can re
 
 `Database::flush()` can be called when you need to ensure data has been written to the strea.
 
-##### AvrStream
+###### AvrStream
 
-`AvrStream` is an abstraction that allows the `core-avr-database` library to read and write bytes to and from a source.
+Further reading on `AvrStream` and the `core-avr-io` library can be found **[here](core-avr-io.md)**.
 
-`MemoryStream` is an implementation entirely in memory. It is effectively a layer on top of a `char[]`.
-
-`EEPROMStream` is the more useful implementation. It uses the `DataFlash` library to read and write bytes in flash memory. Working with EEPROM on an Arduino involves complicated SPI signaling logic as well as dealing with paging. This class abstracts that away to a nicer interface that exposes data as a continuous block of data.
-
-#####Further Reading
+#### Further Reading
 
 * **[Storage](core-avr-database.storage.md)**
 * **[SPI](https://www.arduino.cc/en/reference/SPI)**

@@ -42,8 +42,8 @@ task test {
 	}
 }
 
-// Generates a project setup for testing.
-task gentests {
+// Generates a project archetype.
+task genapi {
 	doLast { task ->
 		if (!task.project.hasProperty('api')) {
 			println('No tests generated. Must be supplied with -Papi property.');
@@ -56,14 +56,19 @@ task gentests {
 			apiDir.mkdir();
 		}
 
+		def srcDir = new File(apiDir, 'src');
+		if (!srcDir.exists()) {
+			srcDir.mkdir();
+		}
+
 		def testDir = new File(apiDir, 'test');
 		if (!testDir.exists()) {
 			testDir.mkdir();
 		}
 
 		// copy makefile
-		def src = new File('templates/tests/makefile.example')
-		def dst = new File("$api/test/makefile")
+		def src = new File('templates/makefile.example')
+		def dst = new File("$api/makefile")
 		dst << src.text
 
 		// prep test main

@@ -30,7 +30,7 @@ We also include a number of `gradle` tasks.
 
 * **build** - Builds static libraries and test executables
 * **gendocs** - Generates documentation using `doxygen`. This is output in [`docs/generated`](../generated/index.html).
-* **gentest** - Generates unit test archetype for a project. Requires `-Papi` property, eg - `gradle gentest -Papi=core-avr-ds`.
+* **genapi** - Generates a project archetype. Requires `-Papi` property, eg - `gradle genapi -Papi=core-avr-ds`.
 
 
 ##### Gradle Properties

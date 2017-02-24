@@ -1,19 +1,21 @@
-####Overview
+[TOC]
 
-The `avr-core-sensor` library focuses on managing, initializing, and polling sensors. There is a hard dependency on the [core-avr-data](core-avr-data.md) library.
+### Overview
 
-![Overview](https://www.lucidchart.com/publicSegments/view/d404875d-51d6-4e6a-911f-892a003210e5/image.png)
+The `avr-core-sensor` library focuses on managing, initializing, and polling sensors. There is a hard dependency on the [core-avr-database](core-avr-database.md) library.
 
-####SensorManager
+![Overview](https://www.lucidchart.com/publicSegments/view/de06df27-7ea7-4b5e-8841-cf43785dda7b/image.png)
+
+###### SensorManager
 
 The entry point for managing sensors is `SensorManager`. New `Sensor` instances are added to the manager with a corresponding `SensorConfig`. The config holds information that informs the `SensorManager` how to use the `Sensor`.
 
 `SensorManager::update()` is called on an update loop. The manager then moves through the list of `Sensor`s it maintains and polls them according to the configuration. Collected data is saved to a persistent store by the `FileManager`.
 
 
-####Data
+###### Sensor Data
 
-Sensor data is informed by the backend storage mechanism which you can read more about in the [core-avr-data: Storage](core-avr-data.storage.md) document.
+Sensor data is informed by the backend storage mechanism which you can read more about in the [core-avr-database: Storage](core-avr-database.storage.md) document.
 
 ![Data Layout.](https://www.lucidchart.com/publicSegments/view/77f88ead-2daa-4ba4-a37f-085c02dca509/image.png)
 
