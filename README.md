@@ -11,7 +11,7 @@ The core libraries can be built using `gradle`. Under the hood, we leverage `mak
 * **[Logging](docs/core-avr-logging.md)**
 * **[I/O](docs/core-avr-io.md)**
 * **[Database](docs/core-avr-database.md)**
-* **[Sensors](docs/core-avr-sensors.md)**
+* **[Sensors](docs/core-avr-sensor.md)**
 * **[Messaging](docs/core-avr-messaging.md)**
 
 ##### Testing
