@@ -1,23 +1,58 @@
 #ifndef SENSOR_H
 #define SENSOR_H
 
+#include "SensorConfig.h"
+
+/**
+ * @brief      Abstract base class for a Sensor.
+ */
 class Sensor
 {
+private:
+	/**
+	 * Configuration for this sensor.
+	 */
+	SensorConfig _config;
+
 public:
+	/**
+	 * @brief      Constructor.
+	 */
 	Sensor()
 	{
 		//
 	}
 
+	/**
+	 * @brief      Destructor.
+	 */
 	~Sensor()
 	{
 		//
 	}
 
-	SensorConfig config() = 0;
+	/**
+	 * @brief      Retrieves the configuration for this sensor.
+	 *
+	 * @return     Config for this object.
+	 */
+	virtual SensorConfig config();
 
-	bool init(SensorConfig config) = 0;
-	float poll() = 0;
+	/**
+	 * @brief      Initializes the sensor.
+	 *
+	 * @param[in]  config  The configuration for this sensor.
+	 *
+	 * @return     True if sensor initialization was successful.
+	 */
+	virtual bool init(SensorConfig config);
+
+	/**
+	 * @brief      Polls the sensor for a value.
+	 *
+	 * @return     A float value.
+	 */
+	virtual float poll() = 0;
 };
 
-#endif SENSOR_H
+#endif

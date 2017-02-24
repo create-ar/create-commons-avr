@@ -11,8 +11,6 @@
 
 #define IDENTIFIER_LENGTH 4
 
-static char VALID_IDENTIFIER[IDENTIFIER_LENGTH] = {'O', 'F', 'F', 'H'};
-
 /**
  * @brief      Configuration object fo initializing DatabaseManager.
  */

@@ -5,6 +5,8 @@
 
 #define DATABASEMANAGER_VERSION 1
 
+static char VALID_IDENTIFIER[IDENTIFIER_LENGTH] = {'O', 'F', 'F', 'H'};
+
 DatabaseManager::DatabaseManager(AvrStream* stream)
 {
 	_stream = stream;

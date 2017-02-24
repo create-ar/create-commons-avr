@@ -1,19 +1,14 @@
 #ifndef SENSORCONFIG_H
 #define SENSORCONFIG_H
 
-class SensorConfig
+/**
+ * @brief      Configuration for sensors.
+ */
+struct SensorConfig
 {
-public:
-	SensorConfig()
-	{
-		//
-	}
-
-	~SensorConfig()
-	{
-		//
-	}
-
+	/**
+	 * Number of milliseconds we should wait between polls.
+	 */
 	int pollIntervalMs;
 };
 

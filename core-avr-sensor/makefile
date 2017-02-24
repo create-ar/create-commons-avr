@@ -7,7 +7,11 @@ include ../properties.mk
 # 
 # -I$(BASECORE_DIR)/core-avr-ds/src
 #
-INC=
+INC=\
+	-I$(BASECORE_DIR)/core-avr-database/src\
+	-I$(BASECORE_DIR)/core-avr-io/src\
+	-I$(BASECORE_DIR)/core-avr-logging/src\
+	-I$(BASECORE_DIR)/core-avr-ds/src
 ###############################################################################
 
 ###############################################################################
@@ -27,7 +31,9 @@ LIBNAME=core-avr-sensor
 # 
 # src/Foo.cpp src/Bar.cpp
 # 
-SOURCES=
+SOURCES=\
+	src/Sensor.cpp\
+	src/SensorManager.cpp
 ###############################################################################
 
 ###############################################################################
@@ -37,7 +43,8 @@ SOURCES=
 # 
 # test/Foo.cpp test/Bar.cpp
 # 
-TEST_SOURCES=
+TEST_SOURCES=\
+	test/Main_core-avr-sensor.cpp
 ###############################################################################
 
 ###############################################################################
@@ -47,7 +54,10 @@ TEST_SOURCES=
 # 
 # -lcore-avr-logging
 #
-ARCHIVE_INCLUDES=
+ARCHIVE_INCLUDES=\
+	-lcore-avr-database\
+	-lcore-avr-io\
+	-lcore-avr-logging
 ###############################################################################
 
 # object file directories
