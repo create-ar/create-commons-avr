@@ -93,7 +93,7 @@ Logger* Log::logger(const char* category)
 
 	Logger* logger = nullptr;
 
-	LinkedListIterator<Tuple<const char, Logger>>* it = _loggers.it();
+	Iterator<Tuple<const char, Logger>>* it = _loggers.it();
 	while (it->moveNext())
 	{
 		Tuple<const char, Logger>* value = it->current();

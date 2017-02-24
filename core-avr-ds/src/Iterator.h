@@ -9,14 +9,33 @@
 template<class T>
 class Iterator
 {
+public:
 	/**
-	 * @brief      Element iterator is currently pointing at.
-	 *
-	 * @return     { description_of_the_return_value }
+	 * @brief      Destructor.
 	 */
-	T* current() = 0;
-	void reset() = 0;
-	bool moveNext() = 0;
-}
+	virtual ~Iterator()
+	{
+		//
+	}
+
+	/**
+	 * @brief      Element currently pointed to.
+	 *
+	 * @return     A pointer to the current element.
+	 */
+	virtual T* current() = 0;
+
+	/**
+	 * @brief      Resets the iterator to the beginning.
+	 */
+	virtual void reset() = 0;
+
+	/**
+	 * @brief      Moves the iterator to the next value.
+	 *
+	 * @return     True if there is another value, false otherwise.
+	 */
+	virtual bool moveNext() = 0;
+};
 
 #endif

@@ -9,7 +9,14 @@
 class SerialLogTarget : public LogTarget
 {
 public:
+	/**
+	 * @brief      Constructor.
+	 */
     SerialLogTarget() { }
+
+    /**
+     * @brief      Destructor.
+     */
     ~SerialLogTarget() { }
 
 	/**

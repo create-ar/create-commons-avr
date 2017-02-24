@@ -1,6 +1,8 @@
 #ifndef LINKEDLIST_h
 #define LINKEDLIST_h
 
+#include "Iterator.h"
+
 template <class T>
 class Node
 {
@@ -12,7 +14,7 @@ public:
 };
 
 template <class T>
-class LinkedListIterator
+class LinkedListIterator : public Iterator<T>
 {
 private:
 
@@ -26,7 +28,7 @@ public:
 		_head = head;
 	}
 
-	T* current()
+	T* current() override
 	{
 		if (nullptr == _ptr)
 		{
@@ -36,12 +38,12 @@ public:
 		return _ptr->value;
 	}
 
-	void reset()
+	void reset() override
 	{
 		_ptr = nullptr;
 	}
 
-	bool moveNext()
+	bool moveNext() override
 	{
 		if (nullptr == _ptr)
 		{
@@ -95,7 +97,7 @@ public:
 		_head = _tail = nullptr;
 	}
 
-	LinkedListIterator<T>* it()
+	Iterator<T>* it()
 	{
 		return new LinkedListIterator<T>(&_head);
 	}
