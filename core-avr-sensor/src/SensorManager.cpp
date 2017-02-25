@@ -75,9 +75,9 @@ void SensorManager::update(double dt)
 		record->accumulator += dt;
 
 		int pollInterval = sensor->config().pollIntervalMs;
-		if (record->accumulator > pollInterval)
+		if (record->accumulator >= pollInterval)
 		{
-			//float value = sensor->poll();
+			sensor->poll();
 
 			record->accumulator -= pollInterval;
 		}

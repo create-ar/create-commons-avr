@@ -26,7 +26,7 @@ public:
 	/**
 	 * @brief      Destructor.
 	 */
-	~Sensor()
+	virtual ~Sensor()
 	{
 		//
 	}
