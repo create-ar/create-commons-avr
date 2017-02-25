@@ -44,7 +44,8 @@ SOURCES=\
 # test/Foo.cpp test/Bar.cpp
 # 
 TEST_SOURCES=\
-	test/Main_core-avr-sensor.cpp
+	test/Main_core-avr-sensor.cpp\
+	test/SensorManager_Tests.cpp
 ###############################################################################
 
 ###############################################################################

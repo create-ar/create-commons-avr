@@ -6,3 +6,5 @@ libs/
 build/
 
 *.stackdump
+gradle.sublime-build
+sublime-build.sh
