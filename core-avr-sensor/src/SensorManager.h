@@ -1,6 +1,7 @@
 #ifndef SENSORMANAGER_H
 #define SENSORMANAGER_H
 
+#include <Logger.h>
 #include <DatabaseManager.h>
 #include <LinkedList.h>
 
@@ -20,6 +21,11 @@ struct SensorRecord
 	 * Accumulation of dts.
 	 */
 	double accumulator;
+
+	/**
+	 * The database to use.
+	 */
+	Database* database;
 };
 
 /**
@@ -28,6 +34,11 @@ struct SensorRecord
 class SensorManager
 {
 private:
+	/**
+	 * Logger.
+	 */
+	Logger* _logger;
+
 	/**
 	 * To store data.
 	 */

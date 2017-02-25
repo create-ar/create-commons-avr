@@ -19,8 +19,9 @@ public:
 	 * @brief      Constructor.
 	 */
 	Sensor()
+		: _config("DEFAULT", SENSOR_DB_SIZE)
 	{
-		//
+		
 	}
 
 	/**
