@@ -3,83 +3,140 @@
 
 #include "Database.h"
 #include "MemoryStream.h"
+#include "AvrClock.h"
+#include "StandardClock.hpp"
 
 TEST_CASE("Database consistency.", "[Database]")
 {
 	int size = 512;
+	const int offset = 12;
+	const char* nullUri = nullptr;
+	const char* uri = "test";
+	const char valuesPerRecord = 3;
 
 	SECTION("Initialization.")
 	{
 		AvrStream* stream = new MemoryStream(size);
-		Database* file = new Database();
+		AvrClock* clock = new StandardClock();
+		Database* database = new Database(clock);
 
-		const int offset = 12;
-		const char* nullUri = nullptr;
-		const char* uri = "test";
-
-		REQUIRE(!file->init(nullptr, offset, size, uri));
-		REQUIRE(!file->init(stream, offset, 0, uri));
-		REQUIRE(!file->init(stream, -1, size, uri));
-		REQUIRE(!file->init(stream, offset, size, nullUri));
+		REQUIRE(!database->init(nullptr, offset, size, valuesPerRecord, uri));
+		REQUIRE(!database->init(stream, offset, 0, valuesPerRecord, uri));
+		REQUIRE(!database->init(stream, -1, size, valuesPerRecord, uri));
+		REQUIRE(!database->init(stream, offset, size, 0, uri));
+		REQUIRE(!database->init(
+			stream,
+			offset,
+			size,
+			valuesPerRecord,
+			nullUri));
 
 		// should initialize correctly
-		REQUIRE(file->init(stream, 0, size, uri));
-		delete file;
+		REQUIRE(database->init(stream, 0, size, valuesPerRecord, uri));
+		delete database;
 		
-		file = new Database();
-		REQUIRE(file->load(stream, 0));
-		REQUIRE(file->header.contentSize == size);
+		database = new Database(clock);
+		REQUIRE(database->load(stream, 0));
+		REQUIRE(database->header.contentSize == size);
 		REQUIRE(0 == strncmp(
-			file->header.uri,
+			database->header.uri,
 			uri,
 			strlen(uri)));
 
-		delete file;
+		delete database;
+		delete clock;
 		delete stream;
 	}
 
-	SECTION("Data consistency.")
+	SECTION("Record format")
 	{
+		AvrClock* clock = new StandardClock();
 		AvrStream* stream = new MemoryStream(size);
-		
-		const float values[] = {1.0f, 2.0f, 3.0f, 4.0f, 5.0f, 6.0f, 7.0f, 8.0f, 9.0f, 10.0f};
+		Database* database = new Database(clock);
+		database->init(stream, offset, size, valuesPerRecord, uri);
 
-		Database* file = new Database();
-		file->init(stream, 0, size, "uri");
+		// create some values
+		float values[valuesPerRecord];
+		for (int i = 0; i < valuesPerRecord; i++)
+		{
+			values[i] = i;
+		}
+		// 0, 1, 2, ...
+		
+		REQUIRE(database->add(values));
+
+		// read a record
+		char readValues[(valuesPerRecord + 1) * 4];
+
+		REQUIRE(-1 == database->dump(nullptr, 0, 1));
+		REQUIRE(-1 == database->dump(readValues, -1, 1));
+		REQUIRE(-1 == database->dump(readValues, 1, 1));
+
+		REQUIRE(1 == database->dump(readValues, 0, 1));
+
+		// verify format
+		REQUIRE(0 == memcmp(values, readValues + 4, 4 * valuesPerRecord));
+
+		delete database;
+		delete stream;
+		delete clock;
+	}
+
+	SECTION("dump() full records")
+	{
+		const int numRecords = 10;
+		const int numTotalValues = numRecords * valuesPerRecord;
+		
+		float allValues[numTotalValues];
+		for (int i = 0; i < numTotalValues; i++)
+		{
+			allValues[i] = i;
+		}
+
+		AvrClock* clock = new StandardClock();
+		AvrStream* stream = new MemoryStream(size);
+		Database* database = new Database(clock);
+		database->init(stream, 0, size, (char) valuesPerRecord, "uri");
 
 		// write values
-		int numRecordsToWrite = 10;
-		for (int i = 0; i < numRecordsToWrite; i++)
+		for (int i = 0; i < numRecords; i++)
 		{
-			REQUIRE(file->add(values[i]));
-			REQUIRE(file->header.numRecords == i + 1);
+			REQUIRE(database->add(allValues + valuesPerRecord * i));
+			REQUIRE(database->header.numRecords == i + 1);
 		}
 
-		REQUIRE(file->flush());
+		REQUIRE(database->flush());
 
-		// read values
-		float* buffer = new float[numRecordsToWrite];
-		REQUIRE(-1 == file->values(nullptr, 0, 10));
-		REQUIRE(-1 == file->values(buffer, -1, 10));
-		REQUIRE(-1 == file->values(buffer, 0, -1));
+		const int numTotalReadBytes = (numTotalValues + numRecords) * 4;
+		char readBuffer[numTotalReadBytes];
 
-		// one by one
-		float value;
-		for (int i = 0; i < numRecordsToWrite; i++)
+		// try invalid parameters
+		REQUIRE(-1 == database->dump(nullptr, 0, 10));
+		REQUIRE(-1 == database->dump(readBuffer, -1, 10));
+		REQUIRE(-1 == database->dump(readBuffer, 0, -1));
+
+		// read all values at once
+		// [timestamp][value]...[value]
+		REQUIRE(numRecords == database->dump(
+			readBuffer,
+			0,
+			numRecords));
+		for (int i = 0; i < numRecords; i++)
 		{
-			REQUIRE(1 == file->values(&value, i, 1));
-			REQUIRE(values[i] == value);
+			// calculate index to record
+			int readBufferIndex = i * (1 + valuesPerRecord) * 4;
+
+			// calculate index into allvalues
+			int valuesIndex = i * valuesPerRecord;
+
+			REQUIRE(0 == memcmp(
+				readBuffer + readBufferIndex + 4,
+				allValues + valuesIndex,
+				valuesPerRecord * 4));
 		}
 
-		// all at once
-		REQUIRE(numRecordsToWrite == file->values(buffer, 0, numRecordsToWrite));
-		for (int i = 0; i < numRecordsToWrite; i++)
-		{
-			REQUIRE(buffer[i] == values[i]);
-		}
-
-		delete[] buffer;
-
-		delete file;
+		delete database;
+		delete stream;
+		delete clock;
 	}
 }

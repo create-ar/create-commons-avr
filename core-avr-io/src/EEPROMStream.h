@@ -11,11 +11,23 @@
  */
 class EEPROMStream : public AvrStream
 {
+private:
+	
+	/**
+	 * Number of bytes per page.
+	 */
+	uint _pageSize;
+
+	/**
+	 * Total number of pages.
+	 */
+	uint _numPages;
+
 public:
 	/**
 	 * @brief      Constructor.
 	 */
-	EEPROMStream();
+	EEPROMStream(uint pageSize, uint numPages);
 
 	/**
 	 * @brief      Destructor.

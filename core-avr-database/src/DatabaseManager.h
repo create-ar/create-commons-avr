@@ -70,6 +70,11 @@ class DatabaseManager
 		Logger* _logger;
 
 		/**
+		 * Clock implementation to use.
+		 */
+		AvrClock* _clock;
+
+		/**
 		 * The DatabaseManager is the owner of the EEPROMStream abstraction.
 		 */
 		AvrStream* _stream;
@@ -82,8 +87,13 @@ class DatabaseManager
 	public:
 		/**
 		 * @brief      Constructor.
+		 *
+		 * @param      clock   The clock implementation to use.
+		 * @param      stream  The stream to read/write data with.
 		 */
-		DatabaseManager(AvrStream* stream);
+		DatabaseManager(
+			AvrClock* clock,
+			AvrStream* stream);
 
 		/**
 		 * @brief      Destructor.
@@ -108,11 +118,16 @@ class DatabaseManager
 		 * @brief      Creates a Database of a specific size, linked to a URI.
 		 *
 		 * @param[in]  uri   The uri this Database can be addressed at.
+		 * @param[in]  uri   The number of values that should be stored in a
+		 * single record.
 		 * @param[in]  size  The size of the file.
 		 *
 		 * @return     If there was room for the file and it was successfully created, returns the Database. If not, nullptr.
 		 */
-		Database* create(const char* uri, const int size);
+		Database* create(
+			const char* uri,
+			const int size,
+			const char valuesPerRecord);
 
 		/**
 		 * @brief      Retrieves a file by uri.

@@ -3,6 +3,13 @@
 #include <Log.h>
 #include <Iterator.h>
 
+namespace
+{
+	#define SENSOR_MAX_VALUES 8
+
+	float _readBuffer[SENSOR_MAX_VALUES];
+}
+
 SensorManager::SensorManager(DatabaseManager* data)
 	: _data(data)
 {
@@ -49,7 +56,7 @@ bool SensorManager::add(Sensor* sensor)
 		{
 			_logger->info("Creating database.");
 
-			if (!_data->create(uri, config.dbSize))
+			if (!_data->create(uri, config.dbSize, config.numValues))
 			{
 				_logger->error("Could not create database.");
 				return false;
@@ -103,10 +110,14 @@ void SensorManager::update(double dt)
 		Sensor* sensor = record->sensor;
 		record->accumulator += dt;
 
-		int pollInterval = sensor->config().pollIntervalMs;
+		SensorConfig config = sensor->config();
+		int pollInterval = config.pollIntervalMs;
 		if (record->accumulator >= pollInterval)
 		{
-			sensor->poll();
+			if (sensor->poll(_readBuffer))
+			{
+				// 
+			}
 
 			record->accumulator -= pollInterval;
 		}

@@ -49,11 +49,13 @@ public:
 	virtual bool init(SensorConfig config);
 
 	/**
-	 * @brief      Polls the sensor for a value.
+	 * @brief      Polls the sensor for values.
 	 *
-	 * @return     A float value.
+	 * @param      values  Output values.
+	 *
+	 * @return     True if the sensor could generate values.
 	 */
-	virtual float poll() = 0;
+	virtual bool poll(const float* values) = 0;
 };
 
 #endif

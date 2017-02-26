@@ -6,11 +6,13 @@
 #include "Database.h"
 #include "DatabaseManager.h"
 #include "MemoryStream.h"
+#include "StandardClock.hpp"
 
 TEST_CASE("DatabaseManager usage.", "[DatabaseManager]")
 {
 	const int size = 4096;
 	const int filesize = 128;
+	const int valuesPerRecord = 3;
 
 	SECTION("Initialization.")
 	{
@@ -22,50 +24,56 @@ TEST_CASE("DatabaseManager usage.", "[DatabaseManager]")
 		DatabaseManagerConfig config;
 		config.totalBytes = totalBytes;
 
+		AvrClock* clock = new StandardClock();
 		MemoryStream* stream = new MemoryStream(totalBytes);
-		DatabaseManager* files = new DatabaseManager(stream);
+		DatabaseManager* files = new DatabaseManager(clock, stream);
 		REQUIRE(files->init(config));
 		delete files;
 
-		files = new DatabaseManager(stream);
+		files = new DatabaseManager(clock, stream);
 		REQUIRE(files->load(config));
 
 		delete files;
 		delete stream;
+		delete clock;
 	}
 
 	SECTION("Create")
 	{
+		AvrClock* clock = new StandardClock();
 		MemoryStream* stream = new MemoryStream(size);
-		DatabaseManager* files = new DatabaseManager(stream);
+		DatabaseManager* files = new DatabaseManager(clock, stream);
 
 		DatabaseManagerConfig config;
 		config.totalBytes = size;
 		REQUIRE(files->init(config));
 
 		const char* uri = "/records/moisturesensor";
-		REQUIRE(nullptr == files->create(nullptr, filesize));
-		REQUIRE(nullptr == files->create(uri, 0));
-		REQUIRE(nullptr == files->create(uri, -1));
-		REQUIRE(nullptr == files->create(uri, size + 1));
+		REQUIRE(nullptr == files->create(nullptr, filesize, valuesPerRecord));
+		REQUIRE(nullptr == files->create(uri, 0, valuesPerRecord));
+		REQUIRE(nullptr == files->create(uri, -1, valuesPerRecord));
+		REQUIRE(nullptr == files->create(uri, filesize, 0));
+		REQUIRE(nullptr == files->create(uri, size + 1, valuesPerRecord));
 
-		Database* file = files->create(uri, filesize);
+		Database* file = files->create(uri, filesize, valuesPerRecord);
 		REQUIRE(nullptr != file);
 		
 		delete files;
 		delete stream;
+		delete clock;
 	}
 
 	SECTION("Get()")
 	{
+		AvrClock* clock = new StandardClock();
 		MemoryStream* stream = new MemoryStream(size);
-		DatabaseManager* files = new DatabaseManager(stream);
+		DatabaseManager* files = new DatabaseManager(clock, stream);
 
 		DatabaseManagerConfig config;
 		REQUIRE(files->init(config));
 
 		const char* uri = "/records/moisturesensor";
-		Database* file = files->create(uri, filesize);
+		Database* file = files->create(uri, filesize, valuesPerRecord);
 		delete file;
 
 		REQUIRE(nullptr == files->get(nullptr));
@@ -77,12 +85,14 @@ TEST_CASE("DatabaseManager usage.", "[DatabaseManager]")
 		
 		delete files;
 		delete stream;
+		delete clock;
 	}
 
 	SECTION("Get many")
 	{
+		AvrClock* clock = new StandardClock();
 		MemoryStream* stream = new MemoryStream(size);
-		DatabaseManager* files = new DatabaseManager(stream);
+		DatabaseManager* files = new DatabaseManager(clock, stream);
 
 		DatabaseManagerConfig config;
 		config.totalBytes = size;
@@ -98,7 +108,10 @@ TEST_CASE("DatabaseManager usage.", "[DatabaseManager]")
 			uriBuffer = (char*) calloc(16, 0);
 			sprintf(uriBuffer, "/db/sensor/%i", i);
 
-			Database* file = files->create((const char*) uriBuffer, fileSize);
+			Database* file = files->create(
+				(const char*) uriBuffer,
+				fileSize,
+				valuesPerRecord);
 
 			REQUIRE(nullptr != file);
 
@@ -123,5 +136,6 @@ TEST_CASE("DatabaseManager usage.", "[DatabaseManager]")
 
 		delete files;
 		delete stream;
+		delete clock;
 	}
 }

@@ -27,7 +27,12 @@ task clean {
 // Runs all tests.
 task test {
 	doLast { task ->
-		def libs = ['core-avr-ds', 'core-avr-logging', 'core-avr-io', 'core-avr-database']
+		def libs = [
+			'core-avr-ds',
+			'core-avr-logging',
+			'core-avr-io',
+			'core-avr-database',
+			'core-avr-sensor']
 		libs.each({ lib ->
 			println "Running $lib tests..."
 			if (task.project.hasProperty('verbose'))

@@ -3,6 +3,7 @@
 
 #include <stdlib.h>
 #include <Database.h>
+#include <PinConfiguration.h>
 
 // Length of id field.
 #define SENSOR_ID_LEN 8
@@ -34,6 +35,16 @@ public:
 	int dbSize;
 
 	/**
+	 * Number of values this sensor returns.
+	 */
+	int numValues;
+
+	/**
+	 * Contains pin information.
+	 */
+	PinConfiguration pins;
+
+	/**
 	 * @brief      Constructor. Requires a unique identifier for this sensor.
 	 * Should be constant across sessions.
 	 *
@@ -42,8 +53,11 @@ public:
 	 */
 	SensorConfig(
 		const char ident[SENSOR_ID_LEN],
-		int databaseSize)
-		: dbSize(databaseSize)
+		int databaseSize,
+		int numValues = 1)
+	:
+		dbSize(databaseSize),
+		numValues(numValues)
 	{
 		memcpy(identifier, ident, SENSOR_ID_LEN);
 	}

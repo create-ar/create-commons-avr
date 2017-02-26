@@ -1,6 +1,8 @@
 #include "EEPROMStream.h"
 
-EEPROMStream::EEPROMStream()
+EEPROMStream::EEPROMStream(uint pageSize, uint numPages) :
+	_pageSize(pageSize),
+	_numPages(numPages)
 {
 	
 }

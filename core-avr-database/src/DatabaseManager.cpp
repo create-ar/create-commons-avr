@@ -7,8 +7,9 @@
 
 static char VALID_IDENTIFIER[IDENTIFIER_LENGTH] = {'O', 'F', 'F', 'H'};
 
-DatabaseManager::DatabaseManager(AvrStream* stream)
+DatabaseManager::DatabaseManager(AvrClock* clock, AvrStream* stream)
 {
+	_clock = clock;
 	_stream = stream;
 	_logger = Log::logger("DatabaseManager");
 }
@@ -59,7 +60,10 @@ bool DatabaseManager::init(DatabaseManagerConfig config)
 	return false;
 }
 
-Database* DatabaseManager::create(const char* uri, const int size)
+Database* DatabaseManager::create(
+	const char* uri,
+	const int size,
+	const char valuesPerRecord)
 {
 	if (nullptr == uri)
 	{
@@ -84,8 +88,8 @@ Database* DatabaseManager::create(const char* uri, const int size)
 	_stream->set('\0', absoluteOffset, size);
 
 	// create a file
-	Database* file = new Database();
-	if (!file->init(_stream, absoluteOffset, size, uri))
+	Database* file = new Database(_clock);
+	if (!file->init(_stream, absoluteOffset, size, valuesPerRecord, uri))
 	{
 		delete file;
 		return nullptr;
@@ -126,7 +130,7 @@ Database* DatabaseManager::get(const char* uri)
 				uri,
 				strlen(uri)))
 			{
-				Database* file = new Database();
+				Database* file = new Database(_clock);
 				if (!file->load(_stream, offset))
 				{
 					delete file;

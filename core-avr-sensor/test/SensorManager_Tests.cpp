@@ -2,6 +2,7 @@
 
 #include <DatabaseManager.h>
 #include <MemoryStream.h>
+#include <StandardClock.hpp>
 
 #include "SensorManager.h"
 #include "Sensor.h"
@@ -17,28 +18,29 @@ public:
 		//
 	}
 
-	float poll() override
+	bool poll(const float* values) override
 	{
 		pollCount += 1;
 
-		return 0;
+		return true;
 	}
 };
 
 TEST_CASE("SensorManager", "[SensorManager]")
 {
 	// setup
+	AvrClock* clock = new StandardClock();
 	MemoryStream* stream = new MemoryStream(4096);
-	DatabaseManager* data = new DatabaseManager(stream);
+	DatabaseManager* data = new DatabaseManager(clock, stream);
 	
 	DatabaseManagerConfig config;
-	data->init(config);
+	REQUIRE(data->init(config));
 
 	SensorManager* sensors = new SensorManager(data);
 
 	{
 		DummySensor* dummy = new DummySensor();
-		SensorConfig sensorConfig;
+		SensorConfig sensorConfig("DummySE", 1024);
 		sensorConfig.pollIntervalMs = 10;
 
 		dummy->init(sensorConfig);
@@ -70,4 +72,5 @@ TEST_CASE("SensorManager", "[SensorManager]")
 	delete sensors;
 	delete data;
 	delete stream;
+	delete clock;
 }

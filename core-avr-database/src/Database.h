@@ -2,6 +2,7 @@
 #define DATABASE_H
 
 #include "AvrStream.h"
+#include "AvrClock.h"
 
 #include <string.h>
 #include <Logger.h>
@@ -24,9 +25,14 @@ struct DatabaseHeader
 	short contentSize;
 
 	/**
-	 * Number of records total.
+	 * Number of records currently stored.
 	 */
 	short numRecords;
+
+	/**
+	 * Number of values per record. This does not include timestamp.
+	 */
+	char valuesPerRecord;
 
 	/**
 	 * Uri.
@@ -49,6 +55,11 @@ private:
 	Logger* _logger;
 
 	/**
+	 * AvrClock implementation.
+	 */
+	AvrClock* _clock;
+
+	/**
 	 * Stream to read/write with.
 	 */
 	AvrStream* _stream;
@@ -63,6 +74,11 @@ private:
 	 */
 	char _scratchBuffer[4];
 
+	/**
+	 * Number of bytes per record. Calculated value.
+	 */
+	int _bytesPerRecord;
+
 public:
 
 	/**
@@ -72,13 +88,22 @@ public:
 
 	/**
 	 * @brief      Constructor.
+	 * 
+	 * @param      clock  The clock implementation to use.
 	 */
-	Database();
+	Database(AvrClock* clock);
 
 	/**
 	 * @brief      Destructor.
 	 */
 	~Database();
+
+	/**
+	 * @brief      Total number of stored records.
+	 *
+	 * @return     Total number of records stored.
+	 */
+	float numRecords();
 
 	/**
 	 * @brief      Loads header into memory. This is for Databases that already
@@ -97,11 +122,17 @@ public:
 	 * @param      stream  The stream to write to.
 	 * @param[in]  offset  The byte offset this file starts at.
 	 * @param[in]  contentSize    The size, in bytes, of the file.
+	 * @param[in]  valuesPerRecord    The number of values per record.
 	 * @param[in]  uri    The uri of the resource.
 	 *
 	 * @return     True if the file was successfully written.
 	 */
-	bool init(AvrStream* stream, const int offset, const short contentSize, const char* uri);
+	bool init(
+		AvrStream* stream,
+		const int offset,
+		const short contentSize,
+		const char valuesPerRecord,
+		const char* uri);
 
 	/**
 	 * @brief      Flushes any changes to the stream, in case the Database decides
@@ -112,31 +143,28 @@ public:
 	bool flush();
 
 	/**
-	 * @brief      Adds a value to the file.
+	 * @brief      Adds a set of values to the file. These values are added
+	 * with a timestamp.
 	 *
-	 * @param[in]  value	The float to add to the file.
+	 * @param[in]  value	The floats to add to the file.
 	 *
 	 * @return     Returns true iff the add was successful.
 	 */
-	bool add(float value);
+	bool add(const float* value);
 
 	/**
-	 * @brief      Total number of stored values.
+	 * @brief      Dumps database data to a buffer. Format is described in more
+	 * detail in the core-avr-sensor documentation.
+	 * 
+	 * This method may modify the buffer and still fail.
 	 *
-	 * @return     Total number of float values stored.
+	 * @param[in]  buffer   Buffer to copy records into.
+	 * @param[in]  recordOffset  The starting index of records.
+	 * @param[in]  recordCount   The number of records to copy into the buffer.
+	 *
+	 * @return     Returns the number of records copied.
 	 */
-	float numValues();
-
-	/**
-	 * @brief      Retrieves values.
-	 *
-	 * @param[in]  buffer   Buffer to copy values into.
-	 * @param[in]  recordOffset  The starting index of values.
-	 * @param[in]  recordCount   The number of values to copy into the buffer.
-	 *
-	 * @return     Returns the number of values copied.
-	 */
-	int values(float* buffer, const int recordDffset, const int recordCount);
+	int dump(char* buffer, const int recordDffset, const int recordCount);
 };
 
 #endif
