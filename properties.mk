@@ -31,7 +31,7 @@ LIB_DIR=$(BASECORE_DIR)/libs
 # AVR properties
 AVR_INCLUDES=-I$(ARDUINO_DIR)/hardware/arduino/avr/cores/arduino -I$(ARDUINO_DIR)/hardware/arduino/avr/variants/$(VARIANT) -I$(ARDUINO_DIR)/hardware/tools/avr/avr/include
 AVR_CFLAGS=$(COMMON_CFLAGS) -fno-exceptions -ffunction-sections -fdata-sections -fno-threadsafe-statics -MMD -DARDUINO=100 -DARDUINO_AVR_NANO -DARDUINO_ARCH_AVR -mmcu=$(CPUNAME) -DF_CPU=$(CPUCLOCK)
-AVR_ARCHIVER=$(ARDUINODIR)/hardware/tools/avr/bin/avr-ar.exe
+AVR_ARCHIVER=$(ARDUINO_DIR)/hardware/tools/avr/bin/avr-ar.exe
 AVR_CC=$(ARDUINO_DIR)/hardware/tools/avr/bin/avr-g++.exe
 
 # Local architecture properties

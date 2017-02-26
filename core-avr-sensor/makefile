@@ -11,7 +11,8 @@ INC=\
 	-I$(BASECORE_DIR)/core-avr-database/src\
 	-I$(BASECORE_DIR)/core-avr-io/src\
 	-I$(BASECORE_DIR)/core-avr-logging/src\
-	-I$(BASECORE_DIR)/core-avr-ds/src
+	-I$(BASECORE_DIR)/core-avr-ds/src\
+	-I$(BASECORE_DIR)/thirdparty/Dht11
 ###############################################################################
 
 ###############################################################################
@@ -34,6 +35,11 @@ LIBNAME=core-avr-sensor
 SOURCES=\
 	src/Sensor.cpp\
 	src/SensorManager.cpp
+###############################################################################
+# Sources specific to avr build.
+#
+AVR_SOURCES=\
+	src/Dht11Sensor.cpp
 ###############################################################################
 
 ###############################################################################
@@ -66,7 +72,7 @@ AVR_OBJ_DIR=build/avr/obj
 x86_OBJ_DIR=build/x86/obj
 
 # Temporary build files.
-AVR_OBJS=$(addprefix $(AVR_OBJ_DIR)/, $(notdir $(SOURCES:.cpp=.o)))
+AVR_OBJS=$(addprefix $(AVR_OBJ_DIR)/, $(notdir $(SOURCES:.cpp=.o))) $(addprefix $(AVR_OBJ_DIR)/, $(notdir $(AVR_SOURCES:.cpp=.o)))
 x86_OBJS=$(addprefix $(x86_OBJ_DIR)/, $(notdir $(SOURCES:.cpp=.o)))
 TEST_OBJS=$(addprefix $(x86_OBJ_DIR)/, $(notdir $(TEST_SOURCES:.cpp=.o)))
 
