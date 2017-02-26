@@ -10,9 +10,9 @@ The `avr-core-sensor` library focuses on managing, initializing, and polling sen
 
 The entry point for managing sensors is `SensorManager`. New `Sensor` instances are added to the manager with a corresponding `SensorConfig`. The config holds information that informs the `SensorManager` how to use the `Sensor`.
 
-`SensorManager::update()` is called on an update loop. The manager then moves through the list of `Sensor`s it maintains and polls them according to the configuration. Collected data is saved to a persistent store by the `FileManager`.
+`SensorManager::update()` is called on an update loop. The manager then moves through the list of `Sensor`s it maintains and polls them according to the configuration. Collected data is saved to a persistent store by creating and maintaining `Database` instances from `DatabaseManager`.
 
 
 ###### Sensor Data
 
-Sensor data is informed by the backend storage mechanism which you can read more about in the [core-avr-database: Storage](core-avr-database.storage.md) document.
+Sensor data is informed by the backend storage mechanism which you can read more about in the [core-avr-database: Storage](core-avr-database.storage.md) document. Effectively, each sensor may return one or many floating point values which are then stored by timestamp.

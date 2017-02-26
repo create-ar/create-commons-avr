@@ -1,12 +1,12 @@
 #### Overview
 
-We collect sensor data with varying granularities. At the bottom layer, the device aggregates data and stores as much as possible via [core-avr-database](core-avr-database.md). The phone also has an aggregation and storage mechanism before it hits the backend, which has a third aggregation system.
+We collect data with varying granularities. At the bottom layer, the device aggregates data and stores as much as possible via [core-avr-database](core-avr-database.md). The phone also has an aggregation and storage mechanism before it hits the backend, which has a third aggregation system.
 
 It's helpful to define the end points first, then dive into the middle.
 
 ##### Device Data Collection and Aggregation
 
-The device will collect data from sensors through the [core-avr-sensor](core-avr-sensor.md) library. This data is polled at regular intervals from various sensors. Different sensors will have different poll intervals and data storage needs.
+The device can collect data from any source, [core-avr-sensor](core-avr-sensor.md) is one of many possiblities. In this example, data is polled at regular intervals from various sensors. Different sensors will have different poll intervals and data storage needs.
 
 Once a device has successfully synced with a mobile, all data is cleared. Syncing may be forced by a user, however it is also automatically synced on an interval. To keep as much data as possible, data is eventually aggregated.
 
@@ -34,10 +34,8 @@ This backend works in much the same way as [Carbon](https://github.com/graphite-
 
 ##### Data Format
 
-Eventually, the data is stored via whisper as a list of timestamped points arranged in separate archives:
+Eventually, the data is stored via `whisper` as a list of timestamped points arranged in separate archives:
 
 [`!Ld`](https://docs.python.org/3/library/struct.html#format-strings)
 
-Since the archives are a fixed-size, we store data in archives of fixed duration. This has yet to be determined yet, but we should determine an optimal `N` milliseconds that an archive should store. Most likely this will also be based on the type of data needing stored.
-
-Taking the data format on the backend as a model, we should also store data on device and on mobile in the same way.
+This is mimicked on device as described in the [core-avr-sensor](core-avr-sensor.md) documentation.
