@@ -110,7 +110,6 @@ Database* DatabaseManager::get(const char* uri)
 
 	if (0 == _header.numDatabases)
 	{
-		throw "No files!";
 		return nullptr;
 	}
 

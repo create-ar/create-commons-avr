@@ -24,6 +24,7 @@ SensorManager::~SensorManager()
 	{
 		delete it->current();
 	}
+	
 	delete it;
 }
 

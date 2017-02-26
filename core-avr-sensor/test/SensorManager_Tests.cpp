@@ -3,6 +3,7 @@
 #include <DatabaseManager.h>
 #include <MemoryStream.h>
 #include <StandardClock.hpp>
+#include <FunctionPointerLogTarget.h>
 
 #include "SensorManager.h"
 #include "Sensor.h"
@@ -26,8 +27,16 @@ public:
 	}
 };
 
+void log(const char* message)
+{
+	INFO(message);
+}
+
 TEST_CASE("SensorManager", "[SensorManager]")
 {
+	FunctionPointerLogTarget* logger = new FunctionPointerLogTarget(log);
+	Log::addTarget(logger);
+
 	// setup
 	AvrClock* clock = new StandardClock();
 	MemoryStream* stream = new MemoryStream(4096);
@@ -73,4 +82,5 @@ TEST_CASE("SensorManager", "[SensorManager]")
 	delete data;
 	delete stream;
 	delete clock;
+	delete logger;
 }
