@@ -1,7 +1,12 @@
 .gradle
 .git
 
-docs/generated/
+docs/generated/build
+docs/generated/html
+docs/generated/xml
+docs/generated/source/_static
+docs/generated/source/_templates
+
 libs/
 build/
 

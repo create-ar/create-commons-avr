@@ -1,4 +1,6 @@
-#### Overview
+########
+Overview
+########
 
 The `core-avr-logging` library provides a very basic set of logging utilities modeled after familiar logging frameworks.
 
