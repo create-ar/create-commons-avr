@@ -14,8 +14,7 @@ html_theme_path = [sphinx_rtd_theme.get_html_theme_path()]
 # breathe
 sys.path.append( "C:/Projects/ThirdParty/breathe" )
 breathe_projects = { 
-    "core": "C:/Projects/openfarm-core-avr/docs/generated/xml",
-    "docs": "C:/Projects/openfarm-core-avr/"
+    "core": "../generated/xml"
 }
 breathe_default_project = "core"
 
