@@ -19,7 +19,6 @@ source_parsers = {
 
 extensions = [
     'sphinx.ext.autodoc',
-    'sphinx.ext.imgmath',
     'breathe']
 templates_path = ['_templates']
 source_suffix = ['.rst', '.md']
