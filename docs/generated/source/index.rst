@@ -8,7 +8,7 @@ projects.
 
 .. toctree::
    :maxdepth: 2
-   :caption: User Documentation
+   :caption: API Documentation
 
    ../core-avr-ds
    ../core-avr-logging

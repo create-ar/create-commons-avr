@@ -1,17 +1,14 @@
-# base dir for everything
-BASE_DIR=/cygdrive/c/Projects
-
 # base directory for all core projects
-BASECORE_DIR=$(BASE_DIR)/openfarm-core-avr
+BASECORE_DIR=..
 
 # third part directory
-THIRDPARTY_DIR=$(BASE_DIR)/Libraries
+THIRDPARTY_DIR=$(BASECORE_DIR)/thirdparty
 
 # base arduino directory
-ARDUINO_DIR=$(BASE_DIR)/ThirdParty/Arduino
+ARDUINO_DIR=$(THIRDPARTY_DIR)/arduino
 
 # include for Catch.hpp
-TEST_INCLUDES=-I$(BASE_DIR)/ThirdParty/Catch/single_include
+TEST_INCLUDES=-I$(THIRDPARTY_DIR)/catch
 
 # arduino variant
 VARIANT=standard

@@ -12,7 +12,6 @@ html_theme = "sphinx_rtd_theme"
 html_theme_path = [sphinx_rtd_theme.get_html_theme_path()]
 
 # breathe
-sys.path.append( "C:/Projects/ThirdParty/breathe" )
 breathe_projects = { "core": "../xml" }
 breathe_default_project = "core"
 
