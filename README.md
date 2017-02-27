@@ -4,13 +4,13 @@ Core libraries for AVR development. This code base is an attempt to make it easi
 
 ##### Building
 
-The core libraries are built using `make`. We also include a `gradle` project for useful tasks. Check out the **[build process documentation](docs/build-process.overview.md)** for further reading.
+![Build Status](https://travis-ci.org/Open-farm/openfarm-core-avr.svg?branch=master)
+The core libraries are built using `make`. We also include a `gradle` project for useful tasks. Check out our docs on **[build process](docs/build-process.overview.md)** for further reading.
 
 ##### Documentation
 
-API documentation can be found on **[ReadTheDocs](http://openfarm-core-avr.readthedocs.io/en/latest/)**.
-
 [![Documentation Status](https://readthedocs.org/projects/openfarm-core-avr/badge/?version=latest)](http://openfarm-core-avr.readthedocs.io/en/latest/?badge=latest)
+API documentation can be found on **[ReadTheDocs](http://openfarm-core-avr.readthedocs.io/en/latest/)**.
 
 ###### Deep Dives:
 
