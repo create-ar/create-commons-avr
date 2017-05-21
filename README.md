@@ -12,8 +12,6 @@ The core libraries are built using `make`. We also include a `gradle` project fo
 [![Documentation Status](https://readthedocs.org/projects/openfarm-core-avr/badge/?version=latest)](http://openfarm-core-avr.readthedocs.io/en/latest/?badge=latest)
 API documentation can be found on **[ReadTheDocs](http://openfarm-core-avr.readthedocs.io/en/latest/)**.
 
-###### Deep Dives:
-
 * **[Logging](docs/core-avr-logging.md)**
 * **[I/O](docs/core-avr-io.md)**
 * **[Database](docs/core-avr-database.md)**

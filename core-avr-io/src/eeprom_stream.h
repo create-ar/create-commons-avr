@@ -6,7 +6,7 @@
 #include <pin_configuration.h>
 
 /**
- * @brief      Abstracts SPI + EEPROM paging into working with a single
+ * @brief      Abstracts SPI + EEPROM paging int32_to working with a single
  * block of contiguous bytes. All calls are blocking.
  */
 class EEPROMStream : public AvrStream
@@ -16,18 +16,18 @@ private:
 	/**
 	 * Number of bytes per page.
 	 */
-	uint pageSize_;
+	uint32_t pageSize_;
 
 	/**
 	 * Total number of pages.
 	 */
-	uint numPages_;
+	uint32_t numPages_;
 
 public:
 	/**
 	 * @brief      Constructor.
 	 */
-	EEPROMStream(uint pageSize, uint numPages);
+	EEPROMStream(uint32_t pageSize, uint32_t numPages);
 
 	/**
 	 * @brief      Destructor.
@@ -43,15 +43,15 @@ public:
 
 	virtual char read() override;
 
-	virtual int read(char* const buffer, const int offset, const int count) override;
+	virtual int32_t read(char* const buffer, const int32_t offset, const int32_t count) override;
 
 	virtual bool write(const char value) override;
 
-	virtual int write(char* const buffer, const int offset, const int count) override;
+	virtual int32_t write(char* const buffer, const int32_t offset, const int32_t count) override;
 
-	virtual int set(const char value, const int offset, const int count) override;
+	virtual int32_t set(const char value, const int32_t offset, const int32_t count) override;
 
-	virtual int seek(const int offset, const int origin) override;
+	virtual int32_t seek(const int32_t offset, const int32_t origin) override;
 };
 
 #endif

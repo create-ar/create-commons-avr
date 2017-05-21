@@ -6,15 +6,15 @@
 
 TEST_CASE("MemoryStream.", "[MemoryStream]")
 {
-	const int size = 512;
+	const int32_t size = 512;
 
 	SECTION("read()")
 	{
 		MemoryStream* stream = new MemoryStream(size);
 		char* readBuffer = new char[size];
 
-		int offset = 12;
-		int readSize = 128;
+		int32_t offset = 12;
+		int32_t readSize = 128;
 
 		// default data is zeroed out
 		REQUIRE(0 == stream->read());
@@ -70,7 +70,7 @@ TEST_CASE("MemoryStream.", "[MemoryStream]")
 		char* readBuffer = new char[size];
 
 		char write[] = "This is a test.";
-		int len = strlen(write);
+		int32_t len = strlen(write);
 
 		REQUIRE(len == stream->write(write, 0, len));
 

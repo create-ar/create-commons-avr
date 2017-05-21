@@ -1,6 +1,8 @@
 #ifndef	AVRSTREAM_H
 #define AVRSTREAM_H
 
+#include <inttypes.h>
+
 /**
  * @brief      Abstracts the method of reading/writing bytes.
  */
@@ -33,7 +35,7 @@ public:
 	 *
 	 * @return     The number of bytes actually read. -1 if there was an error.
 	 */
-	virtual int read(char* const buffer, const int offset, const int count) = 0;
+	virtual int32_t read(char* const buffer, const int32_t offset, const int32_t count) = 0;
 
 	/**
 	 * @brief      Writes a single byte to the stream and advances the index.
@@ -53,7 +55,7 @@ public:
 	 *
 	 * @return     Returns how many bytes were successfully written.
 	 */
-	virtual int write(char* const buffer, const int offset, const int count) = 0;
+	virtual int32_t write(char* const buffer, const int32_t offset, const int32_t count) = 0;
 
 	/**
 	 * @brief      Sets a block of bytes to a specific value. Effectively, memset.
@@ -64,7 +66,7 @@ public:
 	 *
 	 * @return     Returns how many bytes were successfully set.
 	 */
-	virtual int set(const char value, const int offset, const int count) = 0;
+	virtual int32_t set(const char value, const int32_t offset, const int32_t count) = 0;
 
 	/**
 	 * @brief      Moves the index to a specific place. This is used when
@@ -75,7 +77,7 @@ public:
 	 *
 	 * @return     The current absolute index.
 	 */
-	virtual int seek(const int offset, const int origin) = 0;
+	virtual int32_t seek(const int32_t offset, const int32_t origin) = 0;
 };
 
 #endif

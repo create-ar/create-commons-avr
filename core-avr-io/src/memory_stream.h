@@ -20,7 +20,7 @@ private:
 	/**
 	 * Size of the buffer.
 	 */
-	const int size_;
+	const int32_t size_;
 
 	/**
 	 * Actual memory buffer.
@@ -30,24 +30,24 @@ private:
 	/**
 	 * Index in the buffer.
 	 */
-	int index_;
+	int32_t index_;
 
 public:
 	
-	MemoryStream(const int size);
+	MemoryStream(const int32_t size);
 	~MemoryStream();
 
 	virtual char read() override;
 
-	virtual int read(char* const buffer, const int offset, const int count) override;
+	virtual int32_t read(char* const buffer, const int32_t offset, const int32_t count) override;
 
 	virtual bool write(const char value) override;
 
-	virtual int write(char* const buffer, const int offset, const int count) override;
+	virtual int32_t write(char* const buffer, const int32_t offset, const int32_t count) override;
 
-	virtual int set(const char value, const int offset, const int count) override;
+	virtual int32_t set(const char value, const int32_t offset, const int32_t count) override;
 
-	virtual int seek(const int offset, const int count) override;
+	virtual int32_t seek(const int32_t offset, const int32_t count) override;
 };
 
 #endif

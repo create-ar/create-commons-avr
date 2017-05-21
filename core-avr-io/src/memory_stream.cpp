@@ -6,7 +6,7 @@
 /**
 * @brief      Stream implementation completely in memory.
 */
-MemoryStream::MemoryStream(const int size) :
+MemoryStream::MemoryStream(const int32_t size) :
 	logger_(nullptr),
 	size_(size),
 	buffer_(nullptr),
@@ -41,10 +41,10 @@ char MemoryStream::read()
 	return -1;
 }
 
-int MemoryStream::read(
+int32_t MemoryStream::read(
 	char* const buffer,
-	const int offset,
-	const int count)
+	const int32_t offset,
+	const int32_t count)
 {
 	if (nullptr == buffer_)
 	{
@@ -67,8 +67,8 @@ int MemoryStream::read(
 	}
 
 	// see how many bytes we should read
-	int remaining = size_ - offset;
-	int len = remaining < count
+	int32_t remaining = size_ - offset;
+	int32_t len = remaining < count
 		? remaining
 		: count;
 	
@@ -102,7 +102,7 @@ bool MemoryStream::write(const char value)
 	return true;
 }
 
-int  MemoryStream::write(char* const buffer, const int offset, const int count)
+int32_t MemoryStream::write(char* const buffer, const int32_t offset, const int32_t count)
 {
 	if (nullptr == buffer_)
 	{
@@ -124,8 +124,8 @@ int  MemoryStream::write(char* const buffer, const int offset, const int count)
 		return -1;
 	}
 
-	int remaining = size_ - offset;
-	int len = remaining < count
+	int32_t remaining = size_ - offset;
+	int32_t len = remaining < count
 		? remaining
 		: count;
 
@@ -142,7 +142,7 @@ int  MemoryStream::write(char* const buffer, const int offset, const int count)
 	return len;
 }
 
-int MemoryStream::set(const char value, const int offset, const int count)
+int32_t MemoryStream::set(const char value, const int32_t offset, const int32_t count)
 {
 	if (nullptr == buffer_)
 	{
@@ -159,8 +159,8 @@ int MemoryStream::set(const char value, const int offset, const int count)
 		return -1;
 	}
 
-	int remaining = size_ - offset;
-	int len = remaining < count
+	int32_t remaining = size_ - offset;
+	int32_t len = remaining < count
 		? remaining
 		: count;
 
@@ -177,7 +177,7 @@ int MemoryStream::set(const char value, const int offset, const int count)
 	return len;
 }
 
-int MemoryStream::seek(const int offset, const int count)
+int32_t MemoryStream::seek(const int32_t offset, const int32_t count)
 {
 	if (nullptr == buffer_)
 	{
@@ -194,8 +194,8 @@ int MemoryStream::seek(const int offset, const int count)
 		return -1;
 	}
 
-	int calculated = offset + count;
-	int index = calculated < 0
+	int32_t calculated = offset + count;
+	int32_t index = calculated < 0
 		? 0
 		: calculated > size_
 			? size_
