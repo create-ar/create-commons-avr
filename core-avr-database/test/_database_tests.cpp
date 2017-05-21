@@ -1,10 +1,10 @@
 #include <catch.hpp>
-#include <Log.h>
+#include <log.h>
 
-#include "Database.h"
-#include "MemoryStream.h"
-#include "AvrClock.h"
-#include "StandardClock.hpp"
+#include "database.h"
+#include "memory_stream.h"
+#include "avr_clock.h"
+#include "standard_clock.hpp"
 
 TEST_CASE("Database consistency.", "[Database]")
 {

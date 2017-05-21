@@ -31,8 +31,8 @@ LIBNAME=core-avr-database
 # Foo.cpp Bar.cpp
 # 
 SOURCES=\
-	src/Database.cpp\
-	src/DatabaseManager.cpp
+	src/database.cpp\
+	src/database_manager.cpp
 ###############################################################################
 
 ###############################################################################

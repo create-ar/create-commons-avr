@@ -1,7 +1,7 @@
 #ifndef LINKEDLIST_h
 #define LINKEDLIST_h
 
-#include "Iterator.h"
+#include "iterator.h"
 
 /**
  * @brief      Node class used internally to LinkedList.

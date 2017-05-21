@@ -1,5 +1,5 @@
-#include "Logger.h"
-#include "Log.h"
+#include "logger.h"
+#include "log.h"
 
 Logger::Logger(const char* category)
 	: category_(category)

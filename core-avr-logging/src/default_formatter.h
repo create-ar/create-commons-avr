@@ -1,7 +1,7 @@
 #ifndef DEFAULTFORMATTER_H
 #define DEFAULTFORMATTER_H
 
-#include "LogFormatter.h"
+#include "log_formatter.h"
 
 #include <string.h>
 

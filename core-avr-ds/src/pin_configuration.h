@@ -1,7 +1,7 @@
 #ifndef PINCONFIGURATION_H
 #define PINCONFIGURATION_H
 
-#include "LinkedList.h"
+#include "linked_list.h"
 
 /**
  * @brief      Potential modes of a pin.

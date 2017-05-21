@@ -33,13 +33,13 @@ LIBNAME=core-avr-sensor
 # src/Foo.cpp src/Bar.cpp
 # 
 SOURCES=\
-	src/Sensor.cpp\
-	src/SensorManager.cpp
+	src/sensor.cpp\
+	src/sensor_manager.cpp
 ###############################################################################
 # Sources specific to avr build.
 #
 AVR_SOURCES=\
-	src/Dht11Sensor.cpp
+	src/dht11_sensor.cpp
 ###############################################################################
 
 ###############################################################################

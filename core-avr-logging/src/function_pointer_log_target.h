@@ -1,7 +1,7 @@
-#ifndef FPLOGTARGET_H
-#define FPLOGTARGET_H
+#ifndef FUNCTIONPOINTERLOGTARGET_H
+#define FUNCTIONPOINTERLOGTARGET_H
 
-#include "LogTarget.h"
+#include "log_target.h"
 
 /**
  * @brief      Forwards logs to a function pointer.

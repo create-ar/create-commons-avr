@@ -1,4 +1,4 @@
-#include "ConsoleLogTarget.h"
+#include "console_log_target.h"
 
 #include <stdio.h>
 

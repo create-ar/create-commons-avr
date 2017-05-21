@@ -2,8 +2,8 @@
 #define SENSORCONFIG_H
 
 #include <stdlib.h>
-#include <Database.h>
-#include <PinConfiguration.h>
+#include <database.h>
+#include <pin_configuration.h>
 
 // Length of id field.
 #define kSensorIdLen 8

@@ -1,7 +1,7 @@
 #ifndef CONSOLELOGTARGET_H
 #define CONSOLELOGTARGET_H
 
-#include "LogTarget.h"
+#include "log_target.h"
 
 /**
  * @brief      Forwards logs to stdout.

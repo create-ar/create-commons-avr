@@ -1,9 +1,9 @@
 #ifndef EEPROMSTREAM_H
 #define EEPROMSTREAM_H
 
-#include "AvrStream.h"
+#include "avr_stream.h"
 
-#include <PinConfiguration.h>
+#include <pin_configuration.h>
 
 /**
  * @brief      Abstracts SPI + EEPROM paging into working with a single

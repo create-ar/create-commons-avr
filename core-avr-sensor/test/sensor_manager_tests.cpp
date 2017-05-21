@@ -1,13 +1,13 @@
 #include <catch.hpp>
 
-#include <DatabaseManager.h>
-#include <MemoryStream.h>
-#include <StandardClock.hpp>
-#include <FunctionPointerLogTarget.h>
+#include <database_manager.h>
+#include <memory_stream.h>
+#include <standard_clock.hpp>
+#include <function_pointer_log_target.h>
 
-#include "SensorManager.h"
-#include "Sensor.h"
-#include "SensorConfig.h"
+#include "sensor_manager.h"
+#include "sensor.h"
+#include "sensor_config.h"
 
 class DummySensor : public Sensor
 {

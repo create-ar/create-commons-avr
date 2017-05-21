@@ -1,7 +1,7 @@
 #ifndef ARDUINOCLOCK_HPP
 #define ARDUINOCLOCK_HPP
 
-#include "AvrClock.h"
+#include "avr_clock.h"
 
 #include <arduino.h>
 

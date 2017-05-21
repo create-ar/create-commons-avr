@@ -1,7 +1,7 @@
 #include <catch.hpp>
 #include <string.h>
 
-#include "DefaultFormatter.h"
+#include "default_formatter.h"
 
 TEST_CASE("Formatting", "[DefaultFormatter]")
 {

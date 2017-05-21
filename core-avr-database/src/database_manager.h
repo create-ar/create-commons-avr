@@ -1,12 +1,12 @@
 #ifndef DATABASEMANAGER_H
 #define DATABASEMANAGER_H
 
-#include "AvrStream.h"
-#include "Database.h"
+#include "avr_stream.h"
+#include "database.h"
 
-#include <Tuple.h>
-#include <LinkedList.h>
-#include <Logger.h>
+#include <tuple.h>
+#include <linked_list.h>
+#include <logger.h>
 #include <stdio.h>
 
 #define IDENTIFIER_LENGTH 4

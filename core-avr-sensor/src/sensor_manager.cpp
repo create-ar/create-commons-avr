@@ -1,7 +1,7 @@
-#include "SensorManager.h"
+#include "sensor_manager.h"
 
-#include <Log.h>
-#include <Iterator.h>
+#include <log.h>
+#include <iterator.h>
 
 namespace
 {

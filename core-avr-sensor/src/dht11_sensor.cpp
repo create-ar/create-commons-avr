@@ -1,4 +1,4 @@
-#include "Dht11Sensor.h"
+#include "dht11_sensor.h"
 
 
 float Dht11Sensor::dewPoint(double celsius, double humidity)

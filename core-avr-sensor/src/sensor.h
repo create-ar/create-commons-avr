@@ -1,7 +1,7 @@
 #ifndef SENSOR_H
 #define SENSOR_H
 
-#include "SensorConfig.h"
+#include "sensor_config.h"
 
 /**
  * @brief      Abstract base class for a Sensor.

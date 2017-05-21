@@ -1,4 +1,4 @@
-#include "EEPROMStream.h"
+#include "eeprom_stream.h"
 
 EEPROMStream::EEPROMStream(uint pageSize, uint numPages) :
 	_pageSize(pageSize),

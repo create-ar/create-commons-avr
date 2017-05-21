@@ -2,7 +2,7 @@
 #include <string.h>
 #include <PinConfiguration.h>
 
-#include "MemoryStream.h"
+#include "memory_stream.h"
 
 TEST_CASE("MemoryStream.", "[MemoryStream]")
 {

@@ -1,11 +1,11 @@
 #ifndef SENSORMANAGER_H
 #define SENSORMANAGER_H
 
-#include <Logger.h>
-#include <DatabaseManager.h>
-#include <LinkedList.h>
+#include <logger.h>
+#include <database_manager.h>
+#include <linked_list.h>
 
-#include "Sensor.h"
+#include "sensor.h"
 
 /**
  * @brief      Internal struct used to track sensor updates.

@@ -1,11 +1,11 @@
 #include <catch.hpp>
 
-#include "Log.h"
-#include "Logger.h"
-#include "DefaultFormatter.h"
+#include "log.h"
+#include "logger.h"
+#include "default_formatter.h"
 
-#include "DummyLogTarget.h"
-#include "DummyFormatter.h"
+#include "dummy_log_target.h"
+#include "dummy_formatter.h"
 
 TEST_CASE("End to end logging.", "[Log]")
 {

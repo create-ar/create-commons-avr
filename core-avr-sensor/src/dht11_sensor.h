@@ -1,9 +1,9 @@
 #ifndef DHT11SENSOR_H
 #define DHT11SENSOR_H
 
-#include "Sensor.h"
+#include "sensor.h"
 
-#include <Logger.h>
+#include <logger.h>
 #include <Dht11.h>
 
 #define kDht11PinName "dht11_pin"

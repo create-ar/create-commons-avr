@@ -1,11 +1,11 @@
 #ifndef LOG_H
 #define LOG_H
 
-#include "LogTarget.h"
-#include "LogFormatter.h"
-#include "Logger.h"
-#include "LinkedList.h"
-#include "Tuple.h"
+#include "log_target.h"
+#include "log_formatter.h"
+#include "logger.h"
+#include "linked_list.h"
+#include "tuple.h"
 
 namespace Log {
 	

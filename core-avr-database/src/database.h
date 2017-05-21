@@ -1,11 +1,11 @@
 #ifndef DATABASE_H
 #define DATABASE_H
 
-#include "AvrStream.h"
-#include "AvrClock.h"
+#include "avr_stream.h"
+#include "avr_clock.h"
 
 #include <string.h>
-#include <Logger.h>
+#include <logger.h>
 
 #define DATABASE_URI_SIZE 64
 

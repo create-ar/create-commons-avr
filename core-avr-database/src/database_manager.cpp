@@ -1,7 +1,7 @@
-#include "DatabaseManager.h"
+#include "database_manager.h"
 
 #include <stdlib.h>
-#include <Log.h>
+#include <log.h>
 
 #define DATABASEMANAGER_VERSION 1
 

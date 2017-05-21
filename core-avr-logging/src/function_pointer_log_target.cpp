@@ -1,4 +1,4 @@
-#include "FunctionPointerLogTarget.h"
+#include "function_pointer_log_target.h"
 
 FunctionPointerLogTarget::FunctionPointerLogTarget(void (*lambda)(const char*))
 	:lambda_(lambda)

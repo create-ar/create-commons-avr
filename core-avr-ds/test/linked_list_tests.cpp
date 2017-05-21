@@ -1,6 +1,6 @@
 #include <catch.hpp>
 
-#include "LinkedList.h"
+#include "linked_list.h"
 
 static int ids = 0;
 

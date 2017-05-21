@@ -1,10 +1,10 @@
 #ifndef MEMORYSTREAM_H
 #define MEMORYSTREAM_H
 
-#include "AvrStream.h"
+#include "avr_stream.h"
 
-#include <Log.h>
-#include <Logger.h>
+#include <log.h>
+#include <logger.h>
 
 /**
  * @brief      Stream implementation completely in memory.

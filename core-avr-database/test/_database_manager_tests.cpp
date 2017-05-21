@@ -3,10 +3,10 @@
 #include <stdlib.h>
 #include <string.h>
 
-#include "Database.h"
-#include "DatabaseManager.h"
-#include "MemoryStream.h"
-#include "StandardClock.hpp"
+#include "database.h"
+#include "database_manager.h"
+#include "memory_stream.h"
+#include "standard_clock.hpp"
 
 TEST_CASE("DatabaseManager usage.", "[DatabaseManager]")
 {

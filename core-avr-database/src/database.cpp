@@ -1,6 +1,6 @@
 #include "Database.h"
 
-#include <Log.h>
+#include <log.h>
 
 #define DATABASE_VERSION 1
 

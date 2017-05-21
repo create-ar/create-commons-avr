@@ -1,7 +1,7 @@
 #ifndef STANDARDCLOCK_H
 #define STANDARDCLOCK_H
 
-#include "AvrClock.h"
+#include "avr_clock.h"
 
 #include <time.h>
 
