@@ -30,10 +30,10 @@ public:
 	 *
 	 * @return     Returns the time.
 	 */
-	unsigned long now() override
+	uint32_t now() override
 	{
 		time_t now = time(0);
-		return (unsigned long) ((now - startTime_) * 1000);
+		return (uint32_t) ((now - startTime_) * 1000);
 	}
 };
 

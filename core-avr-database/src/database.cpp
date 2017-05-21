@@ -5,9 +5,9 @@
 #define DATABASE_VERSION 1
 
 Database::Database(AvrClock* clock)
+	:clock_(clock)
 {
 	logger_ = Log::logger("Database");
-	clock_ = clock;
 }
 
 Database::~Database()
@@ -17,8 +17,8 @@ Database::~Database()
 
 bool Database::init(
 	AvrStream* stream,
-	const int offset,
-	const short contentSize,
+	const int32_t offset,
+	const int16_t contentSize,
 	const char valuesPerRecord,
 	const char* uri)
 {
@@ -65,7 +65,7 @@ bool Database::init(
 	return false;
 }
 
-bool Database::load(AvrStream* stream, const int offset)
+bool Database::load(AvrStream* stream, const int32_t offset)
 {
 	if (nullptr == stream)
 	{
@@ -124,13 +124,13 @@ bool Database::add(const float* value)
 	// [TIMESTAMP][VALUE]...[VALUE]
 	{
 		// locate index into stream
-		int absByteIndex = offset_
+		int32_t absByteIndex = offset_
 			+ DATABASE_HEADER_SIZE
 			+ bytesPerRecord_ * header.numRecords;
 
 		// write timestamp
-		unsigned long timestamp = clock_->now();
-		int numBytesWritten = stream_->write(
+		uint32_t timestamp = clock_->now();
+		int32_t numBytesWritten = stream_->write(
 			(char*) &timestamp,
 			absByteIndex,
 			4);
@@ -158,10 +158,10 @@ float Database::numRecords()
 	return header.numRecords;
 }
 
-int Database::dump(
+int32_t Database::dump(
 	char* buffer,
-	const int recordOffset,
-	const int recordCount)
+	const int32_t recordOffset,
+	const int32_t recordCount)
 {
 	if (nullptr == stream_)
 	{
@@ -180,13 +180,13 @@ int Database::dump(
 		return -1;
 	}
 
-	int startAbsByteIndex = offset_
+	int32_t startAbsByteIndex = offset_
 		+ DATABASE_HEADER_SIZE
 		+ bytesPerRecord_ * recordOffset;
-	int endAbsByteIndex = startAbsByteIndex + bytesPerRecord_ * recordCount;
-	int byteLen = endAbsByteIndex - startAbsByteIndex;
+	int32_t endAbsByteIndex = startAbsByteIndex + bytesPerRecord_ * recordCount;
+	int32_t byteLen = endAbsByteIndex - startAbsByteIndex;
 
-	int readLen = stream_->read(buffer, startAbsByteIndex, byteLen);
+	int32_t readLen = stream_->read(buffer, startAbsByteIndex, byteLen);
 	if (readLen != byteLen)
 	{
 		return -1;

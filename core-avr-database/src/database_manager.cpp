@@ -8,9 +8,8 @@
 static char VALID_IDENTIFIER[IDENTIFIER_LENGTH] = {'O', 'F', 'F', 'H'};
 
 DatabaseManager::DatabaseManager(AvrClock* clock, AvrStream* stream)
+	: clock_(clock), stream_(stream)
 {
-	clock_ = clock;
-	stream_ = stream;
 	logger_ = Log::logger("DatabaseManager");
 }
 
@@ -62,7 +61,7 @@ bool DatabaseManager::init(DatabaseManagerConfig config)
 
 Database* DatabaseManager::create(
 	const char* uri,
-	const int size,
+	const int32_t size,
 	const char valuesPerRecord)
 {
 	if (nullptr == uri)
@@ -75,7 +74,7 @@ Database* DatabaseManager::create(
 		return nullptr;
 	}
 
-	int totalSize = size + DATABASE_HEADER_SIZE;
+	int32_t totalSize = size + DATABASE_HEADER_SIZE;
 
 	// first, check if we have the room left
 	if (header_.totalBytes - header_.usedBytes < totalSize)
@@ -84,7 +83,7 @@ Database* DatabaseManager::create(
 	}
 
 	// set that memory to 0
-	int absoluteOffset = DATABASEMANAGER_HEADER_SIZE + header_.usedBytes;
+	int32_t absoluteOffset = DATABASEMANAGER_HEADER_SIZE + header_.usedBytes;
 	stream_->set('\0', absoluteOffset, size);
 
 	// create a file
@@ -114,7 +113,7 @@ Database* DatabaseManager::get(const char* uri)
 	}
 
 	// start looking through files right after the header
-	unsigned int offset = DATABASEMANAGER_HEADER_SIZE;
+	uint32_t offset = DATABASEMANAGER_HEADER_SIZE;
 	DatabaseHeader fileHeader;
 
 	while (offset < DATABASEMANAGER_HEADER_SIZE + header_.usedBytes)

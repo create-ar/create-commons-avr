@@ -17,17 +17,17 @@ struct DatabaseHeader
 	/**
 	 * Version of the file.
 	 */
-	int version;
+	int32_t version;
 
 	/**
 	 * Number of bytes, excluding the header.
 	 */
-	short contentSize;
+	int16_t contentSize;
 
 	/**
 	 * Number of records currently stored.
 	 */
-	short numRecords;
+	int16_t numRecords;
 
 	/**
 	 * Number of values per record. This does not include timestamp.
@@ -67,7 +67,7 @@ private:
 	/**
 	 * Byte offset into stream.
 	 */
-	int offset_;
+	int32_t offset_;
 
 	/**
 	 * Buffer used internally to move floats around.
@@ -77,7 +77,7 @@ private:
 	/**
 	 * Number of bytes per record. Calculated value.
 	 */
-	int bytesPerRecord_;
+	int32_t bytesPerRecord_;
 
 public:
 
@@ -114,7 +114,7 @@ public:
 	 * 
 	 * @return     True if the file was successfully loaded.
 	 */
-	bool load(AvrStream* stream, const int offset);
+	bool load(AvrStream* stream, const int32_t offset);
 
 	/**
 	 * @brief      Writes header to disk. This is for new Databases.
@@ -129,8 +129,8 @@ public:
 	 */
 	bool init(
 		AvrStream* stream,
-		const int offset,
-		const short contentSize,
+		const int32_t offset,
+		const int16_t contentSize,
 		const char valuesPerRecord,
 		const char* uri);
 
@@ -164,7 +164,7 @@ public:
 	 *
 	 * @return     Returns the number of records copied.
 	 */
-	int dump(char* buffer, const int recordDffset, const int recordCount);
+	int32_t dump(char* buffer, const int32_t recordOffset, const int32_t recordCount);
 };
 
 #endif

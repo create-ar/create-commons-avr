@@ -35,22 +35,22 @@ struct DatabaseManagerHeader
 	/**
 	 * DatabaseManager header version.
 	 */
-	short version;
+	int16_t version;
 
 	/**
 	 * Total number of files stored.
 	 */
-	short numDatabases;
+	int16_t numDatabases;
 
 	/**
 	 * Total number of bytes being used by file system, excluding the header.
 	 */
-	int usedBytes;
+	int32_t usedBytes;
 
 	/**
 	 * Total number of bytes this file system can use, excluding the header.
 	 */
-	int totalBytes;
+	int32_t totalBytes;
 };
 
 /**
@@ -126,7 +126,7 @@ class DatabaseManager
 		 */
 		Database* create(
 			const char* uri,
-			const int size,
+			const int32_t size,
 			const char valuesPerRecord);
 
 		/**
