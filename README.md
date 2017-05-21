@@ -23,3 +23,7 @@ API documentation can be found on **[ReadTheDocs](http://openfarm-core-avr.readt
 ##### Testing
 
 We have extensive test suites for all our libraries. You can read more about our testing strategy **[here](docs/testing.overview.md)**.
+
+##### Contributing
+
+We follow the **[Google C++ Style Guide](https://google.github.io/styleguide/cppguide.html)**.
