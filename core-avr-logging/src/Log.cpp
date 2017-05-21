@@ -5,29 +5,29 @@ namespace {
 	/**
 	 * Supports up to 4 log targets.
 	 */
-	constexpr int MAX_LOGTARGETS = 4;
+	constexpr int kMaxLogTargets = 4;
 
 	/**
 	 * Array of pointers to LogTargets.
 	 */
-	LogTarget* _targets[MAX_LOGTARGETS];
+	LogTarget* targets_[kMaxLogTargets];
 
 	/**
 	 * Formatter for all logs.
 	 */
-	LogFormatter* _formatter;
+	LogFormatter* formatter_;
 
 	/**
 	 * Tracks loggers.
 	 */
-	LinkedList<Tuple<const char, Logger>> _loggers;
+	LinkedList<Tuple<const char, Logger>> loggers_;
 }
 
 
 // Methods are global
 void Log::setFormatter(LogFormatter* formatter)
 {
-	_formatter = formatter;
+	formatter_ = formatter;
 }
 
 void Log::addTarget(LogTarget* target)
@@ -37,11 +37,11 @@ void Log::addTarget(LogTarget* target)
 		return;
 	}
 
-	for (int i = 0; i < MAX_LOGTARGETS; i++)
+	for (int i = 0; i < kMaxLogTargets; i++)
 	{
-		if (nullptr == _targets[i])
+		if (nullptr == targets_[i])
 		{
-			_targets[i] = target;
+			targets_[i] = target;
 			break;
 		}
 	}
@@ -54,11 +54,11 @@ void Log::removeTarget(LogTarget* target)
 		return;
 	}
 
-	for (int i = 0; i < MAX_LOGTARGETS; i++)
+	for (int i = 0; i < kMaxLogTargets; i++)
 	{
-		if (target == _targets[i])
+		if (target == targets_[i])
 		{
-			_targets[i] = nullptr;
+			targets_[i] = nullptr;
 			break;
 		}
 	}
@@ -66,20 +66,20 @@ void Log::removeTarget(LogTarget* target)
 
 void Log::log(const char* level, const char* category, const char* message)
 {
-	for (int i = 0; i < MAX_LOGTARGETS; i++)
+	for (int i = 0; i < kMaxLogTargets; i++)
 	{
-		if (nullptr == _targets[i])
+		if (nullptr == targets_[i])
 		{
 			break;
 		}
 
-		if (nullptr == _formatter)
+		if (nullptr == formatter_)
 		{
-			_targets[i]->log(message);
+			targets_[i]->log(message);
 		}
 		else
 		{
-			_targets[i]->log(_formatter->format(level, category, message));
+			targets_[i]->log(formatter_->format(level, category, message));
 		}
 	}
 }
@@ -93,7 +93,7 @@ Logger* Log::logger(const char* category)
 
 	Logger* logger = nullptr;
 
-	Iterator<Tuple<const char, Logger>>* it = _loggers.it();
+	Iterator<Tuple<const char, Logger>>* it = loggers_.it();
 	while (it->moveNext())
 	{
 		Tuple<const char, Logger>* value = it->current();
@@ -108,7 +108,7 @@ Logger* Log::logger(const char* category)
 	if (nullptr == logger)
 	{
 		logger = new Logger(category);
-		_loggers.add(new Tuple<const char, Logger>(
+		loggers_.add(new Tuple<const char, Logger>(
 			category,
 			logger));
 	}

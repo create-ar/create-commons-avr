@@ -15,22 +15,22 @@ private:
 	/**
 	 * Logger instance.
 	 */
-	Logger* _logger;
+	Logger* logger_;
 
 	/**
 	 * Size of the buffer.
 	 */
-	const int _size;
+	const int size_;
 
 	/**
 	 * Actual memory buffer.
 	 */
-	char* _buffer;
+	char* buffer_;
 
 	/**
 	 * Index in the buffer.
 	 */
-	int _index;
+	int index_;
 
 public:
 	

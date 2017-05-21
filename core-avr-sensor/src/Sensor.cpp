@@ -2,12 +2,12 @@
 
 SensorConfig Sensor::config()
 {
-	return _config;
+	return config_;
 }
 
 bool Sensor::init(SensorConfig config)
 {
-	_config = config;
+	config_ = config;
 
 	return true;
 }

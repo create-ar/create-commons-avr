@@ -1,8 +1,9 @@
 #include "FunctionPointerLogTarget.h"
 
 FunctionPointerLogTarget::FunctionPointerLogTarget(void (*lambda)(const char*))
+	:lambda_(lambda)
 {
-	_lambda = lambda;
+	
 }
 
 FunctionPointerLogTarget::~FunctionPointerLogTarget()
@@ -12,5 +13,5 @@ FunctionPointerLogTarget::~FunctionPointerLogTarget()
 
 void FunctionPointerLogTarget::log(const char* message)
 {
-	_lambda(message);
+	lambda_(message);
 }

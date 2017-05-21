@@ -12,14 +12,14 @@ private:
 	/**
 	 * Configuration for this sensor.
 	 */
-	SensorConfig _config;
+	SensorConfig config_;
 
 public:
 	/**
 	 * @brief      Constructor.
 	 */
 	Sensor()
-		: _config("DEFAULT", SENSOR_DB_SIZE)
+		: config_("DEFAULT", kSensorDbLen)
 	{
 		
 	}

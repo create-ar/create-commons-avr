@@ -37,17 +37,17 @@ private:
 	/**
 	 * Logger.
 	 */
-	Logger* _logger;
+	Logger* logger_;
 
 	/**
 	 * To store data.
 	 */
-	DatabaseManager* _data;
+	DatabaseManager* data_;
 
 	/**
 	 * List of all sensors.
 	 */
-	LinkedList<SensorRecord> _sensors;
+	LinkedList<SensorRecord> sensors_;
 
 public:
 	/**

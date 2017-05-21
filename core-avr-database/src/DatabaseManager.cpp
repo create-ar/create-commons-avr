@@ -9,9 +9,9 @@ static char VALID_IDENTIFIER[IDENTIFIER_LENGTH] = {'O', 'F', 'F', 'H'};
 
 DatabaseManager::DatabaseManager(AvrClock* clock, AvrStream* stream)
 {
-	_clock = clock;
-	_stream = stream;
-	_logger = Log::logger("DatabaseManager");
+	clock_ = clock;
+	stream_ = stream;
+	logger_ = Log::logger("DatabaseManager");
 }
 
 DatabaseManager::~DatabaseManager()
@@ -21,14 +21,14 @@ DatabaseManager::~DatabaseManager()
 
 bool DatabaseManager::load(DatabaseManagerConfig config)
 {
-	if (_stream->read((char *) &_header, 0, DATABASEMANAGER_HEADER_SIZE))
+	if (stream_->read((char *) &header_, 0, DATABASEMANAGER_HEADER_SIZE))
 	{
-		if (0 != strncmp(_header.identifier, VALID_IDENTIFIER, IDENTIFIER_LENGTH))
+		if (0 != strncmp(header_.identifier, VALID_IDENTIFIER, IDENTIFIER_LENGTH))
 		{
 			return false;
 		}
 
-		if (_header.totalBytes != config.totalBytes)
+		if (header_.totalBytes != config.totalBytes)
 		{
 			return false;
 		}
@@ -46,13 +46,13 @@ bool DatabaseManager::init(DatabaseManagerConfig config)
 		return false;
 	}
 
-	memcpy(_header.identifier, VALID_IDENTIFIER, IDENTIFIER_LENGTH);
-	_header.version = DATABASEMANAGER_VERSION;
-	_header.numDatabases = 0;
-	_header.usedBytes = 0;
-	_header.totalBytes = config.totalBytes;
+	memcpy(header_.identifier, VALID_IDENTIFIER, IDENTIFIER_LENGTH);
+	header_.version = DATABASEMANAGER_VERSION;
+	header_.numDatabases = 0;
+	header_.usedBytes = 0;
+	header_.totalBytes = config.totalBytes;
 
-	if (_stream->write((char*) &_header, 0, DATABASEMANAGER_HEADER_SIZE))
+	if (stream_->write((char*) &header_, 0, DATABASEMANAGER_HEADER_SIZE))
 	{
 		return true;
 	}
@@ -78,25 +78,25 @@ Database* DatabaseManager::create(
 	int totalSize = size + DATABASE_HEADER_SIZE;
 
 	// first, check if we have the room left
-	if (_header.totalBytes - _header.usedBytes < totalSize)
+	if (header_.totalBytes - header_.usedBytes < totalSize)
 	{
 		return nullptr;
 	}
 
 	// set that memory to 0
-	int absoluteOffset = DATABASEMANAGER_HEADER_SIZE + _header.usedBytes;
-	_stream->set('\0', absoluteOffset, size);
+	int absoluteOffset = DATABASEMANAGER_HEADER_SIZE + header_.usedBytes;
+	stream_->set('\0', absoluteOffset, size);
 
 	// create a file
-	Database* file = new Database(_clock);
-	if (!file->init(_stream, absoluteOffset, size, valuesPerRecord, uri))
+	Database* file = new Database(clock_);
+	if (!file->init(stream_, absoluteOffset, size, valuesPerRecord, uri))
 	{
 		delete file;
 		return nullptr;
 	}
 
-	_header.numDatabases += 1;
-	_header.usedBytes += totalSize;
+	header_.numDatabases += 1;
+	header_.usedBytes += totalSize;
 
 	return file;
 }
@@ -108,7 +108,7 @@ Database* DatabaseManager::get(const char* uri)
 		return nullptr;
 	}
 
-	if (0 == _header.numDatabases)
+	if (0 == header_.numDatabases)
 	{
 		return nullptr;
 	}
@@ -117,9 +117,9 @@ Database* DatabaseManager::get(const char* uri)
 	unsigned int offset = DATABASEMANAGER_HEADER_SIZE;
 	DatabaseHeader fileHeader;
 
-	while (offset < DATABASEMANAGER_HEADER_SIZE + _header.usedBytes)
+	while (offset < DATABASEMANAGER_HEADER_SIZE + header_.usedBytes)
 	{
-		if (DATABASE_HEADER_SIZE == _stream->read(
+		if (DATABASE_HEADER_SIZE == stream_->read(
 			(char*) &fileHeader,
 			offset,
 			DATABASE_HEADER_SIZE))
@@ -129,8 +129,8 @@ Database* DatabaseManager::get(const char* uri)
 				uri,
 				strlen(uri)))
 			{
-				Database* file = new Database(_clock);
-				if (!file->load(_stream, offset))
+				Database* file = new Database(clock_);
+				if (!file->load(stream_, offset))
 				{
 					delete file;
 					return nullptr;

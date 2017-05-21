@@ -16,12 +16,12 @@ private:
 	/**
 	 * Number of bytes per page.
 	 */
-	uint _pageSize;
+	uint pageSize_;
 
 	/**
 	 * Total number of pages.
 	 */
-	uint _numPages;
+	uint numPages_;
 
 public:
 	/**

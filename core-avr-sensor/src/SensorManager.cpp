@@ -5,21 +5,21 @@
 
 namespace
 {
-	#define SENSOR_MAX_VALUES 8
+	#define kSensorMaxValues 8
 
-	float _readBuffer[SENSOR_MAX_VALUES];
+	float readBuffer_[kSensorMaxValues];
 }
 
 SensorManager::SensorManager(DatabaseManager* data)
-	: _data(data)
+	: data_(data)
 {
-	_logger = Log::logger("SensorManager");
+	logger_ = Log::logger("SensorManager");
 }
 
 SensorManager::~SensorManager()
 {
 	// delete records
-	Iterator<SensorRecord>* it = _sensors.it();
+	Iterator<SensorRecord>* it = sensors_.it();
 	while (it->moveNext())
 	{
 		delete it->current();
@@ -31,7 +31,7 @@ SensorManager::~SensorManager()
 bool SensorManager::add(Sensor* sensor)
 {
 	// don't add it twice
-	Iterator<SensorRecord>* it = _sensors.it();
+	Iterator<SensorRecord>* it = sensors_.it();
 	while (it->moveNext())
 	{
 		SensorRecord* record = it->current();
@@ -46,34 +46,34 @@ bool SensorManager::add(Sensor* sensor)
 	record->sensor = sensor;
 
 	// construct uri
-	char uri[SENSOR_ID_LEN + 8];
+	char uri[kSensorIdLen + 8];
 	SensorConfig config = sensor->config();
 	sprintf(uri, "SENSOR__%s", config.identifier);
 
 	// retrieve database
 	{
-		Database* database = _data->get(uri);
+		Database* database = data_->get(uri);
 		if (nullptr == database)
 		{
-			_logger->info("Creating database.");
+			logger_->info("Creating database.");
 
-			if (!_data->create(uri, config.dbSize, config.numValues))
+			if (!data_->create(uri, config.dbSize, config.numValues))
 			{
-				_logger->error("Could not create database.");
+				logger_->error("Could not create database.");
 				return false;
 			}
 
-			database = _data->get(uri);
+			database = data_->get(uri);
 			if (nullptr == database)
 			{
-				_logger->error("Database created but could not be retrieved.");
+				logger_->error("Database created but could not be retrieved.");
 				return false;
 			}
 		}
 		record->database = database;
 	}
 
-	_sensors.add(record);
+	sensors_.add(record);
 
 	return true;
 }
@@ -82,13 +82,13 @@ bool SensorManager::remove(Sensor* sensor)
 {
 	bool removed = false;
 
-	Iterator<SensorRecord>* it = _sensors.it();
+	Iterator<SensorRecord>* it = sensors_.it();
 	while (it->moveNext())
 	{
 		SensorRecord* record = it->current();
 		if (record->sensor == sensor)
 		{
-			_sensors.remove(record);
+			sensors_.remove(record);
 			
 			delete record;
 
@@ -104,7 +104,7 @@ bool SensorManager::remove(Sensor* sensor)
 
 void SensorManager::update(double dt)
 {
-	Iterator<SensorRecord>* it = _sensors.it();
+	Iterator<SensorRecord>* it = sensors_.it();
 	while (it->moveNext())
 	{
 		SensorRecord* record = it->current();
@@ -115,7 +115,7 @@ void SensorManager::update(double dt)
 		int pollInterval = config.pollIntervalMs;
 		if (record->accumulator >= pollInterval)
 		{
-			if (sensor->poll(_readBuffer))
+			if (sensor->poll(readBuffer_))
 			{
 				// 
 			}

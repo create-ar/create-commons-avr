@@ -41,12 +41,12 @@ private:
 	/**
 	 * Pointer to the head pointer.
 	 */
-	Node<T>** _head;
+	Node<T>** head_;
 
 	/**
 	 * Current pointer.
 	 */
-	Node<T>* _ptr = nullptr;
+	Node<T>* ptr_ = nullptr;
 
 public:
 
@@ -57,7 +57,7 @@ public:
 	 */
 	LinkedListIterator<T>(Node<T>** head)
 	{
-		_head = head;
+		head_ = head;
 	}
 
 	/**
@@ -67,12 +67,12 @@ public:
 	 */
 	T* current() override
 	{
-		if (nullptr == _ptr)
+		if (nullptr == ptr_)
 		{
 			return nullptr;
 		}
 
-		return _ptr->value;
+		return ptr_->value;
 	}
 
 	/**
@@ -80,7 +80,7 @@ public:
 	 */
 	void reset() override
 	{
-		_ptr = nullptr;
+		ptr_ = nullptr;
 	}
 
 	/**
@@ -90,24 +90,24 @@ public:
 	 */
 	bool moveNext() override
 	{
-		if (nullptr == _ptr)
+		if (nullptr == ptr_)
 		{
-			if (nullptr == *_head)
+			if (nullptr == *head_)
 			{
 				return false;
 			}
 
-			_ptr = *_head;
+			ptr_ = *head_;
 
 			return true;
 		}
 
-		if (nullptr == _ptr->next)
+		if (nullptr == ptr_->next)
 		{
 			return false;
 		}
 
-		_ptr = _ptr->next;
+		ptr_ = ptr_->next;
 
 		return true;
 	}
@@ -125,12 +125,12 @@ private:
 	/**
 	 * Pointer to the head node.
 	 */
-	Node<T>* _head = nullptr;
+	Node<T>* head_ = nullptr;
 
 	/**
 	 * Pointer to the tail node.
 	 */
-	Node<T>* _tail = nullptr;
+	Node<T>* tail_ = nullptr;
 
 public:
 
@@ -147,7 +147,7 @@ public:
 	 */
 	void clear()
 	{
-		Node<T>* ptr = _head;
+		Node<T>* ptr = head_;
 		while (nullptr != ptr)
 		{
 			Node<T>* next = ptr->next;
@@ -157,7 +157,7 @@ public:
 			ptr = next;
 		}
 
-		_head = _tail = nullptr;
+		head_ = tail_ = nullptr;
 	}
 
 	/**
@@ -167,7 +167,7 @@ public:
 	 */
 	Iterator<T>* it()
 	{
-		return new LinkedListIterator<T>(&_head);
+		return new LinkedListIterator<T>(&head_);
 	}
 
 	/**
@@ -179,7 +179,7 @@ public:
 	{
 		int count = 0;
 
-		Node<T>* ptr = _head;
+		Node<T>* ptr = head_;
 		while (nullptr != ptr)
 		{
 			count++;
@@ -201,16 +201,16 @@ public:
 		Node<T>* node = new Node<T>();
 		node->value = element;
 
-		if (nullptr == _head)
+		if (nullptr == head_)
 		{
-			_head = _tail = node;
+			head_ = tail_ = node;
 		}
 		else
 		{
-			node->previous = _tail;
-			_tail->next = node;
+			node->previous = tail_;
+			tail_->next = node;
 
-			_tail = node;
+			tail_ = node;
 		}
 	}
 
@@ -224,7 +224,7 @@ public:
 	 */
 	bool remove(T* element)
 	{
-		Node<T>* ptr = _head;
+		Node<T>* ptr = head_;
 		while (nullptr != ptr)
 		{
 			if (ptr->value != element)
@@ -240,19 +240,19 @@ public:
 				// head and tail
 				if (nullptr == ptr->next)
 				{
-					_head = _tail = nullptr;
+					head_ = tail_ = nullptr;
 				}
 				else
 				{
-					_head = ptr->next;
-					_head->previous = nullptr;
+					head_ = ptr->next;
+					head_->previous = nullptr;
 				}
 			}
 			// tail
 			else if (nullptr == ptr->next)
 			{
 				ptr->previous->next = nullptr;
-				_tail = ptr->previous;
+				tail_ = ptr->previous;
 			}
 			// somewhere in the middle
 			else
@@ -279,7 +279,7 @@ public:
 	 */
 	bool contains(T* element)
 	{
-		Node<T>* ptr = _head;
+		Node<T>* ptr = head_;
 		while (nullptr != ptr)
 		{
 			if (ptr->value == element)

@@ -52,32 +52,32 @@ private:
 	/**
 	 * Logger.
 	 */
-	Logger* _logger;
+	Logger* logger_;
 
 	/**
 	 * AvrClock implementation.
 	 */
-	AvrClock* _clock;
+	AvrClock* clock_;
 
 	/**
 	 * Stream to read/write with.
 	 */
-	AvrStream* _stream;
+	AvrStream* stream_;
 
 	/**
 	 * Byte offset into stream.
 	 */
-	int _offset;
+	int offset_;
 
 	/**
 	 * Buffer used internally to move floats around.
 	 */
-	char _scratchBuffer[4];
+	char scratchBuffer_[4];
 
 	/**
 	 * Number of bytes per record. Calculated value.
 	 */
-	int _bytesPerRecord;
+	int bytesPerRecord_;
 
 public:
 

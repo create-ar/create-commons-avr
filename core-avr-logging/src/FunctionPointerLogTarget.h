@@ -13,7 +13,7 @@ private:
 	/**
 	 * The function to forward to.
 	 */
-	void (*_lambda)(const char*);
+	void (*lambda_)(const char*);
 
 public:
 	/**

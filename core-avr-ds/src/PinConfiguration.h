@@ -60,7 +60,7 @@ private:
 	/**
 	 * Tracks relationship between name and pin.
 	 */
-	LinkedList<PinOptions> _pins;
+	LinkedList<PinOptions> pins_;
 
 public:
 	/**
@@ -76,7 +76,7 @@ public:
 	 */
 	~PinConfiguration()
 	{
-		Iterator<PinOptions>* it = _pins.it();
+		Iterator<PinOptions>* it = pins_.it();
 		while (it->moveNext())
 		{
 			delete it->current();
@@ -102,7 +102,7 @@ public:
 		PinOptions* existing = getPin(name);
 		if (nullptr == existing)
 		{
-			_pins.add(new PinOptions(name, pin, mode));
+			pins_.add(new PinOptions(name, pin, mode));
 		}
 
 		return this;
@@ -119,7 +119,7 @@ public:
 	{
 		PinOptions* options = nullptr;
 
-		Iterator<PinOptions>* it = _pins.it();
+		Iterator<PinOptions>* it = pins_.it();
 		while (it->current() != nullptr)
 		{
 			PinOptions* config = it->current();

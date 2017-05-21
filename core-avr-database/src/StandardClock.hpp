@@ -14,7 +14,7 @@ private:
 	/**
 	 * Time object was created.
 	 */
-	time_t _startTime;
+	time_t startTime_;
 
 public:
 	/**
@@ -22,7 +22,7 @@ public:
 	 */
 	StandardClock()
 	{
-		_startTime = time(nullptr);
+		startTime_ = time(nullptr);
 	}
 
 	/**
@@ -33,7 +33,7 @@ public:
 	unsigned long now() override
 	{
 		time_t now = time(0);
-		return (unsigned long) ((now - _startTime) * 1000);
+		return (unsigned long) ((now - startTime_) * 1000);
 	}
 };
 

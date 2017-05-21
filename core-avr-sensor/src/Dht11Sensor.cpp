@@ -20,16 +20,16 @@ float Dht11Sensor::dewPoint(double celsius, double humidity)
 }
 
 Dht11Sensor::Dht11Sensor() :
-	_dht11(nullptr)
+	dht11_(nullptr)
 {
-	_logger = Log::logger("DHT11");
+	logger_ = Log::logger("DHT11");
 }
 
 Dht11Sensor::~Dht11Sensor()
 {
-	if (nullptr != _dht11)
+	if (nullptr != dht11_)
 	{
-		delete _dht11;
+		delete dht11_;
 	}
 }
 
@@ -41,36 +41,36 @@ bool Dht11Sensor::init(SensorConfig config) override
 		return false;
 	}
 
-	if (config.numValues > DHT11_NUM_VALUES)
+	if (config.numValues > kDht11NumValues)
 	{
-		_logger->error("Invalid config: Cannot initialize DHT11 with more than 3 values.");
+		logger_->error("Invalid config: Cannot initialize DHT11 with more than 3 values.");
 		return false;
 	}
 
-	const PinOptions* pin = _pins->pin(DHT11_PIN_NAME);
+	const PinOptions* pin = _pins->pin(kDht11PinName);
 	if (nullptr == pin)
 	{
-		_logger->error("Invalid config: Cannot initialize DHT11 with no pins.");
+		logger_->error("Invalid config: Cannot initialize DHT11 with no pins.");
 		return false;
 	}
 
-	_dht11 = new Dht11(pin->pin);
+	dht11_ = new Dht11(pin->pin);
 
 	return true;
 }
 
 bool Dht11Sensor::poll(const float* values) override
 {
-	switch (_dht11->read())
+	switch (dht11_->read())
 	{
 		// read values
 		case Dht11::OK:
 		{
-			values[0] = _dht11->getTemperature();
+			values[0] = dht11_->getTemperature();
 
 			if (config.numValues > 1)
 			{
-				values[1] = _dht11->getHumidity();
+				values[1] = dht11_->getHumidity();
 
 				if (config.numValues > 2)
 				{
@@ -83,19 +83,19 @@ bool Dht11Sensor::poll(const float* values) override
 		// error cases
 		case Dht11::ERROR_CHECKSUM:
 		{
-			_logger->error("Bad checksum.");
+			logger_->error("Bad checksum.");
 
 			return false;
 		}
 		case Dht11::ERROR_TIMEOUT:
 		{
-			_logger->error("Timeout.");
+			logger_->error("Timeout.");
 
 			return false;
 		}
 		default:
 		{
-			_logger->error("Unknown error.");
+			logger_->error("Unknown error.");
 
 			return false;
 		}

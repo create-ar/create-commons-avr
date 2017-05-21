@@ -7,35 +7,35 @@
 * @brief      Stream implementation completely in memory.
 */
 MemoryStream::MemoryStream(const int size) :
-	_logger(nullptr),
-	_size(size),
-	_buffer(nullptr),
-	_index(0)
+	logger_(nullptr),
+	size_(size),
+	buffer_(nullptr),
+	index_(0)
 {
-	_logger = Log::logger("MemoryStream");
-	_buffer = (char*) calloc(_size, sizeof(char));
+	logger_ = Log::logger("MemoryStream");
+	buffer_ = (char*) calloc(size_, sizeof(char));
 }
 
 MemoryStream::~MemoryStream()
 {
-	if (nullptr == _buffer)
+	if (nullptr == buffer_)
 	{
 		return;
 	}
 	
-	free(_buffer);
+	free(buffer_);
 }
 
 char MemoryStream::read()
 {
-	if (nullptr == _buffer)
+	if (nullptr == buffer_)
 	{
 		return -1;
 	}
 
-	if (_index >= 0 && _index < _size)
+	if (index_ >= 0 && index_ < size_)
 	{
-		return _buffer[_index++];
+		return buffer_[index_++];
 	}
 
 	return -1;
@@ -46,7 +46,7 @@ int MemoryStream::read(
 	const int offset,
 	const int count)
 {
-	if (nullptr == _buffer)
+	if (nullptr == buffer_)
 	{
 		return -1;
 	}
@@ -56,7 +56,7 @@ int MemoryStream::read(
 		return -1;
 	}
 
-	if (offset < 0 || offset > _size)
+	if (offset < 0 || offset > size_)
 	{
 		return -1;
 	}
@@ -67,7 +67,7 @@ int MemoryStream::read(
 	}
 
 	// see how many bytes we should read
-	int remaining = _size - offset;
+	int remaining = size_ - offset;
 	int len = remaining < count
 		? remaining
 		: count;
@@ -79,7 +79,7 @@ int MemoryStream::read(
 
 	memcpy(
 		buffer,
-		_buffer + offset,
+		buffer_ + offset,
 		len);
 
 	return len;
@@ -87,24 +87,24 @@ int MemoryStream::read(
 
 bool MemoryStream::write(const char value)
 {
-	if (nullptr == _buffer)
+	if (nullptr == buffer_)
 	{
 		return false;
 	}
 
-	if (_index < 0 || _index >= _size)
+	if (index_ < 0 || index_ >= size_)
 	{
 		return false;
 	}
 
-	_buffer[_index++] = value;
+	buffer_[index_++] = value;
 
 	return true;
 }
 
 int  MemoryStream::write(char* const buffer, const int offset, const int count)
 {
-	if (nullptr == _buffer)
+	if (nullptr == buffer_)
 	{
 		return -1;
 	}
@@ -114,7 +114,7 @@ int  MemoryStream::write(char* const buffer, const int offset, const int count)
 		return -1;
 	}
 
-	if (offset < 0 || offset > _size)
+	if (offset < 0 || offset > size_)
 	{
 		return -1;
 	}
@@ -124,7 +124,7 @@ int  MemoryStream::write(char* const buffer, const int offset, const int count)
 		return -1;
 	}
 
-	int remaining = _size - offset;
+	int remaining = size_ - offset;
 	int len = remaining < count
 		? remaining
 		: count;
@@ -135,7 +135,7 @@ int  MemoryStream::write(char* const buffer, const int offset, const int count)
 	}
 
 	memcpy(
-		_buffer + offset,
+		buffer_ + offset,
 		buffer,
 		len);
 
@@ -144,12 +144,12 @@ int  MemoryStream::write(char* const buffer, const int offset, const int count)
 
 int MemoryStream::set(const char value, const int offset, const int count)
 {
-	if (nullptr == _buffer)
+	if (nullptr == buffer_)
 	{
 		return -1;
 	}
 
-	if (offset < 0 || offset > _size)
+	if (offset < 0 || offset > size_)
 	{
 		return -1;
 	}
@@ -159,7 +159,7 @@ int MemoryStream::set(const char value, const int offset, const int count)
 		return -1;
 	}
 
-	int remaining = _size - offset;
+	int remaining = size_ - offset;
 	int len = remaining < count
 		? remaining
 		: count;
@@ -170,7 +170,7 @@ int MemoryStream::set(const char value, const int offset, const int count)
 	}
 
 	memset(
-		_buffer + offset,
+		buffer_ + offset,
 		value,
 		count);
 
@@ -179,12 +179,12 @@ int MemoryStream::set(const char value, const int offset, const int count)
 
 int MemoryStream::seek(const int offset, const int count)
 {
-	if (nullptr == _buffer)
+	if (nullptr == buffer_)
 	{
 		return -1;
 	}
 
-	if (offset < 0 || offset > _size)
+	if (offset < 0 || offset > size_)
 	{
 		return -1;
 	}
@@ -197,8 +197,8 @@ int MemoryStream::seek(const int offset, const int count)
 	int calculated = offset + count;
 	int index = calculated < 0
 		? 0
-		: calculated > _size
-			? _size
+		: calculated > size_
+			? size_
 			: calculated;
 
 	if (-1 == index)
@@ -206,7 +206,7 @@ int MemoryStream::seek(const int offset, const int count)
 		return -1;
 	}
 
-	_index = index;
+	index_ = index;
 
-	return _index;
+	return index_;
 }

@@ -6,8 +6,8 @@
 
 Database::Database(AvrClock* clock)
 {
-	_logger = Log::logger("Database");
-	_clock = clock;
+	logger_ = Log::logger("Database");
+	clock_ = clock;
 }
 
 Database::~Database()
@@ -55,9 +55,9 @@ bool Database::init(
 		offset,
 		DATABASE_HEADER_SIZE))
 	{
-		_stream = stream;
-		_offset = offset;
-		_bytesPerRecord = (1 /* timestamp */ + header.valuesPerRecord) * 4 /* bytes per float */;
+		stream_ = stream;
+		offset_ = offset;
+		bytesPerRecord_ = (1 /* timestamp */ + header.valuesPerRecord) * 4 /* bytes per float */;
 
 		return true;
 	}
@@ -82,9 +82,9 @@ bool Database::load(AvrStream* stream, const int offset)
 		offset,
 		DATABASE_HEADER_SIZE))
 	{
-		_stream = stream;
-		_offset = offset;
-		_bytesPerRecord = (1 + header.valuesPerRecord) * 4;
+		stream_ = stream;
+		offset_ = offset;
+		bytesPerRecord_ = (1 + header.valuesPerRecord) * 4;
 
 		return true;
 	}
@@ -94,27 +94,27 @@ bool Database::load(AvrStream* stream, const int offset)
 
 bool Database::flush()
 {
-	if (nullptr == _stream)
+	if (nullptr == stream_)
 	{
 		return false;
 	}
 
-	return DATABASE_HEADER_SIZE == _stream->write(
+	return DATABASE_HEADER_SIZE == stream_->write(
 		(char*) &header,
-		_offset,
+		offset_,
 		DATABASE_HEADER_SIZE);
 }
 
 bool Database::add(const float* value)
 {
-	if (nullptr == _stream)
+	if (nullptr == stream_)
 	{
 		return false;
 	}
 
 	// determine if we have the space
-	int numRecordBytes = header.numRecords * _bytesPerRecord;
-	if (header.contentSize - numRecordBytes < _bytesPerRecord)
+	int numRecordBytes = header.numRecords * bytesPerRecord_;
+	if (header.contentSize - numRecordBytes < bytesPerRecord_)
 	{
 		return false;
 	}
@@ -124,24 +124,24 @@ bool Database::add(const float* value)
 	// [TIMESTAMP][VALUE]...[VALUE]
 	{
 		// locate index into stream
-		int absByteIndex = _offset
+		int absByteIndex = offset_
 			+ DATABASE_HEADER_SIZE
-			+ _bytesPerRecord * header.numRecords;
+			+ bytesPerRecord_ * header.numRecords;
 
 		// write timestamp
-		unsigned long timestamp = _clock->now();
-		int numBytesWritten = _stream->write(
+		unsigned long timestamp = clock_->now();
+		int numBytesWritten = stream_->write(
 			(char*) &timestamp,
 			absByteIndex,
 			4);
 
 		// write values
-		numBytesWritten += _stream->write(
+		numBytesWritten += stream_->write(
 			(char*) value,
 			absByteIndex + 4,
 			header.valuesPerRecord * 4);
 
-		if (_bytesPerRecord != numBytesWritten)
+		if (bytesPerRecord_ != numBytesWritten)
 		{
 			return false;
 		}
@@ -163,7 +163,7 @@ int Database::dump(
 	const int recordOffset,
 	const int recordCount)
 {
-	if (nullptr == _stream)
+	if (nullptr == stream_)
 	{
 		return -1;
 	}
@@ -180,17 +180,17 @@ int Database::dump(
 		return -1;
 	}
 
-	int startAbsByteIndex = _offset
+	int startAbsByteIndex = offset_
 		+ DATABASE_HEADER_SIZE
-		+ _bytesPerRecord * recordOffset;
-	int endAbsByteIndex = startAbsByteIndex + _bytesPerRecord * recordCount;
+		+ bytesPerRecord_ * recordOffset;
+	int endAbsByteIndex = startAbsByteIndex + bytesPerRecord_ * recordCount;
 	int byteLen = endAbsByteIndex - startAbsByteIndex;
 
-	int readLen = _stream->read(buffer, startAbsByteIndex, byteLen);
+	int readLen = stream_->read(buffer, startAbsByteIndex, byteLen);
 	if (readLen != byteLen)
 	{
 		return -1;
 	}
 
-	return readLen / _bytesPerRecord;
+	return readLen / bytesPerRecord_;
 }

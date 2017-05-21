@@ -67,22 +67,22 @@ class DatabaseManager
 		/**
 		 * Logger.
 		 */
-		Logger* _logger;
+		Logger* logger_;
 
 		/**
 		 * Clock implementation to use.
 		 */
-		AvrClock* _clock;
+		AvrClock* clock_;
 
 		/**
 		 * The DatabaseManager is the owner of the EEPROMStream abstraction.
 		 */
-		AvrStream* _stream;
+		AvrStream* stream_;
 
 		/**
 		 * Header information for file system.
 		 */
-		DatabaseManagerHeader _header;
+		DatabaseManagerHeader header_;
 
 	public:
 		/**

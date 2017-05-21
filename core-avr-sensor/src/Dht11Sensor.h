@@ -6,8 +6,8 @@
 #include <Logger.h>
 #include <Dht11.h>
 
-#define DHT11_PIN_NAME "dht11_pin"
-#define DHT11_NUM_VALUES 3
+#define kDht11PinName "dht11_pin"
+#define kDht11NumValues 3
 
 /**
  * @brief      Sensor implementation for the DHT11 temperature/humidity sensor.
@@ -18,12 +18,12 @@ private:
 	/**
 	 * Logger for this class.
 	 */
-	Logger* _logger;
+	Logger* logger_;
 
 	/**
 	 * Sensor instance.
 	 */
-	Dht11* _dht11;
+	Dht11* dht11_;
 
 	/**
 	 * @brief      Retrieves dewpoint.
@@ -48,15 +48,15 @@ public:
 	 */
 	~Dht11Sensor()
 	{
-		if (nullptr != _dht11)
+		if (nullptr != dht11_)
 		{
-			delete _dht11;
+			delete dht11_;
 		}
 	}
 
 	/**
 	 * @brief      Initializes the sensor with its configuration. This sensor
-	 * must have a pin, DHT11_PIN_NAME, and can gather between 1 and 3 values,
+	 * must have a pin, kDht11PinName, and can gather between 1 and 3 values,
 	 * inclusive.
 	 *
 	 * @param[in]  config  The configuration for this sensor.
