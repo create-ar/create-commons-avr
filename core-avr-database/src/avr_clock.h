@@ -1,6 +1,8 @@
 #ifndef AVRCLOCK_H
 #define AVRCLOCK_H
 
+#include <inttypes.h>
+
 /**
  * @brief      Abstraction for clock.
  */
@@ -21,7 +23,7 @@ public:
 	 *
 	 * @return     Total number of milliseconds since the start of the program.
 	 */
-	virtual unsigned long now() = 0;
+	virtual uint32_t now() = 0;
 };
 
 #endif
