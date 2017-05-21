@@ -41,8 +41,8 @@ SOURCES=\
 # Foo.cpp Bar.cpp
 # 
 TEST_SOURCES=\
-	test/Main_core-avr-io.cpp\
-	test/MemoryStream_Tests.cpp
+	test/main_core-avr-io.cpp\
+	test/memory_stream_tests.cpp
 ###############################################################################
 
 ###############################################################################

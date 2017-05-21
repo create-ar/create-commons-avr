@@ -50,8 +50,8 @@ AVR_SOURCES=\
 # test/Foo.cpp test/Bar.cpp
 # 
 TEST_SOURCES=\
-	test/Main_core-avr-sensor.cpp\
-	test/SensorManager_Tests.cpp
+	test/main_core-avr-sensor.cpp\
+	test/sensor_manager_tests.cpp
 ###############################################################################
 
 ###############################################################################

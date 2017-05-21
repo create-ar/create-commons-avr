@@ -1,6 +1,6 @@
 #include <catch.hpp>
 #include <string.h>
-#include <PinConfiguration.h>
+#include <pin_configuration.h>
 
 #include "memory_stream.h"
 

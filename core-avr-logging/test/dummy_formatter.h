@@ -1,4 +1,4 @@
-#include "LogFormatter.h"
+#include "log_formatter.h"
 
 class DummyFormatter : public LogFormatter
 {

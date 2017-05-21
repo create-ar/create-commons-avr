@@ -1,4 +1,4 @@
-#include "LogTarget.h"
+#include "log_target.h"
 
 class DummyLogTarget : public LogTarget
 {

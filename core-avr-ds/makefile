@@ -38,8 +38,8 @@ SOURCES=
 # Foo.cpp Bar.cpp
 # 
 TEST_SOURCES=\
-	test/Main_core-avr-ds.cpp\
-	test/LinkedList_Tests.cpp
+	test/main_core-avr-ds.cpp\
+	test/linked_list_tests.cpp
 ###############################################################################
 
 ###############################################################################

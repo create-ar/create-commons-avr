@@ -42,9 +42,9 @@ SOURCES=\
 # Foo.cpp Bar.cpp
 # 
 TEST_SOURCES=\
-	test/Main_core-avr-logging.cpp\
-	test/Log_Tests.cpp\
-	test/DefaultFormatter_Tests.cpp
+	test/main_core-avr-logging.cpp\
+	test/log_tests.cpp\
+	test/default_formatter_tests.cpp
 ###############################################################################
 
 # object file directories

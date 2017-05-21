@@ -43,9 +43,9 @@ SOURCES=\
 # Foo.cpp Bar.cpp
 # 
 TEST_SOURCES=\
-	test/Database_Tests.cpp\
-	test/Main_core-avr-database.cpp\
-	test/DatabaseManager_Tests.cpp
+	test/database_tests.cpp\
+	test/main_core-avr-database.cpp\
+	test/database_manager_tests.cpp
 ###############################################################################
 
 ###############################################################################
