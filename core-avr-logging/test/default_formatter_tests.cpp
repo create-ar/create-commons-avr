@@ -26,7 +26,7 @@ TEST_CASE("Formatting", "[DefaultFormatter]")
 	delete[] formattedMessage;
 
 	formattedMessage = formatter->format("INFO", "CATEGORY", "MESSAGE");
-	REQUIRE(0 == strncmp("[INFO][CATEGORY] MESSAGE", formattedMessage, strlen(formattedMessage) - 1));
+	REQUIRE(0 == strcmp("[INFO][CATEGORY] MESSAGE", formattedMessage));
 	delete[] formattedMessage;
 
 	delete formatter;

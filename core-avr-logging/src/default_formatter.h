@@ -58,7 +58,7 @@ public:
 		char* buffer = new char[
 			strlen(levelBuffer) + 2
 			+ strlen(categoryBuffer) + 2
-			+ strlen(messageBuffer) + 1];
+			+ strlen(messageBuffer) + 2];
 		
 		sprintf(buffer, "[%s][%s] %s", levelBuffer, categoryBuffer, messageBuffer);
 
