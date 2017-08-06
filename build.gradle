@@ -1,27 +1,21 @@
-apply from: 'util.gradle'
-
 // This task generates documentation.
-task gendocs(dependsOn:'build') {
-	doLast {
-		exec_cmd([
-			'doxygen',
-			'.doxygen.config'],
-			false)
-	}
+task gendocs(dependsOn:'build', type:Exec) {
+	executable 'doxygen'
+	args '.doxygen.config'
+	standardOutput System.out
 }
 
 // Builds.
-task build {
-	doLast {
-		exec_cmd(["make"], true)
-	}
+task build(type:Exec) {
+	executable 'make'
+	standardOutput System.out
+
 }
 
 // Cleans lib + generated folders.
-task clean {
-	doLast {
-		exec_cmd(['rm', '-rf', 'docs/generated/html'], false)
-	}
+task clean(type:Exec) {
+	commandLine 'rm -rf docs/generated/html'
+	standardOutput System.out
 }
 
 // Runs all tests.
@@ -35,13 +29,10 @@ task test {
 			'core-avr-sensor']
 		libs.each({ lib ->
 			println "Running $lib tests..."
-			if (task.project.hasProperty('verbose'))
-			{
-				exec_cmd(["$lib/build/Test.exe", '-s'], true)
-			}
-			else
-			{
-				exec_cmd(["$lib/build/Test.exe"], true)
+			
+			exec {
+				executable "$lib/build/Test.exe"
+				standardOutput System.out
 			}
 		})
 	}
