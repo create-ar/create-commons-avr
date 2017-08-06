@@ -105,7 +105,7 @@ TEST_CASE("DatabaseManager usage.", "[DatabaseManager]")
 
 		for (int i = 0; i < numDatabases; i++)
 		{
-			uriBuffer = (char*) calloc(16, 0);
+			uriBuffer = (char*) calloc(16, sizeof(char));
 			sprintf(uriBuffer, "/db/sensor/%i", i);
 
 			Database* file = files->create(
@@ -122,7 +122,7 @@ TEST_CASE("DatabaseManager usage.", "[DatabaseManager]")
 		
 		for (int i = 0; i < numDatabases; i++)
 		{
-			uriBuffer = (char*) calloc(16, 0);
+			uriBuffer = (char*) calloc(16, sizeof(char));
 			sprintf(uriBuffer, "/db/sensor/%i", i);
 
 			Database* file = files->get((const char*) uriBuffer);
