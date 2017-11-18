@@ -16,7 +16,7 @@
     "license": "MIT",
     "export":
     {
-        "include": "src"
+        "include": "core-avr-logging/src"
     },
     "frameworks": "atmelavr"
 }
