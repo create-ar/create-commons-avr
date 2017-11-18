@@ -1,0 +1,22 @@
+{
+    "name": "core-avr-logging",
+    "version": "0.1.0",
+    "description": "Logging library.",
+    "authors":
+    {
+        "name": "Benjamin Jordan",
+        "email": "benjamin@createar.co",
+        "maintainer": true
+    },
+    "repository":
+    {
+        "type": "git",
+        "url": "git@github.com:create-ar/create-commons-avr.git"
+    },
+    "license": "MIT",
+    "export":
+    {
+        "include": "src"
+    },
+    "frameworks": "atmelavr"
+}
