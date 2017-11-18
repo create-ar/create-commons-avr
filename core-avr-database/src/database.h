@@ -70,11 +70,6 @@ private:
 	int32_t offset_;
 
 	/**
-	 * Buffer used internally to move floats around.
-	 */
-	char scratchBuffer_[4];
-
-	/**
 	 * Number of bytes per record. Calculated value.
 	 */
 	int32_t bytesPerRecord_;

@@ -30,7 +30,7 @@ TEST_CASE("MemoryStream.", "[MemoryStream]")
 
 		REQUIRE(readSize == stream->read(readBuffer, offset, readSize));
 
-		delete readBuffer;
+		delete[] readBuffer;
 		delete stream;
 	}
 
