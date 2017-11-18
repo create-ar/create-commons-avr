@@ -1,6 +1,7 @@
 {
     "name": "core-avr-logging",
     "version": "0.1.0",
+    "keywords": "logging,avr,arduino",
     "description": "Logging library.",
     "authors":
     {
