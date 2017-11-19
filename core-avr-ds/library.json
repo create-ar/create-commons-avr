@@ -1,0 +1,22 @@
+{
+    "name": "core-avr-ds",
+    "version": "0.1.0",
+    "description": "Basic data structures.",
+    "authors":
+    {
+        "name": "Benjamin Jordan",
+        "email": "benjamin@createar.co",
+        "maintainer": true
+    },
+    "repository":
+    {
+        "type": "git",
+        "url": "git@github.com:create-ar/create-commons-avr.git"
+    },
+    "license": "MIT",
+    "export":
+    {
+        "include": "core-avr-ds/src"
+    },
+    "frameworks": "atmelavr"
+}

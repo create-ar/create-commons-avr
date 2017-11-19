@@ -1,0 +1,37 @@
+{
+    "name": "core-avr-database",
+    "version": "0.1.0",
+    "description": "Simple numerical database library.",
+    "authors":
+    {
+        "name": "Benjamin Jordan",
+        "email": "benjamin@createar.co",
+        "maintainer": true
+    },
+    "repository":
+    {
+        "type": "git",
+        "url": "git@github.com:create-ar/create-commons-avr.git"
+    },
+    "license": "MIT",
+    "export":
+    {
+        "include": "core-avr-database/src"
+    },
+    "frameworks": "atmelavr",
+    "dependencies":
+    [
+        {
+            "name": "core-avr-ds",
+            "version": "0.1.0"
+        },
+        {
+            "name": "core-avr-logging",
+            "version": "0.1.0"
+        },
+        {
+            "name": "core-avr-io",
+            "version": "0.1.0"
+        }
+    ]
+}
