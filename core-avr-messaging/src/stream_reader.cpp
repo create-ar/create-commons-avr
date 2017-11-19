@@ -1,7 +1,7 @@
 #include "stream_reader.h"
 #include "converter.h"
 
-StreamReader::StreamReader() : index_(0), buffer_length_(0)
+StreamReader::StreamReader() : buffer_length_(0), index_(0)
 {
     //
 }
