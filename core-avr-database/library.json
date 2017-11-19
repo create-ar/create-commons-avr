@@ -1,6 +1,7 @@
 {
     "name": "core-avr-database",
     "version": "0.1.0",
+    "keywords": "arduino,avr,database",
     "description": "Simple numerical database library.",
     "authors":
     {

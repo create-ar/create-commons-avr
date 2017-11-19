@@ -1,6 +1,7 @@
 {
     "name": "core-avr-io",
     "version": "0.1.0",
+    "keywords": "arduino,avr,io,streams",
     "description": "I/O library based on streams.",
     "authors":
     {

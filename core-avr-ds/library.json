@@ -1,6 +1,7 @@
 {
     "name": "core-avr-ds",
     "version": "0.1.0",
+    "keywords": "arduino,avr,datastructures",
     "description": "Basic data structures.",
     "authors":
     {

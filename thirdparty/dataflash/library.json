@@ -1,6 +1,7 @@
 {
     "name": "DataFlash",
     "version": "0.1.0",
+    "keywords": "arduino,avr,dataflash",
     "description": "Library for working with DataFlash.",
     "authors":
     {
