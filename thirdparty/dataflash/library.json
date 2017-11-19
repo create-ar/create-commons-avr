@@ -11,6 +11,11 @@
     },
     "homepage": "http://forum.arduino.cc/index.php?topic=298022.0",
     "license": "MIT",
+    "repository":
+    {
+        "type": "git",
+        "url": "git@github.com:create-ar/create-commons-avr.git"
+    },
     "export":
     {
         "include": "thirdparty/dataflash"
