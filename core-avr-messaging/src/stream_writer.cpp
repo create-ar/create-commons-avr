@@ -2,7 +2,7 @@
 
 StreamWriter::StreamWriter(int max_length) : buffer_length_(max_length)
 {
-	buffer_ = new unsigned char[buffer_length_];
+	buffer_ = new char[buffer_length_];
 
 	index = 0;
 }
@@ -12,7 +12,7 @@ StreamWriter::~StreamWriter()
 	delete[] buffer_;
 }
 
-unsigned char* StreamWriter::get_buffer(int* len)
+char* StreamWriter::get_buffer(int* len)
 {
 	*len = buffer_length_;
 
@@ -39,12 +39,12 @@ const void StreamWriter::write_int(const int value)
 	buffer_[index++] = converter.char_value[3];
 }
 
-const void StreamWriter::write_byte(const unsigned char value)
+const void StreamWriter::write_byte(const char value)
 {
 	buffer_[index++] = value;
 }
 
-const void StreamWriter::write_bytes(const unsigned char* bytes, const short len)
+const void StreamWriter::write_bytes(const char* bytes, const short len)
 {
 	write_short(len);
 

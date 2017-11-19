@@ -4,17 +4,17 @@
 class StreamReader
 {
 private:
-	unsigned char* buffer_;
+	char* buffer_;
 	int buffer_length_;
 	int index_;
 
 public:
 	StreamReader();
 
-	unsigned char* get_buffer();
+	char* get_buffer();
 
 	void set_buffer(
-		unsigned char* buffer,
+		char* buffer,
 		int length,
 		int index);
 
@@ -26,9 +26,9 @@ public:
 
 	int read_int();
 	
-	unsigned char read_byte();
+	char read_byte();
 
-	void read_bytes(unsigned char* value, short& len);
+	char* read_bytes(short& len);
 
 	bool read_bool();
 };

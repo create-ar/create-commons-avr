@@ -6,13 +6,13 @@ StreamReader::StreamReader() : buffer_length_(0), index_(0)
     //
 }
 
-unsigned char* StreamReader::get_buffer()
+char* StreamReader::get_buffer()
 {
 	return buffer_;
 }
 
 void StreamReader::set_buffer(
-	unsigned char* buffer,
+	char* buffer,
 	int length,
 	int index)
 {
@@ -53,22 +53,24 @@ int StreamReader::read_int()
 	return converter.int_value;
 }
 
-unsigned char StreamReader::read_byte()
+char StreamReader::read_byte()
 {
 	return buffer_[index_++];
 }
 
-void StreamReader::read_bytes(unsigned char* value, short& len)
+char* StreamReader::read_bytes(short& len)
 {
 	len = read_short();
-	value = new unsigned char[len];
 
+	auto value = new char[len];
 	for (int i = 0; i < len; i++)
 	{
 		value[i] = buffer_[index_ + i];
 	}
 
 	index_ += len;
+
+	return value;
 }
 
 bool StreamReader::read_bool()

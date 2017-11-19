@@ -46,12 +46,17 @@ TEST_CASE("Reader/Writer Integration", "[StreamReader/StreamWriter]")
 
     SECTION("Bytes")
 	{
-        //const char[] value = "asdff";
+        const char value[] = "asdff";
         
-        //writer->write_bytes(value, 5);
+        writer->write_bytes(value, 5);
         
-        char* read;
-        int len;
+        short len;
+        auto read = reader->read_bytes(len);
+
+        REQUIRE(0 == strcmp(value, read));
+        REQUIRE(len == 5);
+
+        delete read;
     }
 
     SECTION("Bool")

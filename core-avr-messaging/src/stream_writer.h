@@ -6,7 +6,7 @@
 class StreamWriter
 {
 private:
-	unsigned char* buffer_;
+	char* buffer_;
 	int buffer_length_;
 
 public:
@@ -15,13 +15,13 @@ public:
 	StreamWriter(const int max_length);
 	~StreamWriter();
 
-	unsigned char* get_buffer(int* len);
+	char* get_buffer(int* len);
 
 	const void write_short(const short value);
 	const void write_int(const int value);
 	
-	const void write_byte(const unsigned char value);
-	const void write_bytes(const unsigned char* bytes, const short len);
+	const void write_byte(const char value);
+	const void write_bytes(const char* bytes, const short len);
 
 	const void write_bool(const bool value);
 };
