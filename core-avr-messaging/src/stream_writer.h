@@ -18,8 +18,9 @@ public:
 	const void write_short(const int16_t value);
 	const void write_int(const int32_t value);
 	
-	const void write_byte(const char value);
-	const void write_bytes(char* const bytes, const int16_t len);
+	const void write_byte(const unsigned char value);
+	const void write_bytes(unsigned char* bytes, const int16_t len);
+	//const void write_bytes(unsigned char bytes[]);
 
 	const void write_bool(const bool value);
 };

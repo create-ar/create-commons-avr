@@ -29,12 +29,12 @@ const void StreamWriter::write_int(const int value)
 	stream_->write((value >> 24) & 0xFF);
 }
 
-const void StreamWriter::write_byte(const char value)
+const void StreamWriter::write_byte(const unsigned char value)
 {
 	stream_->write(value);
 }
 
-const void StreamWriter::write_bytes(char* const bytes, const int16_t len)
+const void StreamWriter::write_bytes(unsigned char* bytes, const int16_t len)
 {
 	write_short(len);
 	

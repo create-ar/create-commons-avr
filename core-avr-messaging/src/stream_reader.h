@@ -20,9 +20,9 @@ public:
 
 	int32_t read_int();
 	
-	char read_byte();
+	unsigned char read_byte();
 
-	char* read_bytes();
+	unsigned char* read_bytes();
 
 	bool read_bool();
 };
