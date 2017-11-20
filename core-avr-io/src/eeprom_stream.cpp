@@ -17,32 +17,37 @@ bool EEPROMStream::init(PinConfiguration pins)
 	return false;
 }
 
-char read()
+int32_t EEPROMStream::get_index()
+{
+	return 0;
+}
+
+char EEPROMStream::read()
 {
 	return -1;
 }
 
-int32_t read(char* const buffer, const int32_t offset, const int32_t count)
+int32_t EEPROMStream::read(char* const buffer, const int32_t offset, const int32_t count)
 {
 	return -1;
 }
 
-bool write(const char value)
+bool EEPROMStream::write(const char value)
 {
 	return false;
 }
 
-int32_t write(char* const buffer, const int32_t offset, const int32_t count)
+int32_t EEPROMStream::write(char* const buffer, const int32_t offset, const int32_t count)
 {
 	return -1;
 }
 
-int32_t set(const char value, const int32_t offset, const int32_t count)
+int32_t EEPROMStream::set(const char value, const int32_t offset, const int32_t count)
 {
 	return -1;
 }
 
-int32_t seek(const int32_t offset, const int32_t origin)
+int32_t EEPROMStream::seek(const int32_t offset, const int32_t origin)
 {
 	return -1;
 }

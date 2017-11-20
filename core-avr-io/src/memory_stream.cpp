@@ -26,6 +26,11 @@ MemoryStream::~MemoryStream()
 	free(buffer_);
 }
 
+int32_t MemoryStream::get_index()
+{
+	return index_;
+}
+
 char MemoryStream::read()
 {
 	if (nullptr == buffer_)

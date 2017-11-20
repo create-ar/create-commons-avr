@@ -41,6 +41,8 @@ public:
 	 */
 	bool init(PinConfiguration pins);
 
+	virtual int32_t get_index() override;
+
 	virtual char read() override;
 
 	virtual int32_t read(char* const buffer, const int32_t offset, const int32_t count) override;

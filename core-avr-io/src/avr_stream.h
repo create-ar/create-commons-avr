@@ -20,6 +20,13 @@ public:
 	}
 
 	/**
+	 * @brief      Returns the index of the stream.
+	 * 
+	 * @return     The current index.	
+	 */
+	virtual int32_t get_index() = 0;
+
+	/**
 	 * @brief      Reads a single byte from the stream and advances the index.
 	 *
 	 * @return     Returns the byte read.
