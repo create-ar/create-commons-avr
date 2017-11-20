@@ -1,37 +1,30 @@
 #ifndef _STREAMREADER_h
 #define _STREAMREADER_h
 
+#include <inttypes.h>
+
+#include "avr_stream.h"
+
 class StreamReader
 {
 private:
-	char* buffer_;
-	int buffer_length_;
-	int index_;
+	AvrStream* stream_;
 
 public:
 	StreamReader();
 
-	char* get_buffer();
+	void set_stream(AvrStream* stream);
+	AvrStream* get_stream();
 
-	void set_buffer(
-		char* buffer,
-		int length,
-		int index);
+	int16_t read_short();
 
-	int get_index();
-
-	void set_index(int index);
-
-	short read_short();
-
-	int read_int();
+	int32_t read_int();
 	
 	char read_byte();
 
-	char* read_bytes(short& len);
+	char* read_bytes();
 
 	bool read_bool();
 };
 
 #endif
-

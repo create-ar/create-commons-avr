@@ -1,60 +1,47 @@
 #include "stream_writer.h"
 
-StreamWriter::StreamWriter(int max_length) : buffer_length_(max_length)
+StreamWriter::StreamWriter()
 {
-	buffer_ = new char[buffer_length_];
-
-	index = 0;
+	
 }
 
-StreamWriter::~StreamWriter()
+void StreamWriter::set_stream(AvrStream* stream)
 {
-	delete[] buffer_;
+	stream_ = stream;
 }
 
-char* StreamWriter::get_buffer(int* len)
+AvrStream* StreamWriter::get_stream()
 {
-	*len = buffer_length_;
-
-	return buffer_;
+	return stream_;
 }
 
 const void StreamWriter::write_short(const short value)
 {
-	ShortUnion converter = ShortUnion();
-	converter.short_value = value;
-
-	buffer_[index++] = converter.char_value[0];
-	buffer_[index++] = converter.char_value[1];
+	stream_->write(value & 0xFF);
+	stream_->write((value >> 8) & 0xFF);
 }
 
 const void StreamWriter::write_int(const int value)
 {
-	IntUnion converter = IntUnion();
-	converter.int_value = value;
-
-	buffer_[index++] = converter.char_value[0];
-	buffer_[index++] = converter.char_value[1];
-	buffer_[index++] = converter.char_value[2];
-	buffer_[index++] = converter.char_value[3];
+	stream_->write(value & 0xFF);
+	stream_->write((value >> 8) & 0xFF);
+	stream_->write((value >> 16) & 0xFF);
+	stream_->write((value >> 24) & 0xFF);
 }
 
 const void StreamWriter::write_byte(const char value)
 {
-	buffer_[index++] = value;
+	stream_->write(value);
 }
 
-const void StreamWriter::write_bytes(const char* bytes, const short len)
+const void StreamWriter::write_bytes(char* const bytes, const int16_t len)
 {
 	write_short(len);
-
-	for (int i = 0; i < len; i++)
-	{
-		buffer_[index++] = bytes[i];
-	}
+	
+	stream_->write(bytes, 0, len);
 }
 
 const void StreamWriter::write_bool(const bool value)
 {
-	buffer_[index++] = value ? 1 : 0;
+	write_int(value ? 1 : 0);
 }

@@ -6,7 +6,7 @@ TEST_CASE("StreamWriter", "[StreamWriter]")
 {
     const int LEN = 1024;
 
-    auto writer = new StreamWriter(LEN);
+    auto writer = new StreamWriter();
 
     SECTION("")
 	{

@@ -11,7 +11,7 @@ TEST_CASE("MemoryStream.", "[MemoryStream]")
 	SECTION("read()")
 	{
 		MemoryStream* stream = new MemoryStream(size);
-		char* readBuffer = new char[size];
+		unsigned char* readBuffer = new unsigned char[size];
 
 		int32_t offset = 12;
 		int32_t readSize = 128;
@@ -37,7 +37,7 @@ TEST_CASE("MemoryStream.", "[MemoryStream]")
 	SECTION("seek()")
 	{
 		MemoryStream* stream = new MemoryStream(size);
-		char* readBuffer = new char[size];
+		unsigned char* readBuffer = new unsigned char[size];
 
 		REQUIRE(-1 == stream->seek(-1, 2));
 		REQUIRE(-1 == stream->seek(0, -1));
@@ -56,7 +56,7 @@ TEST_CASE("MemoryStream.", "[MemoryStream]")
 	SECTION("write()")
 	{
 		MemoryStream* stream = new MemoryStream(size);
-		char* readBuffer = new char[size];
+		unsigned char* readBuffer = new unsigned char[size];
 
 		REQUIRE(stream->write('a'));
 
@@ -67,10 +67,10 @@ TEST_CASE("MemoryStream.", "[MemoryStream]")
 	SECTION("read()/write()/seek() char")
 	{
 		MemoryStream* stream = new MemoryStream(size);
-		char* readBuffer = new char[size];
+		unsigned char* readBuffer = new unsigned char[size];
 
-		char write[] = "This is a test.";
-		int32_t len = strlen(write);
+		unsigned char write[] = "This is a test.";
+		int32_t len = strlen((const char*) write);
 
 		REQUIRE(len == stream->write(write, 0, len));
 
@@ -80,7 +80,7 @@ TEST_CASE("MemoryStream.", "[MemoryStream]")
 
 		REQUIRE(stream->write(write, 0, len));
 		REQUIRE(stream->read(readBuffer, 0, len));
-		REQUIRE(0 == strncmp(readBuffer, write, len));
+		REQUIRE(0 == strncmp((const char*) readBuffer, (const char*) write, len));
 		
 		delete[] readBuffer;
 		delete stream;
@@ -90,18 +90,18 @@ TEST_CASE("MemoryStream.", "[MemoryStream]")
 	{
 		MemoryStream* stream = new MemoryStream(size);		
 
-		char readBuffer[size];
-		char writeBuffer[size];
+		unsigned char readBuffer[size];
+		unsigned char writeBuffer[size];
 		
 		memset(writeBuffer, 'a', size);
-		REQUIRE(size == stream->write((char* const) writeBuffer, 0, size));
+		REQUIRE(size == stream->write((unsigned char* const) writeBuffer, 0, size));
 		REQUIRE(size == stream->read(readBuffer, 0, size));
-		REQUIRE(0 == strncmp(readBuffer, writeBuffer, size));
+		REQUIRE(0 == strncmp((const char*) readBuffer, (const char*) writeBuffer, size));
 
 		memset(writeBuffer, '\0', size);
 		REQUIRE(size == stream->set('\0', 0, size));
 		REQUIRE(size == stream->read(readBuffer, 0, size));
-		REQUIRE(0 == strncmp(readBuffer, writeBuffer, size));
+		REQUIRE(0 == strncmp((const char*) readBuffer, (const char*) writeBuffer, size));
 
 		delete stream;
 	}

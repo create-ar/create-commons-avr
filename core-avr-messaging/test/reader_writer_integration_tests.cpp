@@ -1,5 +1,6 @@
 #include <catch.hpp>
 
+#include "memory_stream.h"
 #include "stream_reader.h"
 #include "stream_writer.h"
 
@@ -7,67 +8,38 @@ TEST_CASE("Reader/Writer Integration", "[StreamReader/StreamWriter]")
 {
     const int LEN = 1024;
 
+    auto stream = new MemoryStream(LEN);
+    
+    auto writer = new StreamWriter();
+    writer->set_stream(stream);
+
+    const uint16_t short_value = 173;
+    const uint32_t int_value = 32987;
+    const char byte_value = 'c';
+    const char bytes_value[] = "asdff";
+    const bool bool_value = true;
+
+    writer->write_short(short_value);
+    writer->write_int(int_value);
+    writer->write_byte(byte_value);
+    writer->write_bytes((char* const) bytes_value, 5);
+    writer->write_bool(bool_value);
+
     auto reader = new StreamReader();
-    auto writer = new StreamWriter(LEN);
+    stream->seek(0, 0);
+    reader->set_stream(stream);
+    
+    REQUIRE(short_value == reader->read_short());
+    REQUIRE(int_value == reader->read_int());
+    REQUIRE(byte_value == reader->read_byte());
 
-    // plug the writer into the reader
-    int len;
-    reader->set_buffer(
-        writer->get_buffer(&len),
-        LEN,
-        0);
+    auto bytes_read = reader->read_bytes();
+    REQUIRE(0 == strcmp(bytes_value, bytes_read));
+    delete bytes_read;
 
-    SECTION("Short")
-	{
-        const short value = 173;
-
-        writer->write_short(value);
-        
-        REQUIRE(value == reader->read_short());
-    }
-
-    SECTION("Int")
-	{
-        const int value = 32987;
-
-        writer->write_int(value);
-        
-        REQUIRE(value == reader->read_int());
-    }
-
-    SECTION("Byte")
-	{
-        const char value = 'c';
-
-        writer->write_byte(value);
-        
-        REQUIRE(value == reader->read_byte());
-    }
-
-    SECTION("Bytes")
-	{
-        const char value[] = "asdff";
-        
-        writer->write_bytes(value, 5);
-        
-        short len;
-        auto read = reader->read_bytes(len);
-
-        REQUIRE(0 == strcmp(value, read));
-        REQUIRE(len == 5);
-
-        delete read;
-    }
-
-    SECTION("Bool")
-	{
-        const bool value = true;
-
-        writer->write_bool(value);
-        
-        REQUIRE(value == reader->read_bool());
-    }
+    REQUIRE(bool_value == reader->read_bool());
 
     delete writer;
     delete reader;
+    delete stream;
 }

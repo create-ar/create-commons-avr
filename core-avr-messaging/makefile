@@ -7,7 +7,10 @@ include ../properties.mk
 # 
 # -I$(BASECORE_DIR)/core-avr-ds/src
 #
-INC=-I$(BASECORE_DIR)/core-avr-logging/src
+INC=\
+	-I$(BASECORE_DIR)/core-avr-logging/src\
+	-I$(BASECORE_DIR)/core-avr-ds/src\
+	-I$(BASECORE_DIR)/core-avr-io/src
 ###############################################################################
 
 ###############################################################################
@@ -52,7 +55,9 @@ TEST_SOURCES=\
 # 
 # -lcore-avr-logging
 #
-ARCHIVE_INCLUDES=
+ARCHIVE_INCLUDES=\
+	-lcore-avr-io\
+	-lcore-avr-logging
 ###############################################################################
 
 # object file directories

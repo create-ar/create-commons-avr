@@ -1,79 +1,46 @@
 #include "stream_reader.h"
-#include "converter.h"
 
-StreamReader::StreamReader() : buffer_length_(0), index_(0)
+StreamReader::StreamReader()
 {
     //
 }
 
-char* StreamReader::get_buffer()
+void StreamReader::set_stream(AvrStream* stream)
 {
-	return buffer_;
+	stream_ = stream;
 }
 
-void StreamReader::set_buffer(
-	char* buffer,
-	int length,
-	int index)
+AvrStream* StreamReader::get_stream()
 {
-	buffer_ = buffer;
-	buffer_length_ = length;
-	index_ = index;
-}
-
-int StreamReader::get_index()
-{
-	return index_;
-}
-
-void StreamReader::set_index(int index)
-{
-	index_ = index;
+	return stream_;
 }
 
 short StreamReader::read_short()
 {
-	ShortUnion converter;
-	converter.char_value[0] = buffer_[index_];
-	converter.char_value[1] = buffer_[index_ + 1];
-
-	index_ += 2;
-
-	return converter.short_value;
+	return stream_->read() | (stream_->read() << 8);
 }
 
 int StreamReader::read_int()
 {
-	IntUnion converter;
-	converter.char_value[0] = buffer_[index_++];
-	converter.char_value[1] = buffer_[index_++];
-	converter.char_value[2] = buffer_[index_++];
-	converter.char_value[3] = buffer_[index_++];
-
-	return converter.int_value;
+	return stream_->read() | (stream_->read() << 8) | (stream_->read() << 16) | (stream_->read() << 24);
 }
 
 char StreamReader::read_byte()
 {
-	return buffer_[index_++];
+	return stream_->read();
 }
 
-char* StreamReader::read_bytes(short& len)
+char* StreamReader::read_bytes()
 {
-	len = read_short();
+	auto len = read_short();
+	auto buffer = new char[len];
 
-	auto value = new char[len];
-	for (int i = 0; i < len; i++)
-	{
-		value[i] = buffer_[index_ + i];
-	}
+	stream_->read(buffer, stream_->get_index(), len);
 
-	index_ += len;
-
-	return value;
+	return buffer;
 }
 
 bool StreamReader::read_bool()
 {
-	return !(buffer_[index_++] & 0);
+	return !(stream_->read() & 0);
 }

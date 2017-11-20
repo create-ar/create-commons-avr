@@ -27,22 +27,22 @@ char EEPROMStream::read()
 	return -1;
 }
 
-int32_t EEPROMStream::read(char* const buffer, const int32_t offset, const int32_t count)
+int32_t EEPROMStream::read(unsigned char* const buffer, const int32_t offset, const int32_t count)
 {
 	return -1;
 }
 
-bool EEPROMStream::write(const char value)
+bool EEPROMStream::write(const unsigned char value)
 {
 	return false;
 }
 
-int32_t EEPROMStream::write(char* const buffer, const int32_t offset, const int32_t count)
+int32_t EEPROMStream::write(unsigned char* const buffer, const int32_t offset, const int32_t count)
 {
 	return -1;
 }
 
-int32_t EEPROMStream::set(const char value, const int32_t offset, const int32_t count)
+int32_t EEPROMStream::set(const unsigned char value, const int32_t offset, const int32_t count)
 {
 	return -1;
 }
