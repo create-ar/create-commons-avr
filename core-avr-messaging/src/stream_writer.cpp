@@ -38,7 +38,9 @@ const void StreamWriter::write_bytes(unsigned char* bytes, const int16_t len)
 {
 	write_short(len);
 	
-	stream_->write(bytes, 0, len);
+	auto index = stream_->get_index();
+	stream_->write(bytes, index, len);
+	stream_->seek(index, len);
 }
 
 const void StreamWriter::write_bool(const bool value)

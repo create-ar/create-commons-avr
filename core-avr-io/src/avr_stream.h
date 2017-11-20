@@ -31,7 +31,7 @@ public:
 	 *
 	 * @return     Returns the byte read.
 	 */
-	virtual char read() = 0;
+	virtual unsigned char read() = 0;
 
 	/**
 	 * @brief      Reads a block of bytes into the input buffer.

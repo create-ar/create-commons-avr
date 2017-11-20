@@ -13,7 +13,7 @@ MemoryStream::MemoryStream(const int32_t size) :
 	index_(0)
 {
 	logger_ = Log::logger("MemoryStream");
-	buffer_ = (char*) calloc(size_, sizeof(char));
+	buffer_ = (char*) calloc(size_, sizeof(unsigned char));
 }
 
 MemoryStream::~MemoryStream()
@@ -31,7 +31,7 @@ int32_t MemoryStream::get_index()
 	return index_;
 }
 
-char MemoryStream::read()
+unsigned char MemoryStream::read()
 {
 	if (nullptr == buffer_)
 	{

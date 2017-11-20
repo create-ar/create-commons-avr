@@ -1,0 +1,38 @@
+{
+    "name": "core-avr-messaging",
+    "version": "0.1.0",
+    "keywords": "arduino,avr,database",
+    "description": "Messaging library.",
+    "authors":
+    {
+        "name": "Benjamin Jordan",
+        "email": "benjamin@createar.co",
+        "maintainer": true
+    },
+    "repository":
+    {
+        "type": "git",
+        "url": "git@github.com:create-ar/create-commons-avr.git"
+    },
+    "license": "MIT",
+    "export":
+    {
+        "include": "core-avr-messaging/src"
+    },
+    "frameworks": "atmelavr",
+    "dependencies":
+    [
+        {
+            "name": "core-avr-ds",
+            "version": "0.1.0"
+        },
+        {
+            "name": "core-avr-logging",
+            "version": "0.1.0"
+        },
+        {
+            "name": "core-avr-io",
+            "version": "0.1.0"
+        }
+    ]
+}

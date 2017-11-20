@@ -1,8 +1,8 @@
 #include "eeprom_stream.h"
 
 EEPROMStream::EEPROMStream(uint32_t pageSize, uint32_t numPages) :
-	_pageSize(pageSize),
-	_numPages(numPages)
+	pageSize_(pageSize),
+	numPages_(numPages)
 {
 	
 }
@@ -22,7 +22,7 @@ int32_t EEPROMStream::get_index()
 	return 0;
 }
 
-char EEPROMStream::read()
+unsigned char EEPROMStream::read()
 {
 	return -1;
 }
