@@ -14,7 +14,7 @@
     "repository":
     {
         "type": "git",
-        "url": "git@github.com:create-ar/create-commons-avr.git"
+        "url": "https://github.com/create-ar/create-commons-avr.git"
     },
     "export":
     {
