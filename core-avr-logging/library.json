@@ -1,6 +1,6 @@
 {
     "name": "core-avr-logging",
-    "version": "0.1.0",
+    "version": "0.1.1",
     "keywords": "logging,avr,arduino",
     "description": "Logging library.",
     "authors":
@@ -19,5 +19,5 @@
     {
         "include": "core-avr-logging/src"
     },
-    "frameworks": "atmelavr"
+    "frameworks": "atmelavr,arduino"
 }

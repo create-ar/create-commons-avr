@@ -2,6 +2,7 @@
 #define SERIALLOGTARGET_H
 
 #include<Arduino.h>
+#include<inttypes.h>
 
 /**
  * @brief      Forwards logs to Arduino Serial interface.
@@ -12,7 +13,10 @@ public:
 	/**
 	 * @brief      Constructor.
 	 */
-    SerialLogTarget() { }
+    SerialLogTarget(int32_t baudRate)
+	{
+		Serial.begin(baudRate);
+	}
 
     /**
      * @brief      Destructor.
