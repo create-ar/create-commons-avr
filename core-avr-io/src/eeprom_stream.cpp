@@ -1,8 +1,8 @@
 #include "eeprom_stream.h"
 
 EEPROMStream::EEPROMStream(uint32_t pageSize, uint32_t numPages) :
-	_pageSize(pageSize),
-	_numPages(numPages)
+	pageSize_(pageSize),
+	numPages_(numPages)
 {
 	
 }
@@ -17,32 +17,37 @@ bool EEPROMStream::init(PinConfiguration pins)
 	return false;
 }
 
-char read()
+int32_t EEPROMStream::get_index()
+{
+	return 0;
+}
+
+unsigned char EEPROMStream::read()
 {
 	return -1;
 }
 
-int32_t read(char* const buffer, const int32_t offset, const int32_t count)
+int32_t EEPROMStream::read(unsigned char* const buffer, const int32_t offset, const int32_t count)
 {
 	return -1;
 }
 
-bool write(const char value)
+bool EEPROMStream::write(const unsigned char value)
 {
 	return false;
 }
 
-int32_t write(char* const buffer, const int32_t offset, const int32_t count)
+int32_t EEPROMStream::write(unsigned char* const buffer, const int32_t offset, const int32_t count)
 {
 	return -1;
 }
 
-int32_t set(const char value, const int32_t offset, const int32_t count)
+int32_t EEPROMStream::set(const unsigned char value, const int32_t offset, const int32_t count)
 {
 	return -1;
 }
 
-int32_t seek(const int32_t offset, const int32_t origin)
+int32_t EEPROMStream::seek(const int32_t offset, const int32_t origin)
 {
 	return -1;
 }

@@ -1,6 +1,6 @@
 {
     "name": "core-avr-ds",
-    "version": "0.1.0",
+    "version": "0.1.1",
     "keywords": "arduino,avr,datastructures",
     "description": "Basic data structures.",
     "authors":
@@ -19,5 +19,5 @@
     {
         "include": "core-avr-ds/src"
     },
-    "frameworks": "atmelavr"
+    "frameworks": "atmelavr,arduino"
 }

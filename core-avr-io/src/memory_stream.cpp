@@ -13,7 +13,7 @@ MemoryStream::MemoryStream(const int32_t size) :
 	index_(0)
 {
 	logger_ = Log::logger("MemoryStream");
-	buffer_ = (char*) calloc(size_, sizeof(char));
+	buffer_ = (char*) calloc(size_, sizeof(unsigned char));
 }
 
 MemoryStream::~MemoryStream()
@@ -26,7 +26,12 @@ MemoryStream::~MemoryStream()
 	free(buffer_);
 }
 
-char MemoryStream::read()
+int32_t MemoryStream::get_index()
+{
+	return index_;
+}
+
+unsigned char MemoryStream::read()
 {
 	if (nullptr == buffer_)
 	{
@@ -42,7 +47,7 @@ char MemoryStream::read()
 }
 
 int32_t MemoryStream::read(
-	char* const buffer,
+	unsigned char* const buffer,
 	const int32_t offset,
 	const int32_t count)
 {
@@ -85,7 +90,7 @@ int32_t MemoryStream::read(
 	return len;
 }
 
-bool MemoryStream::write(const char value)
+bool MemoryStream::write(const unsigned char value)
 {
 	if (nullptr == buffer_)
 	{
@@ -102,7 +107,7 @@ bool MemoryStream::write(const char value)
 	return true;
 }
 
-int32_t MemoryStream::write(char* const buffer, const int32_t offset, const int32_t count)
+int32_t MemoryStream::write(unsigned char* const buffer, const int32_t offset, const int32_t count)
 {
 	if (nullptr == buffer_)
 	{
@@ -142,7 +147,7 @@ int32_t MemoryStream::write(char* const buffer, const int32_t offset, const int3
 	return len;
 }
 
-int32_t MemoryStream::set(const char value, const int32_t offset, const int32_t count)
+int32_t MemoryStream::set(const unsigned char value, const int32_t offset, const int32_t count)
 {
 	if (nullptr == buffer_)
 	{

@@ -41,15 +41,17 @@ public:
 	 */
 	bool init(PinConfiguration pins);
 
-	virtual char read() override;
+	virtual int32_t get_index() override;
 
-	virtual int32_t read(char* const buffer, const int32_t offset, const int32_t count) override;
+	virtual unsigned char read() override;
 
-	virtual bool write(const char value) override;
+	virtual int32_t read(unsigned char* const buffer, const int32_t offset, const int32_t count) override;
 
-	virtual int32_t write(char* const buffer, const int32_t offset, const int32_t count) override;
+	virtual bool write(const unsigned char value) override;
 
-	virtual int32_t set(const char value, const int32_t offset, const int32_t count) override;
+	virtual int32_t write(unsigned char* const buffer, const int32_t offset, const int32_t count) override;
+
+	virtual int32_t set(const unsigned char value, const int32_t offset, const int32_t count) override;
 
 	virtual int32_t seek(const int32_t offset, const int32_t origin) override;
 };

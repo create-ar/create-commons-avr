@@ -1,8 +1,8 @@
 {
-    "name": "core-avr-io",
+    "name": "core-avr-messaging",
     "version": "0.1.0",
-    "keywords": "arduino,avr,io,streams",
-    "description": "I/O library based on streams.",
+    "keywords": "arduino,avr,database",
+    "description": "Messaging library.",
     "authors":
     {
         "name": "Benjamin Jordan",
@@ -12,15 +12,16 @@
     "repository":
     {
         "type": "git",
-        "url": "https://github.com/create-ar/create-commons-avr.git"
+        "url": "git@github.com:create-ar/create-commons-avr.git"
     },
     "license": "MIT",
     "export":
     {
-        "include": "core-avr-io/src"
+        "include": "core-avr-messaging/src"
     },
-    "frameworks": "atmelavr,arduino",
-    "dependencies": [
+    "frameworks": "atmelavr",
+    "dependencies":
+    [
         {
             "name": "core-avr-ds",
             "version": "0.1.0"
@@ -30,7 +31,7 @@
             "version": "0.1.0"
         },
         {
-            "name": "DataFlash",
+            "name": "core-avr-io",
             "version": "0.1.0"
         }
     ]

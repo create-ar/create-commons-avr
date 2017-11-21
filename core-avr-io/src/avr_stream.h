@@ -20,11 +20,18 @@ public:
 	}
 
 	/**
+	 * @brief      Returns the index of the stream.
+	 * 
+	 * @return     The current index.	
+	 */
+	virtual int32_t get_index() = 0;
+
+	/**
 	 * @brief      Reads a single byte from the stream and advances the index.
 	 *
 	 * @return     Returns the byte read.
 	 */
-	virtual char read() = 0;
+	virtual unsigned char read() = 0;
 
 	/**
 	 * @brief      Reads a block of bytes into the input buffer.
@@ -35,7 +42,7 @@ public:
 	 *
 	 * @return     The number of bytes actually read. -1 if there was an error.
 	 */
-	virtual int32_t read(char* const buffer, const int32_t offset, const int32_t count) = 0;
+	virtual int32_t read(unsigned char* const buffer, const int32_t offset, const int32_t count) = 0;
 
 	/**
 	 * @brief      Writes a single byte to the stream and advances the index.
@@ -44,7 +51,7 @@ public:
 	 *
 	 * @return     Returns true if the byte could be successfully written.
 	 */
-	virtual bool write(const char value) = 0;
+	virtual bool write(const unsigned char value) = 0;
 
 	/**
 	 * @brief      Writes a block of bytes to the stream.
@@ -55,7 +62,7 @@ public:
 	 *
 	 * @return     Returns how many bytes were successfully written.
 	 */
-	virtual int32_t write(char* const buffer, const int32_t offset, const int32_t count) = 0;
+	virtual int32_t write(unsigned char* const buffer, const int32_t offset, const int32_t count) = 0;
 
 	/**
 	 * @brief      Sets a block of bytes to a specific value. Effectively, memset.
@@ -66,7 +73,7 @@ public:
 	 *
 	 * @return     Returns how many bytes were successfully set.
 	 */
-	virtual int32_t set(const char value, const int32_t offset, const int32_t count) = 0;
+	virtual int32_t set(const unsigned char value, const int32_t offset, const int32_t count) = 0;
 
 	/**
 	 * @brief      Moves the index to a specific place. This is used when

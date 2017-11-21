@@ -19,7 +19,7 @@
     {
         "include": "core-avr-database/src"
     },
-    "frameworks": "atmelavr",
+    "frameworks": "atmelavr,arduino",
     "dependencies":
     [
         {
