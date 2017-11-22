@@ -39,7 +39,8 @@ SOURCES=
 # 
 TEST_SOURCES=\
 	test/main_core-avr-ds.cpp\
-	test/linked_list_tests.cpp
+	test/linked_list_tests.cpp\
+	test/fixed_queue_tests.cpp
 ###############################################################################
 
 ###############################################################################
