@@ -46,7 +46,7 @@ TEST_CASE("FixedQueue<T>.", "[FixedQueue]")
         delete queue;
     }
 
-    // overrfill queue
+    // overfill queue
     {
         const uint32_t queueSize = 8;
         const uint32_t dummyLen = 12;
@@ -63,6 +63,98 @@ TEST_CASE("FixedQueue<T>.", "[FixedQueue]")
         {
             REQUIRE(!queue->Add(&dummies[i]));
         }
+
+        delete[] dummies;
+        delete queue;
+    }
+
+    // over-remove
+    {
+        const uint32_t queueSize = 8;
+
+        auto queue = new FixedQueue<DummyObject>(queueSize);
+        auto dummies = new DummyObject[queueSize];
+
+        for (int i = 0; i < queueSize; i++)
+        {
+            REQUIRE(queue->Add(&dummies[i]));
+        }
+
+        for (int i = 0; i < queueSize; i++)
+        {
+            REQUIRE(&dummies[i] == queue->Remove());
+        }
+
+        REQUIRE(nullptr == queue->Remove());
+        
+        delete[] dummies;
+        delete queue;
+    }
+
+    // remove all + re fill
+    {
+        const uint32_t queueSize = 8;
+
+        auto queue = new FixedQueue<DummyObject>(queueSize);
+        auto dummies = new DummyObject[queueSize];
+
+        auto counter = 5;
+        while (counter-- > 0)
+        {
+            for (int i = 0; i < queueSize; i++)
+            {
+                REQUIRE(queue->Add(&dummies[i]));
+            }
+
+            for (int i = 0; i < queueSize; i++)
+            {
+                REQUIRE(&dummies[i] == queue->Remove());
+            }
+        }
+
+        delete[] dummies;
+        delete queue;
+    }
+
+    // remove and add near capacity
+    {
+        const uint32_t queueSize = 8;
+
+        auto queue = new FixedQueue<DummyObject>(queueSize);
+        auto dummies = new DummyObject[32];
+        
+        // add 7
+        auto addCounter = 0;
+        auto removeCounter = 0;
+
+        for (int i = 0; i < 7; i++)
+        {
+            queue->Add(&dummies[addCounter++]);
+        }
+
+        // remove 6
+        for (int i = 0; i < 6; i++)
+        {
+            queue->Remove();
+
+            removeCounter++;
+        }
+
+        REQUIRE(1 == queue->get_size());
+
+        // add 3 more
+        for (int i = 0; i < 3; i++)
+        {
+            queue->Add(&dummies[addCounter++]);
+        }
+
+        // remove remaining 4
+        for (int i = 0; i < 4; i++)
+        {
+            REQUIRE(&dummies[removeCounter++] == queue->Remove());
+        }
+
+        REQUIRE(0 == queue->get_size());
 
         delete[] dummies;
         delete queue;

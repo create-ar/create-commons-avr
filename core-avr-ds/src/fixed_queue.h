@@ -3,17 +3,37 @@
 
 #include <inttypes.h>
 
+/**
+ * Queue with a fixed size in memory.
+ */
 template<class T>
 class FixedQueue
 {
 private:
 
+    /**
+     * Dynamically allocated array of pointers.
+     */
     T** buffer_;
 
+    /**
+     * Total capacity of the queue.
+     */
     int32_t capacity_;
+
+    /**
+     * Start index of the queue.
+     */
     int32_t start_;
+
+    /**
+     * End index of the queue.
+     */
     int32_t end_;
 
+    /**
+     * Advances the start index.
+     */
     void AdvanceStart()
     {
         if (start_ == end_)
@@ -26,6 +46,9 @@ private:
         }
     }
 
+    /**
+     * Advances the end index.
+     */
     bool AdvanceEnd()
     {
         if (this->get_size() == this->get_capacity())
@@ -40,21 +63,33 @@ private:
 
 public:
 
+    /**
+     * Creates a fixed size queue.
+     */
     FixedQueue(int32_t capacity) : capacity_(capacity), start_(-1), end_(-1)
     {
         buffer_ = new T*[capacity];
     }
 
+    /**
+     * Destroys a fixed size queue.
+     */
     ~FixedQueue()
     {
         delete[] buffer_;
     }
 
+    /**
+     * Retrieve the capacity of the queue.
+     */
     int32_t get_capacity()
     {
         return capacity_;
     }
 
+    /**
+     * Retrieves the size, i.e. how many elements are currently in the queue.
+     */
     int32_t get_size()
     {
         if (start_ == -1)
@@ -70,6 +105,9 @@ public:
         return end_ - start_ + 1;
     }
 
+    /**
+     * Adds an element to the queue.
+     */
     bool Add(T* element) 
     {
         if (!AdvanceEnd())
@@ -87,6 +125,9 @@ public:
         return true;
     }
 
+    /**
+     * Retrieves the first element in the queue without removing it.
+     */
     T* Peek()
     {
         if (start_ == -1)
@@ -97,6 +138,9 @@ public:
         return buffer_[start_];
     }
 
+    /**
+     * Removes the first element in the queue.
+     */
     T* Remove()
     {
         if (start_ == -1)
