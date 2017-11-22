@@ -11,22 +11,36 @@ private:
     T** buffer_;
 
     int32_t capacity_;
-    int32_t startIndex_;
-    int32_t endIndex_;
+    int32_t start_;
+    int32_t end_;
 
-    void AdvanceQueue()
+    void AdvanceStart()
     {
-        startIndex_ = (startIndex_ + 1) % capacity_;
-
-        if (startIndex_ == endIndex_)
+        if (start_ == end_)
         {
-            startIndex_ = endIndex_ = -1;
+            start_ = end_ = -1;
         }
+        else
+        {
+            start_ = (start_ + 1) % capacity_;
+        }
+    }
+
+    bool AdvanceEnd()
+    {
+        if (this->get_size() == this->get_capacity())
+        {
+            return false;
+        }
+
+        end_ = (end_ + 1) % capacity_;
+
+        return true;
     }
 
 public:
 
-    FixedQueue(int32_t capacity) : capacity_(capacity), startIndex_(-1), endIndex_(-1)
+    FixedQueue(int32_t capacity) : capacity_(capacity), start_(-1), end_(-1)
     {
         buffer_ = new T*[capacity];
     }
@@ -43,50 +57,58 @@ public:
 
     int32_t get_size()
     {
-        return endIndex_ - startIndex_;
+        if (start_ == -1)
+        {
+            return 0;
+        }
+
+        if (start_ > end_)
+        {
+            return capacity_ - start_ + end_ + 1;
+        }
+
+        return end_ - start_ + 1;
     }
 
     bool Add(T* element) 
     {
-        // find an index
-        auto index = -1;
-        if (-1 == startIndex_)
+        if (!AdvanceEnd())
         {
-            index = 0;
-
-            startIndex_ = 0;
-            endIndex_ = 1;
-
-            buffer_[index] = element;
-
-            return true;
+            return false;
         }
 
-        return false;
+        if (start_ == -1)
+        {
+            start_ = 0;
+        }
+
+        buffer_[end_] = element;
+
+        return true;
     }
 
     T* Peek()
     {
-        if (startIndex_ > -1)
+        if (start_ == -1)
         {
-            return buffer_[startIndex_];
+            return nullptr;
         }
 
-        return nullptr;
+        return buffer_[start_];
     }
 
-    T* Poll()
+    T* Remove()
     {
-        if (startIndex_ > -1)
+        if (start_ == -1)
         {
-            auto current = buffer_[startIndex_];
-
-            this->AdvanceQueue();
-
-            return current;
+            return nullptr;
         }
 
-        return nullptr;
+        auto current = buffer_[start_];
+
+        AdvanceStart();
+
+        return current;
     }
 };
 

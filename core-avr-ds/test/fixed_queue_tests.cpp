@@ -27,7 +27,7 @@ TEST_CASE("FixedQueue<T>.", "[FixedQueue]")
         delete queue;
     }
 
-    // add, peek, poll
+    // add, peek, remove
     {
         auto queue = new FixedQueue<DummyObject>(8);
 
@@ -39,7 +39,7 @@ TEST_CASE("FixedQueue<T>.", "[FixedQueue]")
         REQUIRE(queue->Peek() == dummy);
         REQUIRE(1 == queue->get_size());
 
-        REQUIRE(queue->Poll() == dummy);
+        REQUIRE(queue->Remove() == dummy);
         REQUIRE(0 == queue->get_size());
 
         delete dummy;
