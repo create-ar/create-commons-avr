@@ -9,9 +9,8 @@
  * @tparam     T     Type of value this node can hold.
  */
 template <class T>
-class Node
+struct Node
 {
-public:
 	/**
 	 * Value this node holds.
 	 */
